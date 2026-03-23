@@ -387,6 +387,21 @@ footer span { color:var(--pink); }
         </div>
       </div>
 
+      <div class="project-card reveal">
+        <div class="project-accent" style="background:linear-gradient(90deg,var(--purple),var(--cyan))"></div>
+        <div class="project-header">
+          <div class="project-label">BROADCAST SYSTEM</div>
+          <div class="project-name">NEONCAST</div>
+          <span class="project-status status-live">● LIVE</span>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">Real-time broadcast control system with event-driven FastAPI backend, SSE live-push to six independent OBS browser-source overlays, REST API for Stream Deck hardware integration, and a live control dashboard for stats, alerts, countdowns, and scene management.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Python</span><span class="tech-pill">FastAPI</span><span class="tech-pill">SSE</span><span class="tech-pill">OBS</span><span class="tech-pill">Stream Deck API</span><span class="tech-pill">Vanilla JS</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -446,7 +461,7 @@ footer span { color:var(--pink); }
     <div class="divider"></div>
     <p class="contact-intro reveal">Open to cybersecurity, systems engineering, and senior technical roles. Also always down to talk home lab setups, tooling, or weird side projects.</p>
     <div class="contact-links reveal">
-      <a href="mailto:mskeith0193@gmail.com" class="contact-link"><span class="contact-link-icon">✉</span> EMAIL</a>
+      <a href="/cdn-cgi/l/email-protection#214c524a444855491110181261464c40484d0f424e4c" class="contact-link"><span class="contact-link-icon">✉</span> EMAIL</a>
       <a href="https://linkedin.com/in/mskeith93" class="contact-link" target="_blank"><span class="contact-link-icon">in</span> LINKEDIN</a>
       <a href="https://github.com/nexusfang-tech" class="contact-link" target="_blank"><span class="contact-link-icon">⌥</span> GITHUB</a>
       <a href="https://jarvis.chudmeter.com" class="contact-link" target="_blank"><span class="contact-link-icon">◈</span> JARVIS</a>
@@ -463,7 +478,7 @@ footer span { color:var(--pink); }
   <div class="konami-label">// SYNTHSTRIKE MINI — USE ← → KEYS //</div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const cur=document.getElementById('cursor'),curRing=document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
@@ -533,9 +548,4 @@ function startMiniGame(){
 }
 function miniKey(e){
   if(!miniRunning)return;
-  const lane=[37,39,38,40].indexOf(e.keyCode);if(lane===-1)return;
-  for(const n of miniNotes){if(!n.hit&&n.lane===lane&&n.y>230&&n.y<280){n.hit=true;miniScore+=100;break}}
-}
-</script>
-</body>
-</html>
+  const lane=[37,39,38,40].indexOf(e.keyCode);if(
