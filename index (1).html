@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MATT KEITH // SYSTEMS & SECURITY</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink:   #ff2d78;
+  --purple: #a020f0;
+  --cyan:   #00eeff;
+  --yellow: #ffe600;
+  --bg:     #07000f;
+  --bg2:    #0d0020;
+  --text:   #e8deff;
+  --muted:  #7a6a9a;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+}
+#cursor {
+  position: fixed; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--cyan); pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%); transition: transform 0.1s, background 0.2s;
+  mix-blend-mode: screen;
+}
+#cursor-ring {
+  position: fixed; width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid rgba(0,238,255,0.5); pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%); transition: all 0.12s ease-out;
+}
+body::after {
+  content:''; position:fixed; inset:0; z-index:1000; pointer-events:none;
+  background: repeating-linear-gradient(transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px);
+}
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:500;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 3rem;
+  background: linear-gradient(to bottom, rgba(7,0,15,0.95), transparent);
+  backdrop-filter: blur(2px);
+}
+.nav-logo { font-family: 'Orbitron', sans-serif; font-weight:900; font-size:1rem; letter-spacing:0.2em; color:var(--cyan); text-shadow: 0 0 15px var(--cyan); }
+.nav-logo span { color: var(--pink); }
+.nav-links { display:flex; gap:2.5rem; list-style:none; }
+.nav-links a { font-family:'Share Tech Mono', monospace; font-size:0.75rem; letter-spacing:0.15em; color:var(--muted); text-decoration:none; transition: color 0.2s; position:relative; }
+.nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:1px; background:var(--cyan); transform:scaleX(0); transition:transform 0.2s; }
+.nav-links a:hover { color:var(--cyan); }
+.nav-links a:hover::after { transform:scaleX(1); }
+#hero { min-height: 100vh; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; padding: 6rem 2rem 4rem; }
+#hero-canvas { position:absolute; inset:0; z-index:0; }
+.hero-content { position:relative; z-index:10; text-align:center; animation: fadeUp 1s ease 0.2s both; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+.hero-eyebrow { font-family:'Share Tech Mono',monospace; font-size:0.75rem; letter-spacing:0.4em; color:var(--cyan); margin-bottom:1.2rem; animation: fadeUp 1s ease 0.1s both; }
+.hero-name { font-family:'Orbitron',sans-serif; font-weight:900; font-size: clamp(2.8rem, 8vw, 6.5rem); line-height:1; letter-spacing:0.05em; background: linear-gradient(135deg, #fff 0%, var(--cyan) 40%, var(--pink) 80%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; filter: drop-shadow(0 0 40px rgba(0,238,255,0.4)); margin-bottom:0.3rem; }
+.hero-title { font-family:'Orbitron',sans-serif; font-size:clamp(0.85rem,2vw,1.1rem); letter-spacing:0.35em; color:var(--purple); text-shadow:0 0 20px var(--purple); margin-bottom:2rem; }
+.hero-tags { display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap; margin-bottom:3rem; }
+.tag { font-family:'Share Tech Mono',monospace; font-size:0.7rem; padding:0.4rem 1rem; border:1px solid; letter-spacing:0.1em; clip-path: polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%); transition: all 0.2s; }
+.tag-cyan  { border-color:var(--cyan);   color:var(--cyan);  }
+.tag-pink  { border-color:var(--pink);   color:var(--pink);  }
+.tag-yellow{ border-color:var(--yellow); color:var(--yellow);}
+.tag:hover { background:rgba(255,255,255,0.08); }
+.hero-cta { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+.btn { font-family:'Orbitron',sans-serif; font-size:0.75rem; font-weight:700; padding:0.9rem 2.2rem; letter-spacing:0.15em; cursor:pointer; text-decoration:none; transition:all 0.2s; clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%); }
+.btn-primary { background:linear-gradient(135deg,var(--pink),var(--purple)); color:#fff; border:none; box-shadow:0 0 30px rgba(255,45,120,0.4); }
+.btn-primary:hover { box-shadow:0 0 50px rgba(255,45,120,0.7); transform:scale(1.04); }
+.btn-outline { background:transparent; color:var(--cyan); border:1px solid var(--cyan); }
+.btn-outline:hover { background:rgba(0,238,255,0.1); box-shadow:0 0 20px rgba(0,238,255,0.3); }
+.scroll-hint { position:absolute; bottom:2rem; left:50%; transform:translateX(-50%); font-family:'Share Tech Mono',monospace; font-size:0.65rem; color:var(--muted); letter-spacing:0.2em; animation:bounce 2s ease infinite; }
+@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+section { padding:6rem 2rem; position:relative; }
+.section-wrap { max-width:1100px; margin:0 auto; }
+.section-header { margin-bottom:3rem; }
+.section-num { font-family:'Share Tech Mono',monospace; font-size:0.7rem; color:var(--pink); letter-spacing:0.3em; margin-bottom:0.4rem; }
+.section-title { font-family:'Orbitron',sans-serif; font-size:clamp(1.6rem,4vw,2.4rem); font-weight:900; letter-spacing:0.08em; background:linear-gradient(90deg,#fff,var(--cyan)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.divider { height:1px; background:linear-gradient(90deg,var(--pink),var(--purple),transparent); margin-bottom:3rem; }
+#about { background: linear-gradient(to bottom, var(--bg), var(--bg2)); }
+.about-grid { display:grid; grid-template-columns:1fr 1.6fr; gap:4rem; align-items:center; }
+.about-avatar { position:relative; aspect-ratio:1; max-width:280px; margin:0 auto; }
+.avatar-frame { width:100%; aspect-ratio:1; border:2px solid var(--purple); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; background:linear-gradient(135deg,rgba(160,32,240,0.15),rgba(0,238,255,0.05)); clip-path:polygon(20px 0%,100% 0%,100% calc(100% - 20px),calc(100% - 20px) 100%,0% 100%,0% 20px); }
+.avatar-initials { font-family:'Orbitron',sans-serif; font-size:4rem; font-weight:900; color:var(--cyan); text-shadow:0 0 30px var(--cyan); }
+.avatar-frame::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(160,32,240,0.04) 8px,rgba(160,32,240,0.04) 9px); }
+.avatar-corner { position:absolute; width:20px; height:20px; border-color:var(--cyan); border-style:solid; }
+.avatar-corner.tl { top:-2px;left:-2px; border-width:2px 0 0 2px; }
+.avatar-corner.tr { top:-2px;right:-2px; border-width:2px 2px 0 0; }
+.avatar-corner.bl { bottom:-2px;left:-2px; border-width:0 0 2px 2px; }
+.avatar-corner.br { bottom:-2px;right:-2px; border-width:0 2px 2px 0; }
+.about-text p { color:rgba(232,222,255,0.8); font-size:1.05rem; line-height:1.8; margin-bottom:1rem; }
+.about-text p strong { color:var(--cyan); font-weight:600; }
+.stat-row { display:flex; gap:2rem; margin-top:2rem; flex-wrap:wrap; }
+.stat { text-align:center; }
+.stat-num { font-family:'Orbitron',sans-serif; font-size:1.8rem; font-weight:900; color:var(--pink); text-shadow:0 0 15px var(--pink); }
+.stat-label { font-family:'Share Tech Mono',monospace; font-size:0.65rem; color:var(--muted); letter-spacing:0.2em; }
+#skills { background: var(--bg2); }
+.skills-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1.5rem; }
+.skill-card { border:1px solid rgba(160,32,240,0.25); padding:1.5rem; background:rgba(13,0,32,0.6); position:relative; overflow:hidden; transition:border-color 0.3s, transform 0.2s; clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px)); }
+.skill-card:hover { border-color:var(--cyan); transform:translateY(-4px); }
+.skill-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--pink),var(--purple),var(--cyan)); opacity:0; transition:opacity 0.3s; }
+.skill-card:hover::before { opacity:1; }
+.skill-icon { font-size:1.5rem; margin-bottom:0.75rem; }
+.skill-cat { font-family:'Orbitron',sans-serif; font-size:0.75rem; font-weight:700; letter-spacing:0.15em; color:var(--cyan); margin-bottom:1rem; }
+.skill-list { list-style:none; }
+.skill-list li { font-family:'Share Tech Mono',monospace; font-size:0.78rem; color:rgba(232,222,255,0.75); padding:0.3rem 0; border-bottom:1px solid rgba(255,255,255,0.05); display:flex; align-items:center; gap:0.5rem; }
+.skill-list li::before { content:'▸'; color:var(--pink); font-size:0.6rem; }
+.cert-badge { display:inline-flex; align-items:center; gap:0.5rem; background:linear-gradient(135deg,rgba(255,45,120,0.15),rgba(160,32,240,0.15)); border:1px solid var(--pink); padding:0.5rem 1rem; margin-top:0.75rem; font-family:'Share Tech Mono',monospace; font-size:0.7rem; color:var(--pink); letter-spacing:0.1em; }
+.cert-badge::before { content:'★'; color:var(--yellow); }
+#projects { background:linear-gradient(to bottom,var(--bg2),var(--bg)); }
+.projects-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:1.5rem; }
+.project-card { border:1px solid rgba(0,238,255,0.15); overflow:hidden; background:rgba(7,0,15,0.8); transition:all 0.3s; position:relative; }
+.project-card:hover { border-color:var(--cyan); transform:translateY(-6px); box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 30px rgba(0,238,255,0.1); }
+.project-header { padding:1.5rem 1.5rem 1rem; border-bottom:1px solid rgba(255,255,255,0.05); position:relative; }
+.project-accent { position:absolute; top:0; left:0; right:0; height:3px; }
+.project-label { font-family:'Share Tech Mono',monospace; font-size:0.65rem; letter-spacing:0.2em; color:var(--muted); margin-bottom:0.5rem; }
+.project-name { font-family:'Orbitron',sans-serif; font-size:1rem; font-weight:700; letter-spacing:0.1em; color:#fff; margin-bottom:0.5rem; }
+.project-body { padding:1rem 1.5rem 1.5rem; }
+.project-desc { color:rgba(232,222,255,0.7); font-size:0.95rem; line-height:1.7; margin-bottom:1rem; }
+.project-tech { display:flex; flex-wrap:wrap; gap:0.4rem; }
+.tech-pill { font-family:'Share Tech Mono',monospace; font-size:0.65rem; padding:0.25rem 0.6rem; border:1px solid rgba(160,32,240,0.4); color:var(--purple); letter-spacing:0.05em; background:rgba(160,32,240,0.08); }
+.project-status { position:absolute; top:1rem; right:1rem; font-family:'Share Tech Mono',monospace; font-size:0.6rem; padding:0.2rem 0.5rem; letter-spacing:0.1em; }
+.status-live { border:1px solid #00ff88; color:#00ff88; background:rgba(0,255,136,0.08); }
+.status-wip  { border:1px solid var(--yellow); color:var(--yellow); background:rgba(255,230,0,0.08); }
+#experience { background:var(--bg); }
+.timeline { position:relative; padding-left:2rem; }
+.timeline::before { content:''; position:absolute; left:0; top:0; bottom:0; width:1px; background:linear-gradient(to bottom,var(--pink),var(--purple),transparent); }
+.timeline-item { position:relative; margin-bottom:3rem; padding-left:2rem; }
+.timeline-dot { position:absolute; left:-2.5rem; top:0.3rem; width:12px; height:12px; border-radius:50%; background:var(--pink); box-shadow:0 0 15px var(--pink); border:2px solid var(--bg); }
+.timeline-date { font-family:'Share Tech Mono',monospace; font-size:0.7rem; color:var(--cyan); letter-spacing:0.15em; margin-bottom:0.3rem; }
+.timeline-role { font-family:'Orbitron',sans-serif; font-size:1rem; font-weight:700; color:#fff; letter-spacing:0.05em; margin-bottom:0.15rem; }
+.timeline-org { font-family:'Rajdhani',sans-serif; font-size:0.9rem; color:var(--pink); font-weight:600; margin-bottom:0.75rem; }
+.timeline-desc { color:rgba(232,222,255,0.7); font-size:0.95rem; line-height:1.7; }
+.timeline-tags { display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.75rem; }
+#contact { background:linear-gradient(to bottom,var(--bg),var(--bg2)); text-align:center; }
+.contact-intro { font-size:1.1rem; color:rgba(232,222,255,0.7); max-width:560px; margin:0 auto 2.5rem; line-height:1.8; }
+.contact-links { display:flex; gap:1.5rem; justify-content:center; flex-wrap:wrap; margin-bottom:3rem; }
+.contact-link { display:flex; align-items:center; gap:0.6rem; font-family:'Share Tech Mono',monospace; font-size:0.8rem; color:var(--muted); text-decoration:none; letter-spacing:0.1em; border:1px solid rgba(255,255,255,0.1); padding:0.75rem 1.25rem; transition:all 0.2s; }
+.contact-link:hover { color:var(--cyan); border-color:var(--cyan); box-shadow:0 0 15px rgba(0,238,255,0.2); }
+.contact-link-icon { font-size:1rem; }
+#konami-overlay { position:fixed; inset:0; z-index:9000; background:rgba(0,0,0,0.95); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.5s; }
+#konami-overlay.active { opacity:1; pointer-events:all; }
+#konami-canvas { border:1px solid var(--cyan); }
+.konami-label { font-family:'Share Tech Mono',monospace; font-size:0.7rem; color:var(--cyan); letter-spacing:0.3em; margin-top:1rem; }
+.konami-close { position:absolute; top:2rem; right:2rem; font-family:'Orbitron',sans-serif; font-size:0.7rem; color:var(--muted); cursor:pointer; letter-spacing:0.15em; background:transparent; border:1px solid var(--muted); padding:0.4rem 0.8rem; }
+.konami-close:hover { color:var(--pink); border-color:var(--pink); }
+footer { padding:2rem; text-align:center; font-family:'Share Tech Mono',monospace; font-size:0.65rem; color:var(--muted); letter-spacing:0.15em; border-top:1px solid rgba(160,32,240,0.2); }
+footer span { color:var(--pink); }
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+@media(max-width:700px){ nav { padding:1rem; } .nav-links { gap:1.2rem; } .about-grid { grid-template-columns:1fr; } .about-avatar { max-width:180px; } }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <div class="nav-logo">MK<span>://</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">ABOUT</a></li>
+    <li><a href="#skills">SKILLS</a></li>
+    <li><a href="#projects">PROJECTS</a></li>
+    <li><a href="#experience">EXPERIENCE</a></li>
+    <li><a href="#contact">CONTACT</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-eyebrow">// SYSTEM ONLINE — INITIALIZING PORTFOLIO //</div>
+    <div class="hero-name">MATT KEITH</div>
+    <div class="hero-title">TECHNOLOGY SERVICES MANAGER &nbsp;·&nbsp; SECURITY ENGINEER</div>
+    <div class="hero-tags">
+      <span class="tag tag-cyan">PENETRATION TESTING</span>
+      <span class="tag tag-pink">AZURE / M365</span>
+      <span class="tag tag-cyan">FULL-STACK DEV</span>
+      <span class="tag tag-yellow">HOME LAB OPS</span>
+      <span class="tag tag-pink">SECURITY AWARENESS</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">VIEW PROJECTS</a>
+      <a href="#contact" class="btn btn-outline">GET IN TOUCH</a>
+    </div>
+  </div>
+  <div class="scroll-hint">▼ &nbsp; SCROLL TO EXPLORE &nbsp; ▼</div>
+</section>
+
+<section id="about">
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div class="section-num">// 01</div>
+      <div class="section-title">ABOUT</div>
+    </div>
+    <div class="divider"></div>
+    <div class="about-grid">
+      <div class="about-avatar reveal">
+        <div class="avatar-frame"><div class="avatar-initials">MK</div></div>
+        <div class="avatar-corner tl"></div>
+        <div class="avatar-corner tr"></div>
+        <div class="avatar-corner bl"></div>
+        <div class="avatar-corner br"></div>
+      </div>
+      <div class="about-text reveal">
+        <p>I'm a <strong>Technology Services Manager</strong> at the North Carolina Association of County Commissioners, where I wear a lot of hats — helpdesk lead, internal developer, and the person who built the security awareness infrastructure from scratch.</p>
+        <p>My work lives at the intersection of <strong>systems engineering, cybersecurity, and automation</strong>. I build tools that actually get used: from Azure-hosted portals with Entra ID auth to phishing simulation platforms with real campaign analytics.</p>
+        <p>Outside of work I run a home lab on a <strong>Dell PowerEdge T430 / Proxmox</strong> stack, chase placement in Fortnite Zero Build, and build side projects that scratch whatever technical itch I have that week.</p>
+        <div class="stat-row">
+          <div class="stat"><div class="stat-num">5+</div><div class="stat-label">YRS EXPERIENCE</div></div>
+          <div class="stat"><div class="stat-num">10+</div><div class="stat-label">TOOLS SHIPPED</div></div>
+          <div class="stat"><div class="stat-num">2</div><div class="stat-label">CERTS EARNED</div></div>
+          <div class="stat"><div class="stat-num">∞</div><div class="stat-label">TICKETS CLOSED</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div class="section-num">// 02</div>
+      <div class="section-title">SKILLS & CERTS</div>
+    </div>
+    <div class="divider"></div>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-icon">🔐</div>
+        <div class="skill-cat">CYBERSECURITY</div>
+        <ul class="skill-list">
+          <li>Penetration Testing</li>
+          <li>Security Awareness Training</li>
+          <li>Phishing Simulation Design</li>
+          <li>Entra ID / Zero Trust</li>
+          <li>Vulnerability Assessment</li>
+          <li>Log Analysis &amp; SIEM</li>
+        </ul>
+        <div class="cert-badge">AAS — CYBERSECURITY</div><br>
+        <div class="cert-badge">CERT — PENETRATION TESTING</div><br>
+        <div class="cert-badge">CERT — PYTHON</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">☁️</div>
+        <div class="skill-cat">CLOUD &amp; INFRASTRUCTURE</div>
+        <ul class="skill-list">
+          <li>Microsoft Azure</li>
+          <li>Microsoft 365 / SharePoint</li>
+          <li>Power Apps / Power Automate</li>
+          <li>Azure App Service</li>
+          <li>Entra ID / SSO / OAuth</li>
+          <li>Barracuda Email Security</li>
+        </ul>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">⚙️</div>
+        <div class="skill-cat">DEVELOPMENT</div>
+        <ul class="skill-list">
+          <li>Python / FastAPI</li>
+          <li>HTML / CSS / JavaScript</li>
+          <li>SQLite / REST APIs</li>
+          <li>GitHub Actions CI/CD</li>
+          <li>APScheduler / Webhooks</li>
+          <li>Leaflet.js / D3.js</li>
+        </ul>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🖥️</div>
+        <div class="skill-cat">HOME LAB &amp; SYSTEMS</div>
+        <ul class="skill-list">
+          <li>Proxmox VE</li>
+          <li>Linux (Ubuntu / Debian)</li>
+          <li>Windows Server</li>
+          <li>Pi-hole / Cloudflare Tunnel</li>
+          <li>Ollama (Local AI)</li>
+          <li>NSSM / Systemd Services</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div class="section-num">// 03</div>
+      <div class="section-title">PROJECTS</div>
+    </div>
+    <div class="divider"></div>
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <div class="project-accent" style="background:linear-gradient(90deg,var(--cyan),var(--purple))"></div>
+        <div class="project-header">
+          <div class="project-label">INTERNAL TOOL</div>
+          <div class="project-name">NCACC CONTACTS PORTAL</div>
+          <span class="project-status status-live">● LIVE</span>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">Azure-hosted member contact management portal with Entra ID SSO, interactive NC county choropleth map, daily digest notifications via Teams, and page analytics middleware. Demoed to executive leadership.</p>
+          <div class="project-tech">
+            <span class="tech-pill">FastAPI</span><span class="tech-pill">Azure VM</span><span class="tech-pill">Entra ID</span><span class="tech-pill">SQLite</span><span class="tech-pill">Leaflet.js</span><span class="tech-pill">Let's Encrypt</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-accent" style="background:linear-gradient(90deg,var(--pink),var(--yellow))"></div>
+        <div class="project-header">
+          <div class="project-label">SECURITY TOOL</div>
+          <div class="project-name">PHISHING SIMULATION PLATFORM</div>
+          <span class="project-status status-wip">◈ WIP</span>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">From-scratch security awareness platform: five phishing templates, realistic landing pages, Graph API mailer, campaign analytics, Teams alerts, and GitHub Actions CI/CD deployment on Azure App Service.</p>
+          <div class="project-tech">
+            <span class="tech-pill">FastAPI</span><span class="tech-pill">Graph API</span><span class="tech-pill">Azure App Service</span><span class="tech-pill">GitHub Actions</span><span class="tech-pill">SQLite</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-accent" style="background:linear-gradient(90deg,var(--purple),var(--cyan))"></div>
+        <div class="project-header">
+          <div class="project-label">PERSONAL PROJECT</div>
+          <div class="project-name">JARVIS SITUATION MONITOR</div>
+          <span class="project-status status-live">● LIVE</span>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">Real-time world events dashboard aggregating niche RSS feeds across categories. Features admin moderation, Chad/Chud community voting, guaranteed content injection for low-traffic niches, Cloudflare Tunnel hosting.</p>
+          <div class="project-tech">
+            <span class="tech-pill">FastAPI</span><span class="tech-pill">RSS / Feed Parsing</span><span class="tech-pill">Cloudflare Tunnel</span><span class="tech-pill">NSSM</span><span class="tech-pill">SQLite</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-accent" style="background:linear-gradient(90deg,var(--yellow),var(--pink))"></div>
+        <div class="project-header">
+          <div class="project-label">DESKTOP APP</div>
+          <div class="project-name">CONTROLLER OFFICE</div>
+          <span class="project-status status-live">● LIVE</span>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">Windows productivity app powered by a Scuf Envision Pro controller. Context-aware profile switching, vaporwave radial menu, local Ollama AI text input, and a config GUI — shipped as a standalone .exe with startup launch.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Python</span><span class="tech-pill">Ollama</span><span class="tech-pill">vgamepad</span><span class="tech-pill">PyInstaller</span><span class="tech-pill">Windows API</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-accent" style="background:linear-gradient(90deg,var(--cyan),var(--pink))"></div>
+        <div class="project-header">
+          <div class="project-label">GAME</div>
+          <div class="project-name">SYNTHSTRIKE</div>
+          <span class="project-status status-live">● SHIPPED</span>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">4-lane Guitar Hero–style browser rhythm game with procedurally composed synthwave chiptune tracks, scrolling retrowave perspective grid, particle effects, and full scoring system. Zero dependencies — single HTML file.</p>
+          <div class="project-tech">
+            <span class="tech-pill">HTML Canvas</span><span class="tech-pill">Web Audio API</span><span class="tech-pill">Vanilla JS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTF TOOLKIT — FIXED: proper accent, label, description -->
+      <div class="project-card reveal">
+        <div class="project-accent" style="background:linear-gradient(90deg,var(--purple),var(--pink))"></div>
+        <div class="project-header">
+          <div class="project-label">SECURITY TOOL</div>
+          <div class="project-name">VOIDTERM CTF TOOLKIT</div>
+          <span class="project-status status-live">● LIVE</span>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">Hybrid vaporwave CTF utility suite with FastAPI backend and full client-side fallback. Base64/Hex/ROT13, hash identification and cracking, JWT inspector, Caesar/Vigenere ciphers, binary/octal/ASCII converter, and URL parser.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Python</span><span class="tech-pill">FastAPI</span><span class="tech-pill">Vanilla JS</span><span class="tech-pill">Uvicorn</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-accent" style="background:linear-gradient(90deg,var(--purple),var(--cyan))"></div>
+        <div class="project-header">
+          <div class="project-label">BROADCAST SYSTEM</div>
+          <div class="project-name">NEONCAST</div>
+          <span class="project-status status-live">● LIVE</span>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">Real-time broadcast control system with event-driven FastAPI backend, SSE live-push to six independent OBS browser-source overlays, REST API for Stream Deck hardware integration, and a live control dashboard for stats, alerts, countdowns, and scene management.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Python</span><span class="tech-pill">FastAPI</span><span class="tech-pill">SSE</span><span class="tech-pill">OBS</span><span class="tech-pill">Stream Deck API</span><span class="tech-pill">Vanilla JS</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div class="section-num">// 04</div>
+      <div class="section-title">EXPERIENCE</div>
+    </div>
+    <div class="divider"></div>
+    <div class="timeline">
+
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2025 — PRESENT</div>
+        <div class="timeline-role">Technology Services Manager</div>
+        <div class="timeline-org">NC Association of County Commissioners · Raleigh, NC</div>
+        <p class="timeline-desc">Primary helpdesk resource and internal developer for a statewide government association. Built and maintain multiple internal platforms on Azure. Architected a security awareness program including a custom phishing simulation platform, Barracuda email security policies, and staff training materials. Manage M365, SharePoint, Power Apps, and Azure infrastructure.</p>
+        <div class="timeline-tags">
+          <span class="tech-pill">Azure</span><span class="tech-pill">M365</span><span class="tech-pill">Python</span><span class="tech-pill">FastAPI</span><span class="tech-pill">Security Awareness</span>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-dot" style="background:var(--purple);box-shadow:0 0 15px var(--purple)"></div>
+        <div class="timeline-date">PRIOR ROLE</div>
+        <div class="timeline-role">Customer Success Manager</div>
+        <div class="timeline-org">MSP / Managed Services</div>
+        <p class="timeline-desc">Client-facing technical account management for SMB and mid-market customers. Transitioned into engineering and infrastructure work during tenure, accelerating the pivot to a full technical career path.</p>
+        <div class="timeline-tags">
+          <span class="tech-pill">Client Management</span><span class="tech-pill">IT Support</span><span class="tech-pill">MSP</span>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-dot" style="background:var(--cyan);box-shadow:0 0 15px var(--cyan)"></div>
+        <div class="timeline-date">EDUCATION</div>
+        <div class="timeline-role">AAS — Cybersecurity</div>
+        <div class="timeline-org">+ Certificate in Penetration Testing; Certification in Python</div>
+        <p class="timeline-desc">Completed an Associate of Applied Science in Cybersecurity alongside a dedicated Penetration Testing certificate program. Foundations in ethical hacking, network security, vulnerability assessment, and security operations.</p>
+        <div class="timeline-tags">
+          <span class="tech-pill">Ethical Hacking</span><span class="tech-pill">Network Security</span><span class="tech-pill">Pen Testing</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-wrap">
+    <div class="section-header reveal" style="text-align:center">
+      <div class="section-num" style="text-align:center">// 05</div>
+      <div class="section-title">CONTACT</div>
+    </div>
+    <div class="divider"></div>
+    <p class="contact-intro reveal">Open to cybersecurity, systems engineering, and senior technical roles. Also always down to talk home lab setups, tooling, or weird side projects.</p>
+    <div class="contact-links reveal">
+      <a href="/cdn-cgi/l/email-protection#214c524a444855491110181261464c40484d0f424e4c" class="contact-link"><span class="contact-link-icon">✉</span> EMAIL</a>
+      <a href="https://linkedin.com/in/mskeith93" class="contact-link" target="_blank"><span class="contact-link-icon">in</span> LINKEDIN</a>
+      <a href="https://github.com/nexusfang-tech" class="contact-link" target="_blank"><span class="contact-link-icon">⌥</span> GITHUB</a>
+      <a href="https://jarvis.chudmeter.com" class="contact-link" target="_blank"><span class="contact-link-icon">◈</span> JARVIS</a>
+    </div>
+    <p class="reveal" style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--muted);letter-spacing:0.2em;">// TRY THE KONAMI CODE //</p>
+  </div>
+</section>
+
+<footer>BUILT BY <span>MATT KEITH</span> · RALEIGH NC · <span>MMXXVI</span> · STACK: VANILLA HTML/CSS/JS</footer>
+
+<div id="konami-overlay">
+  <button class="konami-close" onclick="closeKonami()">✕ CLOSE</button>
+  <canvas id="konami-canvas" width="400" height="300"></canvas>
+  <div class="konami-label">// SYNTHSTRIKE MINI — USE ← → KEYS //</div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const cur=document.getElementById('cursor'),curRing=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function ac(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;curRing.style.left=rx+'px';curRing.style.top=ry+'px';requestAnimationFrame(ac)})();
+document.querySelectorAll('a,button,.project-card,.skill-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2)';cur.style.background='var(--pink)'});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';cur.style.background='var(--cyan)'});
+});
+const hc=document.getElementById('hero-canvas'),hx=hc.getContext('2d');
+function rh(){hc.width=window.innerWidth;hc.height=window.innerHeight}
+rh();window.addEventListener('resize',rh);
+let ht=0;
+function dh(){
+  const W=hc.width,H=hc.height;hx.clearRect(0,0,W,H);
+  const sky=hx.createLinearGradient(0,0,0,H*.6);sky.addColorStop(0,'#07000f');sky.addColorStop(1,'#1a0035');
+  hx.fillStyle=sky;hx.fillRect(0,0,W,H*.6);
+  const gnd=hx.createLinearGradient(0,H*.6,0,H);gnd.addColorStop(0,'#100020');gnd.addColorStop(1,'#07000f');
+  hx.fillStyle=gnd;hx.fillRect(0,H*.6,W,H*.4);
+  const hor=H*.55,spd=(ht*.25)%1;
+  for(let i=0;i<=20;i++){const t=i/20;hx.beginPath();hx.moveTo(W*t,H);hx.lineTo(W/2+(t-.5)*80,hor);hx.strokeStyle='rgba(160,32,240,.18)';hx.lineWidth=1;hx.stroke()}
+  for(let i=0;i<=18;i++){const t=((i/18)+spd)%1,y=hor+(H-hor)*t*t,pw=W*.04+(W*.96)*t*t;hx.beginPath();hx.moveTo((W-pw)/2,y);hx.lineTo((W+pw)/2,y);hx.strokeStyle=`rgba(0,238,255,${t*.22})`;hx.lineWidth=1;hx.stroke()}
+  const sr=Math.min(W,H)*.14,sg=hx.createRadialGradient(W/2,hor-10,0,W/2,hor-10,sr);
+  sg.addColorStop(0,'rgba(255,220,80,.7)');sg.addColorStop(.35,'rgba(255,45,120,.5)');sg.addColorStop(1,'rgba(160,32,240,0)');
+  hx.fillStyle=sg;hx.beginPath();hx.arc(W/2,hor-10,sr,0,Math.PI*2);hx.fill();
+  hx.save();hx.beginPath();hx.arc(W/2,hor-10,sr,0,Math.PI*2);hx.clip();
+  for(let i=0;i<9;i++){const sy=hor-10+sr*(.2+i*.1);if(sy>hor-10+sr)continue;hx.fillStyle='rgba(7,0,15,.55)';hx.fillRect(W/2-sr,sy,sr*2,4+i*2)}
+  hx.restore();
+  for(let i=0;i<60;i++){const sx=(Math.sin(i*137.5)*.5+.5)*W,sy=(Math.sin(i*97.3)*.5+.5)*hor*.85,ss=.5+Math.sin(ht*.05+i)*.4;hx.globalAlpha=.3+Math.sin(ht*.04+i*.7)*.3;hx.fillStyle='rgba(255,255,255,.6)';hx.fillRect(sx,sy,ss,ss)}
+  hx.globalAlpha=1;ht+=.016;requestAnimationFrame(dh);
+}
+dh();
+const io=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);io.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const KONAMI=[38,38,40,40,37,39,37,39,66,65];let ki=0;
+document.addEventListener('keydown',e=>{
+  if(e.keyCode===KONAMI[ki]){ki++;if(ki===KONAMI.length){ki=0;activateKonami()}}else{ki=0}
+});
+function activateKonami(){document.getElementById('konami-overlay').classList.add('active');startMiniGame()}
+function closeKonami(){document.getElementById('konami-overlay').classList.remove('active');miniRunning=false}
+let miniRunning=false,miniScore=0,miniNotes=[];
+const mc=document.getElementById('konami-canvas'),mx2=mc.getContext('2d');
+const MINI_COLS=['#ff2d78','#a020f0','#00eeff','#ffe600'];
+function startMiniGame(){
+  miniRunning=true;miniScore=0;miniNotes=[];
+  for(let i=0;i<30;i++)miniNotes.push({lane:Math.floor(Math.random()*4),y:-20-i*80,speed:2+Math.random(),hit:false});
+  document.addEventListener('keydown',miniKey);
+  (function loop(){
+    if(!miniRunning)return;
+    mx2.clearRect(0,0,400,300);mx2.fillStyle='#07000f';mx2.fillRect(0,0,400,300);
+    const lw=100;
+    for(let l=0;l<4;l++){
+      mx2.fillStyle=`${MINI_COLS[l]}18`;mx2.fillRect(l*lw,0,lw,300);
+      mx2.fillStyle=MINI_COLS[l];mx2.font='bold 11px Orbitron,sans-serif';mx2.textAlign='center';
+      mx2.fillText(['←','→','←','→'][l],l*lw+50,285);
+    }
+    mx2.strokeStyle='rgba(255,255,255,.4)';mx2.lineWidth=2;mx2.beginPath();mx2.moveTo(0,255);mx2.lineTo(400,255);mx2.stroke();
+    let active=false;
+    miniNotes.forEach(n=>{
+      if(n.hit)return;n.y+=n.speed;if(n.y>320){n.hit=true;return}
+      active=true;mx2.beginPath();mx2.roundRect(n.lane*lw+8,n.y,lw-16,18,4);
+      mx2.fillStyle=MINI_COLS[n.lane];mx2.shadowColor=MINI_COLS[n.lane];mx2.shadowBlur=10;mx2.fill();mx2.shadowBlur=0;
+    });
+    mx2.fillStyle='#fff';mx2.font='bold 13px Orbitron,sans-serif';mx2.textAlign='left';mx2.fillText('SCORE: '+miniScore,10,20);
+    if(!active){mx2.fillStyle=MINI_COLS[1];mx2.textAlign='center';mx2.font='bold 14px Orbitron,sans-serif';mx2.fillText('TRACK COMPLETE!',200,140)}
+    requestAnimationFrame(loop);
+  })();
+}
+function miniKey(e){
+  if(!miniRunning)return;
+  const lane=[37,39,38,40].indexOf(e.keyCode);if(
