@@ -21,6 +21,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--cyan);transform:scaleX(0);transition:transform .2s}
 .nav-links a:hover{color:var(--cyan)}
 .nav-links a:hover::after{transform:scaleX(1)}
+.nav-links a.terminal-nav{color:var(--pink);border:1px solid rgba(255,45,120,.4);padding:.2rem .7rem;transition:all .2s}
+.nav-links a.terminal-nav:hover{color:var(--pink);border-color:var(--pink);background:rgba(255,45,120,.08);box-shadow:0 0 12px rgba(255,45,120,.3)}
+.nav-links a.terminal-nav::after{display:none}
 #hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:6rem 2rem 4rem}
 #hero-canvas{position:absolute;inset:0;z-index:0}
 .hero-content{position:relative;z-index:10;text-align:center;animation:fadeUp 1s ease .2s both}
@@ -40,6 +43,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 .btn-primary:hover{box-shadow:0 0 50px rgba(255,45,120,.7);transform:scale(1.04)}
 .btn-outline{background:transparent;color:var(--cyan);border:1px solid var(--cyan)}
 .btn-outline:hover{background:rgba(0,238,255,.1);box-shadow:0 0 20px rgba(0,238,255,.3)}
+.btn-terminal{background:transparent;color:var(--pink);border:1px solid var(--pink);position:relative;overflow:hidden}
+.btn-terminal::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,45,120,.15),rgba(160,32,240,.15));opacity:0;transition:opacity .2s}
+.btn-terminal:hover::before{opacity:1}
+.btn-terminal:hover{box-shadow:0 0 24px rgba(255,45,120,.5);transform:scale(1.04)}
 .scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.2em;animation:bounce 2s ease infinite}
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
 section{padding:6rem 2rem;position:relative}
@@ -114,11 +121,66 @@ section{padding:6rem 2rem;position:relative}
 .konami-label{font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--cyan);letter-spacing:.3em;margin-top:1rem}
 .konami-close{position:absolute;top:2rem;right:2rem;font-family:'Orbitron',sans-serif;font-size:.7rem;color:var(--muted);cursor:pointer;letter-spacing:.15em;background:transparent;border:1px solid var(--muted);padding:.4rem .8rem}
 .konami-close:hover{color:var(--pink);border-color:var(--pink)}
+
+/* ── TERMINAL MODAL ─────────────────────────────── */
+#terminal-modal{
+  position:fixed;inset:0;z-index:8000;
+  background:rgba(0,0,0,0);
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+  transition:background .35s ease;
+}
+#terminal-modal.open{
+  background:rgba(0,0,0,.88);
+  pointer-events:all;
+}
+.terminal-modal-inner{
+  position:relative;
+  width:92vw;max-width:960px;height:88vh;
+  transform:translateY(30px) scale(.97);
+  opacity:0;
+  transition:transform .35s ease, opacity .35s ease;
+}
+#terminal-modal.open .terminal-modal-inner{
+  transform:translateY(0) scale(1);
+  opacity:1;
+}
+.terminal-modal-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 14px;
+  background:#0d0020;
+  border:1px solid rgba(255,45,120,.4);
+  border-bottom:none;
+  font-family:'Share Tech Mono',monospace;
+  font-size:.65rem;
+  letter-spacing:.15em;
+  color:rgba(255,45,120,.7);
+}
+.terminal-modal-dots{display:flex;gap:6px}
+.terminal-modal-dots span{width:10px;height:10px;border-radius:50%}
+.tmd-r{background:var(--pink);box-shadow:0 0 5px var(--pink)}
+.tmd-y{background:var(--yellow);box-shadow:0 0 5px var(--yellow)}
+.tmd-g{background:#00ff88;box-shadow:0 0 5px #00ff88}
+.terminal-modal-close{
+  background:transparent;border:1px solid rgba(255,45,120,.4);
+  color:rgba(255,45,120,.7);font-family:'Share Tech Mono',monospace;
+  font-size:.65rem;letter-spacing:.15em;padding:.2rem .7rem;
+  cursor:pointer;transition:all .2s;
+}
+.terminal-modal-close:hover{color:var(--pink);border-color:var(--pink);box-shadow:0 0 10px rgba(255,45,120,.3)}
+#terminal-iframe{
+  width:100%;
+  height:calc(100% - 36px);
+  border:1px solid rgba(255,45,120,.4);
+  border-top:none;
+  background:#07020f;
+}
+
 footer{padding:2rem;text-align:center;font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.15em;border-top:1px solid rgba(160,32,240,.2)}
 footer span{color:var(--pink)}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
-@media(max-width:700px){nav{padding:1rem}.nav-links{gap:1.2rem}.about-grid{grid-template-columns:1fr}.about-avatar{max-width:180px}}
+@media(max-width:700px){nav{padding:1rem}.nav-links{gap:1.2rem}.about-grid{grid-template-columns:1fr}.about-avatar{max-width:180px}.nav-links a.terminal-nav{display:none}}
 </style>
 </head>
 <body>
@@ -133,6 +195,7 @@ footer span{color:var(--pink)}
     <li><a href="#projects">PROJECTS</a></li>
     <li><a href="#experience">EXPERIENCE</a></li>
     <li><a href="#contact">CONTACT</a></li>
+    <li><a href="#" class="terminal-nav" onclick="openTerminal(event)">&#62;_ TERMINAL</a></li>
   </ul>
 </nav>
 
@@ -152,6 +215,7 @@ footer span{color:var(--pink)}
     <div class="hero-cta">
       <a href="#projects" class="btn btn-primary">VIEW PROJECTS</a>
       <a href="#contact" class="btn btn-outline">GET IN TOUCH</a>
+      <button class="btn btn-terminal" onclick="openTerminal(event)">&#62;_ OPEN TERMINAL</button>
     </div>
   </div>
   <div class="scroll-hint">▼ &nbsp; SCROLL TO EXPLORE &nbsp; ▼</div>
@@ -520,6 +584,23 @@ footer span{color:var(--pink)}
 
 <footer>BUILT BY <span>MATT KEITH</span> · RALEIGH NC · <span>MMXXVI</span> · STACK: VANILLA HTML/CSS/JS</footer>
 
+<!-- ── TERMINAL MODAL ─────────────────────────────────────── -->
+<div id="terminal-modal" onclick="handleModalBackdrop(event)">
+  <div class="terminal-modal-inner">
+    <div class="terminal-modal-bar">
+      <div class="terminal-modal-dots">
+        <span class="tmd-r"></span>
+        <span class="tmd-y"></span>
+        <span class="tmd-g"></span>
+      </div>
+      <span>MK:// NEXUS TERMINAL &nbsp;·&nbsp; v2.4.1 &nbsp;·&nbsp; OPERATOR SESSION</span>
+      <button class="terminal-modal-close" onclick="closeTerminal()">[ DISCONNECT ]</button>
+    </div>
+    <iframe id="terminal-iframe" src="" title="MK Terminal" allow="same-origin"></iframe>
+  </div>
+</div>
+
+<!-- ── KONAMI OVERLAY ─────────────────────────────────────── -->
 <div id="konami-overlay">
   <button class="konami-close" onclick="closeKonami()">✕ CLOSE</button>
   <canvas id="konami-canvas" width="400" height="300"></canvas>
@@ -527,6 +608,7 @@ footer span{color:var(--pink)}
 </div>
 
 <script>
+// ── CURSOR ───────────────────────────────────────────────────────────────────
 const cur=document.getElementById('cursor'),curRing=document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
@@ -535,6 +617,8 @@ document.querySelectorAll('a,button,.project-card,.skill-card').forEach(el=>{
   el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2)';cur.style.background='var(--pink)'});
   el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';cur.style.background='var(--cyan)'});
 });
+
+// ── HERO CANVAS ──────────────────────────────────────────────────────────────
 const hc=document.getElementById('hero-canvas'),hx=hc.getContext('2d');
 function rh(){hc.width=window.innerWidth;hc.height=window.innerHeight}
 rh();window.addEventListener('resize',rh);
@@ -558,8 +642,43 @@ function dh(){
   hx.globalAlpha=1;ht+=.016;requestAnimationFrame(dh);
 }
 dh();
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────────────────
 const io=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);io.unobserve(e.target)}})},{threshold:.1});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// ── TERMINAL MODAL ────────────────────────────────────────────────────────────
+const termModal  = document.getElementById('terminal-modal');
+const termIframe = document.getElementById('terminal-iframe');
+// Update this URL once the terminal repo is live on GitHub Pages:
+const TERMINAL_URL = 'https://nexusfang-tech.github.io/terminal/';
+
+function openTerminal(e) {
+  if (e) e.preventDefault();
+  // Lazy-load the iframe src only on first open
+  if (!termIframe.src || termIframe.src === window.location.href) {
+    termIframe.src = TERMINAL_URL;
+  }
+  termModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTerminal() {
+  termModal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleModalBackdrop(e) {
+  // Close only if click landed directly on the dark backdrop, not the inner panel
+  if (e.target === termModal) closeTerminal();
+}
+
+// Esc key closes terminal modal
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeTerminal();
+});
+
+// ── KONAMI ────────────────────────────────────────────────────────────────────
 const KONAMI=[38,38,40,40,37,39,37,39,66,65];let ki=0;
 document.addEventListener('keydown',e=>{
   if(e.keyCode===KONAMI[ki]){ki++;if(ki===KONAMI.length){ki=0;activateKonami()}}else{ki=0}
