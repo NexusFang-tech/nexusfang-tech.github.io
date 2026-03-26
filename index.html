@@ -306,6 +306,24 @@ footer span{color:var(--pink)}
     <div class="projects-grid">
 
       <div class="project-card reveal">
+        <div class="project-accent" style="background:linear-gradient(90deg,var(--pink),var(--purple))"></div>
+        <div class="project-header">
+          <div class="project-label">PORTFOLIO · WOW FACTOR</div>
+          <div class="project-name">SYNTHWAVE RESUME TERMINAL</div>
+          <span class="project-status status-live">● LIVE</span>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">Interactive retro terminal resume — cold ops system persona, full boot sequence with ASCII banner, commands for skills, projects, experience, certifications, and contact. CRT scanlines, retrowave grid, command history, Tab autocomplete, and 15+ Easter eggs including a matrix protocol and nmap scan. Zero dependencies, single HTML file.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Vanilla JS</span><span class="tech-pill">HTML Canvas</span><span class="tech-pill">GitHub Pages</span><span class="tech-pill">CSS Animations</span>
+          </div>
+          <div style="margin-top:1rem">
+            <a href="https://nexusfang-tech.github.io/terminal" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--pink);text-decoration:none;border:1px solid rgba(255,45,120,.3);padding:.3rem .8rem;letter-spacing:.1em;transition:all .2s" onmouseover="this.style.boxShadow='0 0 10px rgba(255,45,120,.3)'" onmouseout="this.style.boxShadow='none'">⟶ LAUNCH TERMINAL</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
         <div class="project-accent" style="background:linear-gradient(90deg,var(--red, #ff3333),var(--pink))"></div>
         <div class="project-header">
           <div class="project-label">THREAT INTELLIGENCE</div>
@@ -337,6 +355,60 @@ footer span{color:var(--pink)}
           </div>
           <div style="margin-top:1rem">
             <a href="https://threat-feed.netlify.app/map" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--purple);text-decoration:none;border:1px solid rgba(160,32,240,.3);padding:.3rem .8rem;letter-spacing:.1em;transition:all .2s" onmouseover="this.style.boxShadow='0 0 10px rgba(160,32,240,.3)'" onmouseout="this.style.boxShadow='none'">⟶ LAUNCH MAP</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-accent" style="background:linear-gradient(90deg,#ff3333,var(--cyan))"></div>
+        <div class="project-header">
+          <div class="project-label">VULNERABILITY INTELLIGENCE</div>
+          <div class="project-name">CVE EXPLORER</div>
+          <span class="project-status status-live">● LIVE</span>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">Real-time vulnerability intelligence tool powered by the NVD API. Search by CVE ID, keyword, product, or vendor. Renders animated CVSS score ring gauges, full CVSS vector breakdowns, severity filters, and affected product extraction — all client-side, no backend required.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Vanilla JS</span><span class="tech-pill">NVD API</span><span class="tech-pill">GitHub Pages</span><span class="tech-pill">HTML Canvas</span>
+          </div>
+          <div style="margin-top:1rem">
+            <a href="https://nexusfang-tech.github.io/cve-explorer" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--cyan);text-decoration:none;border:1px solid rgba(0,238,255,.3);padding:.3rem .8rem;letter-spacing:.1em;transition:all .2s" onmouseover="this.style.boxShadow='0 0 10px rgba(0,238,255,.3)'" onmouseout="this.style.boxShadow='none'">⟶ LAUNCH TOOL</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-accent" style="background:linear-gradient(90deg,var(--purple),var(--pink))"></div>
+        <div class="project-header">
+          <div class="project-label">OSINT / RECON</div>
+          <div class="project-name">PASSIVE RECON TOOLKIT</div>
+          <span class="project-status status-live">● LIVE</span>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">Browser-based passive reconnaissance tool. Paste a domain and get WHOIS/RDAP registration data, full DNS record enumeration via Cloudflare DoH, certificate transparency subdomain discovery via CertSpotter, and HTTP security header analysis — all from public sources, no active scanning.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Vanilla JS</span><span class="tech-pill">RDAP</span><span class="tech-pill">Cloudflare DoH</span><span class="tech-pill">CertSpotter API</span><span class="tech-pill">GitHub Pages</span>
+          </div>
+          <div style="margin-top:1rem">
+            <a href="https://nexusfang-tech.github.io/recon-toolkit" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--purple);text-decoration:none;border:1px solid rgba(160,32,240,.3);padding:.3rem .8rem;letter-spacing:.1em;transition:all .2s" onmouseover="this.style.boxShadow='0 0 10px rgba(160,32,240,.3)'" onmouseout="this.style.boxShadow='none'">⟶ LAUNCH TOOL</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-accent" style="background:linear-gradient(90deg,var(--cyan),var(--yellow))"></div>
+        <div class="project-header">
+          <div class="project-label">THREAT INTELLIGENCE</div>
+          <div class="project-name">IP INTELLIGENCE LOOKUP</div>
+          <span class="project-status status-live">● LIVE</span>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">Full IP intelligence dashboard — paste any IP and get geolocation, ISP and ASN data, reverse DNS, BGP prefix and peer info, risk scoring with threat flags, an interactive world map with crosshair placement, and real-time DNS blacklist checks across 8 major DNSBLs including Spamhaus, Barracuda, and SpamCop.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Vanilla JS</span><span class="tech-pill">ipapi.co</span><span class="tech-pill">BGPView API</span><span class="tech-pill">Cloudflare DoH</span><span class="tech-pill">GitHub Pages</span>
+          </div>
+          <div style="margin-top:1rem">
+            <a href="https://nexusfang-tech.github.io/ip-intel" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--yellow);text-decoration:none;border:1px solid rgba(255,230,0,.3);padding:.3rem .8rem;letter-spacing:.1em;transition:all .2s" onmouseover="this.style.boxShadow='0 0 10px rgba(255,230,0,.2)'" onmouseout="this.style.boxShadow='none'">⟶ LAUNCH TOOL</a>
           </div>
         </div>
       </div>
