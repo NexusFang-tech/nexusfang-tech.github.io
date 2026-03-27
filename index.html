@@ -121,8 +121,6 @@ section{padding:6rem 2rem;position:relative}
 .konami-label{font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--cyan);letter-spacing:.3em;margin-top:1rem}
 .konami-close{position:absolute;top:2rem;right:2rem;font-family:'Orbitron',sans-serif;font-size:.7rem;color:var(--muted);cursor:pointer;letter-spacing:.15em;background:transparent;border:1px solid var(--muted);padding:.4rem .8rem}
 .konami-close:hover{color:var(--pink);border-color:var(--pink)}
-
-/* ── TERMINAL MODAL ─────────────────────────────── */
 #terminal-modal{position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:background .35s ease}
 #terminal-modal.open{background:rgba(0,0,0,.88);pointer-events:all}
 .terminal-modal-inner{position:relative;width:92vw;max-width:960px;height:88vh;transform:translateY(30px) scale(.97);opacity:0;transition:transform .35s ease,opacity .35s ease;display:flex;flex-direction:column}
@@ -157,7 +155,6 @@ section{padding:6rem 2rem;position:relative}
 @keyframes tm-glitch{0%,60%,100%{text-shadow:2px 0 #ff2d78,-2px 0 #00f5ff}20%{text-shadow:-2px 0 #ff2d78,2px 0 #00f5ff;transform:translate(-1px,0)}40%{text-shadow:2px 0 #00f5ff,-2px 0 #b060ff;transform:translate(1px,0)}}
 .tm-ascii{font-size:9px;line-height:1.15;white-space:pre;margin:6px 0}
 .tm-entry-title{color:#ffe600}.tm-entry-sub{color:#b060ff;font-size:12px}.tm-entry-date{color:#4a3060;font-size:12px}.tm-entry-desc{color:#b8a8cc;font-size:12px;margin-top:2px}
-
 footer{padding:2rem;text-align:center;font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.15em;border-top:1px solid rgba(160,32,240,.2)}
 footer span{color:var(--pink)}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
@@ -224,7 +221,7 @@ footer span{color:var(--pink)}
         <p>Outside of work I run a home lab on a <strong>Dell PowerEdge T430 / Proxmox</strong> stack, chase placement in Fortnite Zero Build, and build side projects that scratch whatever technical itch I have that week.</p>
         <div class="stat-row">
           <div class="stat"><div class="stat-num">5+</div><div class="stat-label">YRS EXPERIENCE</div></div>
-          <div class="stat"><div class="stat-num">10+</div><div class="stat-label">TOOLS SHIPPED</div></div>
+          <div class="stat"><div class="stat-num">20+</div><div class="stat-label">TOOLS SHIPPED</div></div>
           <div class="stat"><div class="stat-num">2</div><div class="stat-label">CERTS EARNED</div></div>
           <div class="stat"><div class="stat-num">∞</div><div class="stat-label">TICKETS CLOSED</div></div>
         </div>
@@ -304,6 +301,60 @@ footer span{color:var(--pink)}
     </div>
     <div class="divider"></div>
     <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <div class="project-accent" style="background:linear-gradient(90deg,#ff0040,#ff6600)"></div>
+        <div class="project-header">
+          <div class="project-label">CYBER WARFARE</div>
+          <div class="project-name">BLACKSITE — CYBER WARFARE SIMULATOR</div>
+          <span class="project-status status-live">● LIVE</span>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">Interactive cyber warfare simulator combining a Red vs Blue Team War Room with live scoring, a ransomware kill chain visualizer with real-time file encryption across 48 nodes, a full OSINT reconnaissance terminal with 9 commands, and a solvable CTF arena with 13 challenges across 5 categories. Cinematic boot sequence, zero dependencies.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Vanilla JS</span><span class="tech-pill">HTML Canvas</span><span class="tech-pill">GitHub Pages</span><span class="tech-pill">CSS Animations</span>
+          </div>
+          <div style="margin-top:1rem">
+            <a href="https://nexusfang-tech.github.io/blacksite" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--pink);text-decoration:none;border:1px solid rgba(255,45,120,.3);padding:.3rem .8rem;letter-spacing:.1em;transition:all .2s" onmouseover="this.style.boxShadow='0 0 10px rgba(255,45,120,.3)'" onmouseout="this.style.boxShadow='none'">⟶ ENTER BLACKSITE</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-accent" style="background:linear-gradient(90deg,#ff1493,#9d00ff)"></div>
+        <div class="project-header">
+          <div class="project-label">INCIDENT RESPONSE</div>
+          <div class="project-name">PHANTOM::RESPONSE — IR COMMAND CENTER</div>
+          <span class="project-status status-live">● LIVE</span>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">Full incident response command center featuring a NIST SP 800-61r2 playbook engine with interactive checklists and timeline export, OSINT/attack surface mapper with subdomain enumeration and vulnerability assessment, and a malware behavior sandbox simulator with 6 real-world malware family analyses including animated detonation timelines, process trees, and MITRE ATT&CK mapping.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Vanilla JS</span><span class="tech-pill">HTML Canvas</span><span class="tech-pill">GitHub Pages</span><span class="tech-pill">CSS Animations</span>
+          </div>
+          <div style="margin-top:1rem">
+            <a href="https://nexusfang-tech.github.io/phantom-response" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--purple);text-decoration:none;border:1px solid rgba(160,32,240,.3);padding:.3rem .8rem;letter-spacing:.1em;transition:all .2s" onmouseover="this.style.boxShadow='0 0 10px rgba(160,32,240,.3)'" onmouseout="this.style.boxShadow='none'">⟶ LAUNCH PHANTOM</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-accent" style="background:linear-gradient(90deg,var(--cyan),#00ff88)"></div>
+        <div class="project-header">
+          <div class="project-label">THREAT INTELLIGENCE</div>
+          <div class="project-name">NEXUS::SENTINEL — THREAT INTEL WORKSTATION</div>
+          <span class="project-status status-live">● LIVE</span>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">Cybersecurity threat intelligence workstation with IP reputation analysis, password strength auditing with entropy calculation, hash identification engine, subnet calculator, simulated port scanner with service detection, multi-format encoder/decoder, JWT token decoder, security header checker, animated threat radar, and live MITRE ATT&CK coverage grid.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Vanilla JS</span><span class="tech-pill">HTML Canvas</span><span class="tech-pill">GitHub Pages</span><span class="tech-pill">CSS Animations</span>
+          </div>
+          <div style="margin-top:1rem">
+            <a href="https://nexusfang-tech.github.io/threat-intel-workstation" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--cyan);text-decoration:none;border:1px solid rgba(0,238,255,.3);padding:.3rem .8rem;letter-spacing:.1em;transition:all .2s" onmouseover="this.style.boxShadow='0 0 10px rgba(0,238,255,.3)'" onmouseout="this.style.boxShadow='none'">⟶ LAUNCH SENTINEL</a>
+          </div>
+        </div>
+      </div>
 
       <div class="project-card reveal">
         <div class="project-accent" style="background:linear-gradient(90deg,var(--pink),var(--purple))"></div>
@@ -668,7 +719,6 @@ footer span{color:var(--pink)}
 
 <footer>BUILT BY <span>MATT KEITH</span> · RALEIGH NC · <span>MMXXVI</span> · STACK: VANILLA HTML/CSS/JS</footer>
 
-<!-- ── TERMINAL MODAL ─────────────────────────────────────── -->
 <div id="terminal-modal" onclick="handleModalBackdrop(event)">
   <div class="terminal-modal-inner">
     <div class="terminal-modal-bar">
@@ -688,7 +738,6 @@ footer span{color:var(--pink)}
   </div>
 </div>
 
-<!-- ── KONAMI OVERLAY ─────────────────────────────────────── -->
 <div id="konami-overlay">
   <button class="konami-close" onclick="closeKonami()">✕ CLOSE</button>
   <canvas id="konami-canvas" width="400" height="300"></canvas>
@@ -696,7 +745,6 @@ footer span{color:var(--pink)}
 </div>
 
 <script>
-// ── CURSOR ───────────────────────────────────────────────────────────────────
 const cur=document.getElementById('cursor'),curRing=document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
@@ -705,8 +753,6 @@ document.querySelectorAll('a,button,.project-card,.skill-card').forEach(el=>{
   el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2)';cur.style.background='var(--pink)'});
   el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';cur.style.background='var(--cyan)'});
 });
-
-// ── HERO CANVAS ──────────────────────────────────────────────────────────────
 const hc=document.getElementById('hero-canvas'),hx=hc.getContext('2d');
 function rh(){hc.width=window.innerWidth;hc.height=window.innerHeight}
 rh();window.addEventListener('resize',rh);
@@ -730,15 +776,10 @@ function dh(){
   hx.globalAlpha=1;ht+=.016;requestAnimationFrame(dh);
 }
 dh();
-
-// ── SCROLL REVEAL ─────────────────────────────────────────────────────────────
 const io=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);io.unobserve(e.target)}})},{threshold:.1});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
-// ── TERMINAL MODAL ────────────────────────────────────────────────────────────
 const termModal = document.getElementById('terminal-modal');
 let termBooted  = false;
-
 function openTerminal(e) {
   if (e) e.preventDefault();
   termModal.classList.add('open');
@@ -754,12 +795,9 @@ function handleModalBackdrop(e) {
   if (e.target === termModal) closeTerminal();
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTerminal(); });
-
-// ── TERMINAL ENGINE ───────────────────────────────────────────────────────────
 const tmOut = document.getElementById('tm-output');
 const tmIn  = document.getElementById('tm-input');
 let tmHistory = [], tmHistIdx = -1;
-
 const TM = {
   about: {
     name:'MATT KEITH', title:'Technology Services Manager · Security Engineer', location:'Raleigh, NC',
@@ -772,6 +810,9 @@ const TM = {
     {cat:'INFRASTRUCTURE',items:[{name:'Proxmox / Home Lab',pct:85},{name:'Docker / VPS Ops',pct:80},{name:'Barracuda / Filtering',pct:78},{name:'Windows Server / NSSM',pct:83}]}
   ],
   projects:[
+    {name:'BLACKSITE Warfare Sim',tech:['JavaScript','HTML Canvas','CSS'],status:'LIVE',desc:'Red vs Blue war room, ransomware kill chain visualizer, OSINT terminal, and solvable CTF arena.'},
+    {name:'PHANTOM::RESPONSE',tech:['JavaScript','HTML Canvas','CSS'],status:'LIVE',desc:'IR command center with NIST 800-61r2 playbook, OSINT mapper, and malware sandbox simulator.'},
+    {name:'NEXUS::SENTINEL',tech:['JavaScript','HTML Canvas','CSS'],status:'LIVE',desc:'Threat intel workstation with IP analysis, password auditing, port scanner, JWT decoder, and more.'},
     {name:'NCACC Contacts Portal',tech:['Python','FastAPI','Azure','Graph API'],status:'LIVE',desc:'Production internal CRM with Entra ID auth, Teams webhooks, analytics middleware, and choropleth map.'},
     {name:'Phishing Sim Platform',tech:['FastAPI','SQLite','Graph API','GitHub Actions'],status:'LIVE',desc:'Full security awareness platform: 5 phishing templates, landing pages, Teams alerts, CI/CD.'},
     {name:'JARVIS Situation Monitor',tech:['FastAPI','RSS','SSE','Cloudflare Tunnel'],status:'LIVE',desc:'Real-time world events dashboard with Chad/Chud voting and admin moderation.'},
@@ -798,7 +839,7 @@ const TM = {
   easter:{
     'sudo':'[ PERMISSION DENIED ] Nice try, operator.',
     'hack':'[ ALERT ] Unauthorized intrusion attempt logged. Just kidding. You\'re already in.',
-    'ls':'nexusfang-tech.github.io/  phishing-sim/  contacts-portal/  jarvis/  controller-office/',
+    'ls':'blacksite/  phantom-response/  nexus-sentinel/  threat-intel-workstation/  nexusfang-tech.github.io/  phishing-sim/  contacts-portal/  jarvis/  controller-office/',
     'cd':'[ ERROR ] You\'re already at the root of the matrix.',
     'pwd':'/home/operator/nexus-terminal/portfolio',
     'uname':'NexusOS v2.4.1 (Synthwave Edition) x86_64 — OPERATIONAL',
@@ -815,7 +856,6 @@ const TM = {
     'clear':null,'cls':null,
   }
 };
-
 function tmLine(html, cls='') {
   const d = document.createElement('div');
   d.className = cls; d.innerHTML = html;
@@ -829,7 +869,6 @@ function tmBar(pct) {
 }
 function tmTags(arr) { return arr.map(t=>`<span class="tm-tag">${t}</span>`).join(''); }
 function tmSection(t) { tmLine(`<div class="tm-section">// ${t}</div>`); }
-
 function tmBoot() {
   const lines = [
     {h:'<span class="tc-dim">[ BIOS ] Scanning memory banks............. OK</span>',d:100},
@@ -858,14 +897,12 @@ function tmBoot() {
   lines.forEach(({h,d})=>setTimeout(()=>{ if(h===''){tmBlank()}else{tmLine(h)} tmScroll(); },d));
   setTimeout(()=>document.getElementById('tm-input').focus(), 1300);
 }
-
 function tmRun(raw) {
   const cmd = raw.trim().toLowerCase();
   tmLine(`<span class="tc-green">operator@nexus-terminal:~/portfolio $</span> <span class="tc-cyan">${raw.trim()}</span>`);
   tmBlank();
   if (!cmd) { tmScroll(); return; }
   tmHistory.unshift(raw); if(tmHistory.length>50)tmHistory.pop(); tmHistIdx=-1;
-
   if (cmd==='clear'||cmd==='cls') { tmOut.innerHTML=''; return; }
   if (cmd==='help') { tmHelp(); }
   else if (cmd==='whoami'||cmd==='about') { tmAbout(); }
@@ -881,7 +918,6 @@ function tmRun(raw) {
   else { tmLine(`  <span class="tc-red">bash: ${raw.trim()}: command not found</span>`); tmLine(`  <span class="tc-dim">// Input logged. Type <span class="tc-yellow">help</span> for authorized commands.</span>`); }
   tmScroll();
 }
-
 function tmHelp() {
   tmSection('AVAILABLE COMMANDS');
   [['whoami','Operative dossier and summary'],['skills','Technical capability assessment'],['projects','Deployed and archived operations'],['experience','Field assignment history'],['certifications','Credentials and formal training'],['contact','Establish secure comms channel'],['clear','Purge terminal buffer']]
@@ -942,15 +978,12 @@ function tmMatrix() {
     if(n>20){clearInterval(iv);tmBlank();tmLine(`  <span class="tc-pink">// MATRIX PROTOCOL DISENGAGED.</span>`);tmScroll();}
   },60);
 }
-
 tmIn.addEventListener('keydown', e => {
   if (e.key==='Enter') { const v=tmIn.value; tmIn.value=''; tmRun(v); }
   else if (e.key==='ArrowUp') { e.preventDefault(); if(tmHistIdx<tmHistory.length-1){tmHistIdx++;tmIn.value=tmHistory[tmHistIdx];} }
   else if (e.key==='ArrowDown') { e.preventDefault(); if(tmHistIdx>0){tmHistIdx--;tmIn.value=tmHistory[tmHistIdx];}else{tmHistIdx=-1;tmIn.value='';} }
   else if (e.key==='Tab') { e.preventDefault(); const p=tmIn.value.toLowerCase(); const m=['whoami','about','skills','projects','experience','certifications','certs','contact','help','clear'].find(c=>c.startsWith(p)); if(m)tmIn.value=m; }
 });
-
-// ── KONAMI ────────────────────────────────────────────────────────────────────
 const KONAMI=[38,38,40,40,37,39,37,39,66,65];let ki=0;
 document.addEventListener('keydown',e=>{
   if(e.keyCode===KONAMI[ki]){ki++;if(ki===KONAMI.length){ki=0;activateKonami()}}else{ki=0}
