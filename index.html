@@ -16,7 +16,8 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;cursor:none}
-body::after{content:'';position:fixed;inset:0;z-index:998;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.12) 2px,rgba(0,0,0,.12) 4px)}
+/* CRT scanlines — exclude hero area, only apply below */
+body::after{content:'';position:fixed;inset:0;z-index:998;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 4px)}
 
 #cursor{position:fixed;width:8px;height:8px;background:var(--cyan);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);transition:transform .15s}
 #cursor-ring{position:fixed;width:28px;height:28px;border:1px solid rgba(0,212,255,.5);pointer-events:none;z-index:9998;transform:translate(-50%,-50%) rotate(45deg);transition:all .1s ease-out}
@@ -33,21 +34,73 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 
 #hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:6rem 2rem 4rem}
 #hero-canvas{position:absolute;inset:0;z-index:1}
-.hero-content{position:relative;z-index:10;text-align:center;animation:fadeUp .8s ease .2s both}
+
+/* ═══ READABILITY FIX: dark scrim behind hero content ═══ */
+.hero-content{
+  position:relative;z-index:10;text-align:center;
+  animation:fadeUp .8s ease .2s both;
+  /* Dark radial backdrop so text doesn't fight the sun */
+  background:radial-gradient(ellipse 65% 70% at 50% 48%, rgba(6,8,16,.82) 0%, rgba(6,8,16,.55) 45%, rgba(6,8,16,.25) 70%, transparent 100%);
+  padding:3rem 4rem 2.5rem;
+  border-radius:4px;
+  max-width:1100px;
+}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
-.hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:.66rem;letter-spacing:.45em;color:var(--cyan);margin-bottom:1.5rem;opacity:.55}
-.hero-name{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(2.8rem,8vw,6.5rem);line-height:1;letter-spacing:.03em;color:#fff;text-shadow:0 0 80px rgba(0,212,255,.2);margin-bottom:.4rem}
-.hero-name span{color:var(--cyan);text-shadow:0 0 40px rgba(0,212,255,.5)}
-.hero-title{font-family:'Share Tech Mono',monospace;font-size:clamp(.72rem,1.6vw,.9rem);letter-spacing:.3em;color:var(--text2);margin-bottom:2.5rem}
+.hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:.66rem;letter-spacing:.45em;color:var(--cyan);margin-bottom:1.5rem;opacity:.7;text-shadow:0 0 12px rgba(0,212,255,.4)}
+
+/* ═══ READABILITY FIX: stronger name text-shadow + stroke effect ═══ */
+.hero-name{
+  font-family:'Orbitron',sans-serif;font-weight:900;
+  font-size:clamp(2.8rem,8vw,6.5rem);line-height:1;letter-spacing:.03em;
+  color:#fff;
+  text-shadow:
+    0 0 80px rgba(0,212,255,.25),
+    0 2px 30px rgba(0,0,0,.9),
+    0 0 4px rgba(0,0,0,.95),
+    0 0 60px rgba(0,0,0,.5);
+  margin-bottom:.4rem;
+  -webkit-text-stroke:0.5px rgba(255,255,255,.15);
+}
+.hero-name span{
+  color:var(--cyan);
+  text-shadow:
+    0 0 40px rgba(0,212,255,.6),
+    0 0 80px rgba(0,212,255,.3),
+    0 2px 30px rgba(0,0,0,.9),
+    0 0 4px rgba(0,0,0,.95);
+}
+
+/* ═══ READABILITY FIX: subtitle with better contrast ═══ */
+.hero-title{
+  font-family:'Share Tech Mono',monospace;
+  font-size:clamp(.72rem,1.6vw,.9rem);letter-spacing:.3em;
+  color:var(--text);
+  margin-bottom:2.5rem;
+  text-shadow:0 1px 20px rgba(0,0,0,.95), 0 0 6px rgba(0,0,0,.9);
+}
+
+/* ═══ READABILITY FIX: tags with stronger backgrounds ═══ */
 .hero-tags{display:flex;gap:.55rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.8rem}
-.tag{font-family:'Share Tech Mono',monospace;font-size:.6rem;padding:.28rem .85rem;border:1px solid;letter-spacing:.1em;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:all .2s}
-.tc{border-color:rgba(0,212,255,.3);color:var(--cyan);background:rgba(0,212,255,.05)}.tr{border-color:rgba(255,61,127,.3);color:var(--rose);background:rgba(255,61,127,.05)}.tg{border-color:rgba(0,255,136,.3);color:var(--green);background:rgba(0,255,136,.05)}.ta{border-color:rgba(255,179,0,.3);color:var(--amber);background:rgba(255,179,0,.05)}
+.tag{
+  font-family:'Share Tech Mono',monospace;font-size:.6rem;
+  padding:.28rem .85rem;border:1px solid;letter-spacing:.1em;
+  clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+  transition:all .2s;
+  backdrop-filter:blur(4px);
+  text-shadow:0 1px 8px rgba(0,0,0,.8);
+}
+.tc{border-color:rgba(0,212,255,.4);color:var(--cyan);background:rgba(0,212,255,.12)}
+.tr{border-color:rgba(255,61,127,.4);color:var(--rose);background:rgba(255,61,127,.12)}
+.tg{border-color:rgba(0,255,136,.4);color:var(--green);background:rgba(0,255,136,.12)}
+.ta{border-color:rgba(255,179,0,.4);color:var(--amber);background:rgba(255,179,0,.12)}
+
 .hero-cta{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
 .btn{font-family:'Orbitron',sans-serif;font-size:.66rem;font-weight:700;padding:.82rem 1.9rem;letter-spacing:.15em;cursor:pointer;text-decoration:none;transition:all .22s;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%)}
 .bp{background:var(--cyan);color:#000;border:none;box-shadow:0 0 24px rgba(0,212,255,.3)}.bp:hover{box-shadow:0 0 40px rgba(0,212,255,.55);transform:translateY(-2px)}
-.bo{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.18)}.bo:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 14px rgba(0,212,255,.12);transform:translateY(-2px)}
-.bg{background:transparent;color:var(--rose);border:1px solid rgba(255,61,127,.28)}.bg:hover{background:rgba(255,61,127,.07);box-shadow:0 0 14px rgba(255,61,127,.18);transform:translateY(-2px)}
-.scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.25em;animation:bounce 2.5s ease infinite}
+.bo{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.22);text-shadow:0 1px 8px rgba(0,0,0,.8)}.bo:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 14px rgba(0,212,255,.12);transform:translateY(-2px)}
+.bg{background:transparent;color:var(--rose);border:1px solid rgba(255,61,127,.32);text-shadow:0 1px 8px rgba(0,0,0,.8)}.bg:hover{background:rgba(255,61,127,.07);box-shadow:0 0 14px rgba(255,61,127,.18);transform:translateY(-2px)}
+.scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.25em;animation:bounce 2.5s ease infinite;text-shadow:0 1px 10px rgba(0,0,0,.9)}
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
 
 section{padding:7rem 2rem;position:relative;z-index:2}
@@ -184,6 +237,7 @@ footer span{color:var(--cyan)}
   .ag{grid-template-columns:1fr}.av{display:none}
   .fg,.cg,.kg{grid-template-columns:1fr}
   .ptabs{overflow-x:auto}
+  .hero-content{padding:2rem 1.5rem 2rem}
 }
 </style>
 </head>
@@ -412,7 +466,8 @@ for(var i=0;i<200;i++){
 
 function drawHero(){
   hx.clearRect(0,0,HW,HH);
-  var HOR=HH*.58; // horizon y
+  // ═══ READABILITY FIX: push horizon lower so sun sits below text center ═══
+  var HOR=HH*.65; // was .58 — pushes sun+mountains down
 
   // ── Sky gradient ──────────────────────────────────────────────────────────
   var sky=hx.createLinearGradient(0,0,0,HOR);
@@ -442,7 +497,7 @@ function drawHero(){
   });
 
   // ── Sun ───────────────────────────────────────────────────────────────────
-  var SX=HW/2, SY=HOR, SR=Math.min(HW*.13,HH*.18);
+  var SX=HW/2, SY=HOR, SR=Math.min(HW*.11,HH*.14); // slightly smaller sun
 
   // Sun outer glow
   var sg=hx.createRadialGradient(SX,SY,0,SX,SY,SR*2.2);
@@ -552,8 +607,8 @@ function drawHero(){
   fg.addColorStop(1,'transparent');
   hx.fillStyle=fg;hx.fillRect(0,HOR,HW,HH*.25);
 
-  // ── Scanline overlay on hero only ─────────────────────────────────────────
-  hx.fillStyle='rgba(0,0,0,.06)';
+  // ── Scanline overlay on hero only (reduced opacity) ───────────────────────
+  hx.fillStyle='rgba(0,0,0,.04)';
   for(var sl=0;sl<HH;sl+=4){hx.fillRect(0,sl,HW,1);}
 
   ht+=.016;
