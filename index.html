@@ -4,240 +4,1047 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MATT KEITH // SYSTEMS & SECURITY</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--pink:#ff2d78;--purple:#a020f0;--cyan:#00eeff;--yellow:#ffe600;--bg:#07000f;--bg2:#0d0020;--text:#e8deff;--muted:#7a6a9a}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;cursor:none}
-#cursor{position:fixed;width:12px;height:12px;border-radius:50%;background:var(--cyan);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,background .2s;mix-blend-mode:screen}
-#cursor-ring{position:fixed;width:36px;height:36px;border-radius:50%;border:1px solid rgba(0,238,255,.5);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .12s ease-out}
-body::after{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;background:repeating-linear-gradient(transparent,transparent 3px,rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px)}
-nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:1rem 3rem;background:linear-gradient(to bottom,rgba(7,0,15,.95),transparent);backdrop-filter:blur(2px)}
-.nav-logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1rem;letter-spacing:.2em;color:var(--cyan);text-shadow:0 0 15px var(--cyan)}.nav-logo span{color:var(--pink)}
-.nav-links{display:flex;gap:2.5rem;list-style:none}
-.nav-links a{font-family:'Share Tech Mono',monospace;font-size:.75rem;letter-spacing:.15em;color:var(--muted);text-decoration:none;transition:color .2s;position:relative}
-.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--cyan);transform:scaleX(0);transition:transform .2s}
-.nav-links a:hover{color:var(--cyan)}.nav-links a:hover::after{transform:scaleX(1)}
-.nav-links a.terminal-nav{color:var(--pink);border:1px solid rgba(255,45,120,.4);padding:.2rem .7rem;transition:all .2s}
-.nav-links a.terminal-nav:hover{color:var(--pink);border-color:var(--pink);background:rgba(255,45,120,.08);box-shadow:0 0 12px rgba(255,45,120,.3)}
+:root{
+  --rose:#e8407a;--violet:#7c3aed;--sky:#0ea5e9;--mint:#10b981;--amber:#f59e0b;--peach:#fb7185;
+  --bg:#fdf4ff;--bg2:#f5f0ff;--bg3:#fce7f3;--surface:#ffffff;--surface2:rgba(255,255,255,0.7);
+  --border:rgba(124,58,237,0.15);--border2:rgba(232,64,122,0.2);
+  --text:#1e1035;--text2:#4c3d6b;--muted:#9d8bb5;
+  --glow-rose:rgba(232,64,122,0.25);--glow-violet:rgba(124,58,237,0.2);--glow-sky:rgba(14,165,233,0.2);
+  --grid-color:rgba(124,58,237,0.06);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;cursor:none}
+
+/* Pastel grain overlay */
+body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")}
+/* Scanlines — lighter on pastel */
+body::after{content:'';position:fixed;inset:0;z-index:999;pointer-events:none;background:repeating-linear-gradient(transparent,transparent 3px,rgba(124,58,237,.018) 3px,rgba(124,58,237,.018) 4px)}
+
+/* Grid background */
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--grid-color) 1px,transparent 1px),linear-gradient(90deg,var(--grid-color) 1px,transparent 1px);background-size:40px 40px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%)}
+
+/* Cursor */
+#cursor{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--rose);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,background .2s;mix-blend-mode:multiply}
+#cursor-ring{position:fixed;width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(124,58,237,0.4);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .12s ease-out}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:.9rem 3rem;background:rgba(253,244,255,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);box-shadow:0 1px 20px rgba(124,58,237,.06)}
+.nav-logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:.95rem;letter-spacing:.2em;color:var(--violet)}.nav-logo span{color:var(--rose)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-family:'Share Tech Mono',monospace;font-size:.72rem;letter-spacing:.12em;color:var(--muted);text-decoration:none;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1.5px;background:var(--rose);transform:scaleX(0);transition:transform .2s;border-radius:2px}
+.nav-links a:hover{color:var(--violet)}.nav-links a:hover::after{transform:scaleX(1)}
+.nav-links a.terminal-nav{color:var(--rose);border:1.5px solid rgba(232,64,122,.3);padding:.2rem .75rem;border-radius:3px;transition:all .2s}
+.nav-links a.terminal-nav:hover{background:rgba(232,64,122,.08);border-color:var(--rose);box-shadow:0 0 12px var(--glow-rose)}
 .nav-links a.terminal-nav::after{display:none}
+
+/* Hero */
 #hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:6rem 2rem 4rem}
-#hero-canvas{position:absolute;inset:0;z-index:0}
-.hero-content{position:relative;z-index:10;text-align:center;animation:fadeUp 1s ease .2s both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-.hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:.75rem;letter-spacing:.4em;color:var(--cyan);margin-bottom:1.2rem}
-.hero-name{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(2.8rem,8vw,6.5rem);line-height:1;letter-spacing:.05em;background:linear-gradient(135deg,#fff 0%,var(--cyan) 40%,var(--pink) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 40px rgba(0,238,255,.4));margin-bottom:.3rem}
-.hero-title{font-family:'Orbitron',sans-serif;font-size:clamp(.85rem,2vw,1.1rem);letter-spacing:.35em;color:var(--purple);text-shadow:0 0 20px var(--purple);margin-bottom:2rem}
-.hero-tags{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem}
-.tag{font-family:'Share Tech Mono',monospace;font-size:.7rem;padding:.4rem 1rem;border:1px solid;letter-spacing:.1em;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:all .2s}
-.tag-cyan{border-color:var(--cyan);color:var(--cyan)}.tag-pink{border-color:var(--pink);color:var(--pink)}.tag-yellow{border-color:var(--yellow);color:var(--yellow)}.tag:hover{background:rgba(255,255,255,.08)}
+#hero-canvas{position:absolute;inset:0;z-index:1}
+.hero-content{position:relative;z-index:10;text-align:center;animation:fadeUp .9s ease .1s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:.72rem;letter-spacing:.4em;color:var(--violet);margin-bottom:1.2rem;opacity:.7}
+.hero-name{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(2.6rem,7.5vw,6rem);line-height:1.05;letter-spacing:.04em;background:linear-gradient(135deg,var(--violet) 0%,var(--rose) 50%,var(--amber) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 20px rgba(124,58,237,.2));margin-bottom:.3rem}
+.hero-title{font-family:'Orbitron',sans-serif;font-size:clamp(.8rem,1.8vw,1rem);letter-spacing:.3em;color:var(--text2);margin-bottom:2rem;opacity:.8}
+.hero-tags{display:flex;gap:.65rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem}
+.tag{font-family:'Share Tech Mono',monospace;font-size:.65rem;padding:.35rem .9rem;border:1.5px solid;letter-spacing:.08em;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:all .2s}
+.tag-violet{border-color:rgba(124,58,237,.4);color:var(--violet);background:rgba(124,58,237,.06)}.tag-rose{border-color:rgba(232,64,122,.4);color:var(--rose);background:rgba(232,64,122,.06)}.tag-sky{border-color:rgba(14,165,233,.4);color:var(--sky);background:rgba(14,165,233,.06)}.tag-amber{border-color:rgba(245,158,11,.4);color:var(--amber);background:rgba(245,158,11,.06)}
+.tag:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
 .hero-cta{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
-.btn{font-family:'Orbitron',sans-serif;font-size:.75rem;font-weight:700;padding:.9rem 2.2rem;letter-spacing:.15em;cursor:pointer;text-decoration:none;transition:all .2s;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%)}
-.btn-primary{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border:none;box-shadow:0 0 30px rgba(255,45,120,.4)}.btn-primary:hover{box-shadow:0 0 50px rgba(255,45,120,.7);transform:scale(1.04)}
-.btn-outline{background:transparent;color:var(--cyan);border:1px solid var(--cyan)}.btn-outline:hover{background:rgba(0,238,255,.1);box-shadow:0 0 20px rgba(0,238,255,.3)}
-.btn-terminal{background:transparent;color:var(--pink);border:1px solid var(--pink);position:relative;overflow:hidden}.btn-terminal::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,45,120,.15),rgba(160,32,240,.15));opacity:0;transition:opacity .2s}.btn-terminal:hover::before{opacity:1}.btn-terminal:hover{box-shadow:0 0 24px rgba(255,45,120,.5);transform:scale(1.04)}
-.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.2em;animation:bounce 2s ease infinite}
-@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
-section{padding:6rem 2rem;position:relative}.section-wrap{max-width:1100px;margin:0 auto}.section-header{margin-bottom:3rem}
-.section-num{font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--pink);letter-spacing:.3em;margin-bottom:.4rem}
-.section-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;letter-spacing:.08em;background:linear-gradient(90deg,#fff,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.divider{height:1px;background:linear-gradient(90deg,var(--pink),var(--purple),transparent);margin-bottom:3rem}
-#about{background:linear-gradient(to bottom,var(--bg),var(--bg2))}
-.about-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:4rem;align-items:center}
-.about-avatar{position:relative;aspect-ratio:1;max-width:280px;margin:0 auto}
-.avatar-frame{width:100%;aspect-ratio:1;border:2px solid var(--purple);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(160,32,240,.15),rgba(0,238,255,.05));clip-path:polygon(20px 0%,100% 0%,100% calc(100% - 20px),calc(100% - 20px) 100%,0% 100%,0% 20px)}
-.avatar-initials{font-family:'Orbitron',sans-serif;font-size:4rem;font-weight:900;color:var(--cyan);text-shadow:0 0 30px var(--cyan)}
-.avatar-frame::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(160,32,240,.04) 8px,rgba(160,32,240,.04) 9px)}
-.avatar-corner{position:absolute;width:20px;height:20px;border-color:var(--cyan);border-style:solid}
-.avatar-corner.tl{top:-2px;left:-2px;border-width:2px 0 0 2px}.avatar-corner.tr{top:-2px;right:-2px;border-width:2px 2px 0 0}.avatar-corner.bl{bottom:-2px;left:-2px;border-width:0 0 2px 2px}.avatar-corner.br{bottom:-2px;right:-2px;border-width:0 2px 2px 0}
-.about-text p{color:rgba(232,222,255,.8);font-size:1.05rem;line-height:1.8;margin-bottom:1rem}.about-text p strong{color:var(--cyan);font-weight:600}
-.stat-row{display:flex;gap:2rem;margin-top:2rem;flex-wrap:wrap}.stat{text-align:center}
-.stat-num{font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;color:var(--pink);text-shadow:0 0 15px var(--pink)}
-.stat-label{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.2em}
-#skills{background:var(--bg2)}
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
-.skill-card{border:1px solid rgba(160,32,240,.25);padding:1.5rem;background:rgba(13,0,32,.6);position:relative;overflow:hidden;transition:border-color .3s,transform .2s;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px))}
-.skill-card:hover{border-color:var(--cyan);transform:translateY(-4px)}
-.skill-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--pink),var(--purple),var(--cyan));opacity:0;transition:opacity .3s}.skill-card:hover::before{opacity:1}
-.skill-icon{font-size:1.5rem;margin-bottom:.75rem}
-.skill-cat{font-family:'Orbitron',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.15em;color:var(--cyan);margin-bottom:1rem}
-.skill-list{list-style:none}.skill-list li{font-family:'Share Tech Mono',monospace;font-size:.78rem;color:rgba(232,222,255,.75);padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:.5rem}.skill-list li::before{content:'▸';color:var(--pink);font-size:.6rem}
-.cert-badge{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,rgba(255,45,120,.15),rgba(160,32,240,.15));border:1px solid var(--pink);padding:.5rem 1rem;margin-top:.75rem;font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--pink);letter-spacing:.1em}.cert-badge::before{content:'★';color:var(--yellow)}
-#projects{background:linear-gradient(to bottom,var(--bg2),var(--bg))}
-.proj-tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:2rem}
-.proj-tab{font-family:'Share Tech Mono',monospace;font-size:.7rem;padding:.45rem 1rem;letter-spacing:.1em;border:1px solid rgba(160,32,240,.25);color:var(--muted);cursor:pointer;background:transparent;transition:all .2s;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%)}
-.proj-tab:hover{color:var(--cyan);border-color:var(--cyan)}
-.proj-tab.active{color:var(--pink);border-color:var(--pink);background:rgba(255,45,120,.08)}
-.proj-tab .tab-count{font-size:.55rem;opacity:.4;margin-left:.25rem}
+.btn{font-family:'Orbitron',sans-serif;font-size:.7rem;font-weight:700;padding:.85rem 2rem;letter-spacing:.12em;cursor:pointer;text-decoration:none;transition:all .2s;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%)}
+.btn-primary{background:linear-gradient(135deg,var(--violet),var(--rose));color:#fff;border:none;box-shadow:0 4px 20px var(--glow-violet)}.btn-primary:hover{box-shadow:0 6px 28px rgba(124,58,237,.4);transform:translateY(-2px)}
+.btn-outline{background:transparent;color:var(--sky);border:1.5px solid rgba(14,165,233,.5)}.btn-outline:hover{background:rgba(14,165,233,.08);box-shadow:0 4px 16px var(--glow-sky);transform:translateY(-2px)}
+.btn-terminal{background:rgba(232,64,122,.08);color:var(--rose);border:1.5px solid rgba(232,64,122,.4)}.btn-terminal:hover{background:rgba(232,64,122,.15);box-shadow:0 4px 16px var(--glow-rose);transform:translateY(-2px)}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.2em;animation:bounce 2s ease infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+
+/* Sections */
+section{padding:6rem 2rem;position:relative;z-index:2}
+.section-wrap{max-width:1100px;margin:0 auto}
+.section-header{margin-bottom:2.5rem}
+.section-num{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--rose);letter-spacing:.3em;margin-bottom:.4rem}
+.section-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:900;letter-spacing:.06em;background:linear-gradient(90deg,var(--violet),var(--sky));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.divider{height:1.5px;background:linear-gradient(90deg,var(--rose),var(--violet),transparent);margin-bottom:3rem;border-radius:2px}
+
+/* About */
+#about{background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 100%)}
+.about-grid{display:grid;grid-template-columns:1fr 1.8fr;gap:4rem;align-items:center}
+.about-avatar{position:relative;max-width:260px;margin:0 auto}
+.avatar-frame{width:100%;aspect-ratio:1;border:2px solid rgba(124,58,237,.25);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(232,64,122,.06));clip-path:polygon(18px 0%,100% 0%,100% calc(100% - 18px),calc(100% - 18px) 100%,0% 100%,0% 18px);box-shadow:0 8px 32px rgba(124,58,237,.12)}
+.avatar-initials{font-family:'Orbitron',sans-serif;font-size:3.5rem;font-weight:900;background:linear-gradient(135deg,var(--violet),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.avatar-frame::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(124,58,237,.03) 10px,rgba(124,58,237,.03) 11px)}
+.avatar-corner{position:absolute;width:18px;height:18px;border-color:var(--rose);border-style:solid}
+.avatar-corner.tl{top:-1px;left:-1px;border-width:2px 0 0 2px}.avatar-corner.tr{top:-1px;right:-1px;border-width:2px 2px 0 0}.avatar-corner.bl{bottom:-1px;left:-1px;border-width:0 0 2px 2px}.avatar-corner.br{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+.about-text p{color:var(--text2);font-size:1rem;line-height:1.85;margin-bottom:.9rem}.about-text p strong{color:var(--violet);font-weight:500}
+.stat-row{display:flex;gap:2rem;margin-top:2rem;flex-wrap:wrap}
+.stat{text-align:center;padding:.75rem 1.25rem;background:var(--surface2);border:1.5px solid var(--border);border-radius:4px;backdrop-filter:blur(8px)}
+.stat-num{font-family:'Orbitron',sans-serif;font-size:1.6rem;font-weight:900;color:var(--rose)}
+.stat-label{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.18em}
+
+/* Skills */
+#skills{background:linear-gradient(160deg,var(--bg2) 0%,var(--bg3) 100%)}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+.skill-card{border:1.5px solid var(--border);padding:1.5rem;background:var(--surface2);position:relative;overflow:hidden;transition:border-color .3s,transform .2s,box-shadow .3s;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));backdrop-filter:blur(12px)}
+.skill-card:hover{border-color:rgba(124,58,237,.4);transform:translateY(-4px);box-shadow:0 12px 32px rgba(124,58,237,.1)}
+.skill-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--rose),var(--violet),var(--sky));opacity:0;transition:opacity .3s}.skill-card:hover::before{opacity:1}
+.skill-icon{font-size:1.4rem;margin-bottom:.65rem}
+.skill-cat{font-family:'Orbitron',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.14em;color:var(--violet);margin-bottom:.85rem}
+.skill-list{list-style:none}.skill-list li{font-family:'Share Tech Mono',monospace;font-size:.76rem;color:var(--text2);padding:.28rem 0;border-bottom:1px solid rgba(124,58,237,.08);display:flex;align-items:center;gap:.5rem}.skill-list li::before{content:'▸';color:var(--rose);font-size:.58rem}
+.cert-badge{display:inline-flex;align-items:center;gap:.45rem;background:rgba(232,64,122,.07);border:1.5px solid rgba(232,64,122,.3);padding:.4rem .9rem;margin-top:.65rem;font-family:'Share Tech Mono',monospace;font-size:.67rem;color:var(--rose);letter-spacing:.08em;border-radius:2px}.cert-badge::before{content:'★';color:var(--amber)}
+
+/* Projects */
+#projects{background:linear-gradient(160deg,var(--bg3) 0%,var(--bg) 100%)}
+.proj-tabs{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:2rem}
+.proj-tab{font-family:'Share Tech Mono',monospace;font-size:.67rem;padding:.42rem 1rem;letter-spacing:.08em;border:1.5px solid var(--border);color:var(--muted);cursor:pointer;background:var(--surface2);transition:all .2s;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);backdrop-filter:blur(8px)}
+.proj-tab:hover{color:var(--violet);border-color:rgba(124,58,237,.4)}
+.proj-tab.active{color:var(--rose);border-color:rgba(232,64,122,.5);background:rgba(232,64,122,.06)}
+.proj-tab .tab-count{font-size:.52rem;opacity:.45;margin-left:.2rem}
 .proj-panel{display:none}.proj-panel.active{display:block}
 .featured-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1rem}
-.fc{border:1px solid rgba(0,238,255,.12);overflow:hidden;background:rgba(7,0,15,.8);transition:all .3s;position:relative}
-.fc:hover{border-color:var(--cyan);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.4),0 0 15px rgba(0,238,255,.06)}
+
+/* Featured cards */
+.fc{border:1.5px solid var(--border);overflow:hidden;background:var(--surface2);transition:all .3s;position:relative;backdrop-filter:blur(12px);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.fc:hover{border-color:rgba(124,58,237,.35);transform:translateY(-3px);box-shadow:0 12px 32px rgba(124,58,237,.1)}
 .fc .fa{position:absolute;top:0;left:0;right:0;height:3px}
 .fc .fh{padding:1rem 1rem .6rem;position:relative}
-.fc .fl{font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:.2em;color:var(--muted);margin-bottom:.2rem}
-.fc .fn{font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.06em;color:#fff}
-.fc .fs{position:absolute;top:.8rem;right:.8rem;font-family:'Share Tech Mono',monospace;font-size:.5rem;padding:.12rem .35rem;border:1px solid #00ff88;color:#00ff88;background:rgba(0,255,136,.06);letter-spacing:.06em}
+.fc .fl{font-family:'Share Tech Mono',monospace;font-size:.52rem;letter-spacing:.2em;color:var(--muted);margin-bottom:.2rem}
+.fc .fn{font-family:'Orbitron',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.05em;color:var(--text)}
+.fc .fs{position:absolute;top:.8rem;right:.8rem;font-family:'Share Tech Mono',monospace;font-size:.48rem;padding:.1rem .35rem;border:1.5px solid var(--mint);color:var(--mint);background:rgba(16,185,129,.07);letter-spacing:.06em;border-radius:2px}
 .fc .fb{padding:0 1rem 1rem}
-.fc .fd{color:rgba(232,222,255,.6);font-size:.8rem;line-height:1.55;margin-bottom:.6rem}
-.fc .ft{display:flex;flex-wrap:wrap;gap:.25rem;margin-bottom:.6rem}
-.tp{font-family:'Share Tech Mono',monospace;font-size:.55rem;padding:.15rem .4rem;border:1px solid rgba(160,32,240,.3);color:var(--purple);letter-spacing:.03em;background:rgba(160,32,240,.05)}
-.fc .fk{font-family:'Share Tech Mono',monospace;font-size:.6rem;text-decoration:none;padding:.25rem .6rem;letter-spacing:.06em;transition:all .2s;display:inline-block;border:1px solid}
-.fc .fk:hover{box-shadow:0 0 8px currentColor}
-.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.65rem}
-.cc{border:1px solid rgba(160,32,240,.12);background:rgba(7,0,15,.55);padding:.65rem .8rem;transition:all .2s;position:relative;overflow:hidden}
-.cc:hover{border-color:var(--cyan);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.fc .fd{color:var(--text2);font-size:.82rem;line-height:1.6;margin-bottom:.65rem}
+.fc .ft{display:flex;flex-wrap:wrap;gap:.25rem;margin-bottom:.65rem}
+.tp{font-family:'Share Tech Mono',monospace;font-size:.54rem;padding:.13rem .38rem;border:1px solid rgba(124,58,237,.22);color:var(--violet);letter-spacing:.03em;background:rgba(124,58,237,.05);border-radius:2px}
+.fc .fk{font-family:'Share Tech Mono',monospace;font-size:.6rem;text-decoration:none;padding:.28rem .65rem;letter-spacing:.06em;transition:all .2s;display:inline-block;border:1.5px solid;border-radius:2px}
+.fc .fk:hover{box-shadow:0 0 10px currentColor;transform:translateX(2px)}
+
+/* Compact cards */
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.65rem}
+.cc{border:1.5px solid var(--border);background:var(--surface2);padding:.75rem .9rem;transition:all .2s;position:relative;overflow:hidden;backdrop-filter:blur(8px)}
+.cc:hover{border-color:rgba(124,58,237,.35);transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,58,237,.08)}
 .cc .ca{position:absolute;top:0;left:0;right:0;height:2px}
 .cc .ct{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.2rem}
-.cc .cn{font-family:'Orbitron',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.04em;color:#fff}
-.cc .cs{font-family:'Share Tech Mono',monospace;font-size:.45rem;padding:.08rem .25rem;flex-shrink:0}
-.sl{border:1px solid #00ff88;color:#00ff88;background:rgba(0,255,136,.05)}
-.sw{border:1px solid var(--yellow);color:var(--yellow);background:rgba(255,230,0,.05)}
-.cc .cd{color:rgba(232,222,255,.5);font-size:.72rem;line-height:1.45;margin-bottom:.4rem}
-.cc .cf{display:flex;flex-wrap:wrap;gap:.15rem;margin-bottom:.4rem}
-.cc .tp{font-size:.45rem;padding:.08rem .3rem}
-.cc .ck{font-family:'Share Tech Mono',monospace;font-size:.55rem;text-decoration:none;letter-spacing:.06em;transition:all .2s}
-.cc .ck:hover{text-shadow:0 0 6px currentColor}
-#experience{background:var(--bg)}
-.timeline{position:relative;padding-left:2rem}.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--pink),var(--purple),transparent)}
+.cc .cn{font-family:'Orbitron',sans-serif;font-size:.63rem;font-weight:700;letter-spacing:.04em;color:var(--text)}
+.cc .cs{font-family:'Share Tech Mono',monospace;font-size:.44rem;padding:.07rem .25rem;flex-shrink:0;border-radius:2px}
+.sl{border:1.5px solid var(--mint);color:var(--mint);background:rgba(16,185,129,.06)}
+.sw{border:1.5px solid var(--amber);color:var(--amber);background:rgba(245,158,11,.06)}
+.cc .cd{color:var(--text2);font-size:.75rem;line-height:1.5;margin-bottom:.4rem}
+.cc .cf{display:flex;flex-wrap:wrap;gap:.18rem;margin-bottom:.4rem}
+.cc .tp{font-size:.46rem;padding:.08rem .3rem}
+.cc .ck{font-family:'Share Tech Mono',monospace;font-size:.55rem;text-decoration:none;letter-spacing:.05em;transition:all .2s;border-radius:2px}
+.cc .ck:hover{text-decoration:underline}
+
+/* Experience */
+#experience{background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 100%)}
+.timeline{position:relative;padding-left:2rem}.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1.5px;background:linear-gradient(to bottom,var(--rose),var(--violet),transparent)}
 .timeline-item{position:relative;margin-bottom:3rem;padding-left:2rem}
-.timeline-dot{position:absolute;left:-2.5rem;top:.3rem;width:12px;height:12px;border-radius:50%;background:var(--pink);box-shadow:0 0 15px var(--pink);border:2px solid var(--bg)}
-.timeline-date{font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--cyan);letter-spacing:.15em;margin-bottom:.3rem}
-.timeline-role{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;color:#fff;letter-spacing:.05em;margin-bottom:.15rem}
-.timeline-org{font-size:.9rem;color:var(--pink);font-weight:600;margin-bottom:.75rem}
-.timeline-desc{color:rgba(232,222,255,.7);font-size:.95rem;line-height:1.7}
-.timeline-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
-#contact{background:linear-gradient(to bottom,var(--bg),var(--bg2));text-align:center}
-.contact-intro{font-size:1.1rem;color:rgba(232,222,255,.7);max-width:560px;margin:0 auto 2.5rem;line-height:1.8}
-.contact-links{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem}
-.contact-link{display:flex;align-items:center;gap:.6rem;font-family:'Share Tech Mono',monospace;font-size:.8rem;color:var(--muted);text-decoration:none;letter-spacing:.1em;border:1px solid rgba(255,255,255,.1);padding:.75rem 1.25rem;transition:all .2s}
-.contact-link:hover{color:var(--cyan);border-color:var(--cyan);box-shadow:0 0 15px rgba(0,238,255,.2)}
-footer{padding:2rem;text-align:center;font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.15em;border-top:1px solid rgba(160,32,240,.2)}footer span{color:var(--pink)}
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:translateY(0)}
-#terminal-modal{position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:background .35s}#terminal-modal.open{background:rgba(0,0,0,.88);pointer-events:all}
-.terminal-modal-inner{position:relative;width:92vw;max-width:960px;height:88vh;transform:translateY(30px) scale(.97);opacity:0;transition:transform .35s,opacity .35s;display:flex;flex-direction:column}#terminal-modal.open .terminal-modal-inner{transform:translateY(0) scale(1);opacity:1}
-.terminal-modal-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:#0d0020;border:1px solid rgba(255,45,120,.4);border-bottom:none;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.15em;color:rgba(255,45,120,.7);flex-shrink:0}
+.timeline-dot{position:absolute;left:-2.45rem;top:.3rem;width:11px;height:11px;border-radius:50%;background:var(--rose);box-shadow:0 0 12px var(--glow-rose);border:2px solid var(--bg)}
+.timeline-date{font-family:'Share Tech Mono',monospace;font-size:.67rem;color:var(--sky);letter-spacing:.14em;margin-bottom:.3rem}
+.timeline-role{font-family:'Orbitron',sans-serif;font-size:.95rem;font-weight:700;color:var(--text);letter-spacing:.04em;margin-bottom:.12rem}
+.timeline-org{font-size:.88rem;color:var(--rose);font-weight:500;margin-bottom:.7rem}
+.timeline-desc{color:var(--text2);font-size:.92rem;line-height:1.75}
+.timeline-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.7rem}
+
+/* Contact */
+#contact{background:linear-gradient(160deg,var(--bg2) 0%,var(--bg3) 100%);text-align:center}
+.contact-intro{font-size:1.05rem;color:var(--text2);max-width:540px;margin:0 auto 2.5rem;line-height:1.85}
+.contact-links{display:flex;gap:1.25rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem}
+.contact-link{display:flex;align-items:center;gap:.55rem;font-family:'Share Tech Mono',monospace;font-size:.76rem;color:var(--muted);text-decoration:none;letter-spacing:.09em;border:1.5px solid var(--border);padding:.7rem 1.2rem;transition:all .2s;background:var(--surface2);backdrop-filter:blur(8px);border-radius:3px}
+.contact-link:hover{color:var(--violet);border-color:rgba(124,58,237,.4);box-shadow:0 4px 16px var(--glow-violet);transform:translateY(-2px)}
+
+footer{padding:2rem;text-align:center;font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.14em;border-top:1px solid var(--border)}
+footer span{color:var(--rose)}
+
+/* Scroll reveal */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* Terminal modal */
+#terminal-modal{position:fixed;inset:0;z-index:8000;background:rgba(30,16,53,0);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:background .35s}
+#terminal-modal.open{background:rgba(30,16,53,.82);pointer-events:all}
+.terminal-modal-inner{position:relative;width:92vw;max-width:960px;height:88vh;transform:translateY(28px) scale(.97);opacity:0;transition:transform .35s,opacity .35s;display:flex;flex-direction:column}
+#terminal-modal.open .terminal-modal-inner{transform:translateY(0) scale(1);opacity:1}
+.terminal-modal-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:#1e1035;border:1.5px solid rgba(232,64,122,.35);border-bottom:none;font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.14em;color:rgba(232,64,122,.65);flex-shrink:0}
 .terminal-modal-dots{display:flex;gap:6px}.terminal-modal-dots span{width:10px;height:10px;border-radius:50%}
-.tmd-r{background:var(--pink)}.tmd-y{background:var(--yellow)}.tmd-g{background:#00ff88}
-.terminal-modal-close{background:transparent;border:1px solid rgba(255,45,120,.4);color:rgba(255,45,120,.7);font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.15em;padding:.2rem .7rem;cursor:pointer;transition:all .2s}.terminal-modal-close:hover{color:var(--pink);border-color:var(--pink)}
-#tm-body{flex:1;border:1px solid rgba(255,45,120,.4);border-top:none;background:#07020f;display:flex;flex-direction:column;overflow:hidden;position:relative;cursor:text}
-#tm-body::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:2;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px)}
-#tm-body::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:2;background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.55) 100%)}
+.tmd-r{background:var(--rose)}.tmd-y{background:var(--amber)}.tmd-g{background:var(--mint)}
+.terminal-modal-close{background:transparent;border:1.5px solid rgba(232,64,122,.35);color:rgba(232,64,122,.65);font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.14em;padding:.2rem .7rem;cursor:pointer;transition:all .2s;border-radius:2px}.terminal-modal-close:hover{color:var(--rose);border-color:var(--rose)}
+#tm-body{flex:1;border:1.5px solid rgba(232,64,122,.35);border-top:none;background:#0f0826;display:flex;flex-direction:column;overflow:hidden;position:relative;cursor:text}
+#tm-body::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:2;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px)}
+#tm-body::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:2;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.45) 100%)}
 #tm-output{flex:1;overflow-y:auto;padding:16px 20px 8px;font-family:'Share Tech Mono',monospace;font-size:13px;line-height:1.6;position:relative;z-index:3}
-.tm-prompt-row{display:flex;align-items:center;padding:8px 20px 12px;border-top:1px solid rgba(176,96,255,.12);position:relative;z-index:3;flex-shrink:0}
+.tm-prompt-row{display:flex;align-items:center;padding:8px 20px 12px;border-top:1px solid rgba(124,58,237,.15);position:relative;z-index:3;flex-shrink:0}
 .tm-ps1-user,.tm-ps1-at,.tm-ps1-sep,.tm-ps1-host,.tm-ps1-path,.tm-ps1-sym{font-family:'Share Tech Mono',monospace;font-size:13px}
-.tm-ps1-user{color:#39ff14}.tm-ps1-at,.tm-ps1-sep{color:#4a3060}.tm-ps1-host{color:#b060ff}.tm-ps1-path{color:#00f5ff}.tm-ps1-sym{color:#ff2d78;margin-right:8px}
-#tm-input{background:transparent;border:none;outline:none;color:#00f5ff;font-family:'Share Tech Mono',monospace;font-size:13px;flex:1;caret-color:#ff2d78}
-.tc-pink{color:#ff2d78}.tc-cyan{color:#00f5ff}.tc-purple{color:#b060ff}.tc-yellow{color:#ffe600}.tc-green{color:#39ff14}.tc-dim{color:#4a3060}.tc-white{color:#e8e0f0}.tc-red{color:#ff4444}
-.tm-section{font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.22em;color:#ff2d78;border-bottom:1px solid #2a1a40;padding-bottom:3px;margin:10px 0 6px}
-.tm-skill-name{display:inline-block;min-width:210px;color:#00f5ff;font-size:12px}.tm-bar-fill{color:#b060ff}.tm-bar-empty{color:#2a1a40}.tm-skill-pct{color:#4a3060;font-size:11px}
-.tm-tag{display:inline-block;border:1px solid rgba(0,245,255,.3);color:#00f5ff;font-size:11px;padding:0 7px;margin:2px 3px 2px 0}
-.tm-help-cmd{display:inline-block;min-width:175px;color:#ffe600}.tm-help-desc{color:#6b5080}
-.tm-contact-key{display:inline-block;min-width:115px;color:#4a3060}.tm-contact-val{color:#00f5ff}
-.tm-glitch{font-family:'Orbitron',monospace;font-weight:900;font-size:20px;color:#00f5ff;letter-spacing:.08em;animation:tm-glitch 4s infinite;display:inline-block}
-@keyframes tm-glitch{0%,60%,100%{text-shadow:2px 0 #ff2d78,-2px 0 #00f5ff}20%{text-shadow:-2px 0 #ff2d78,2px 0 #00f5ff;transform:translate(-1px,0)}40%{text-shadow:2px 0 #00f5ff,-2px 0 #b060ff;transform:translate(1px,0)}}
+.tm-ps1-user{color:#39ff14}.tm-ps1-at,.tm-ps1-sep{color:#4a3060}.tm-ps1-host{color:#c084fc}.tm-ps1-path{color:#67e8f9}.tm-ps1-sym{color:#fb7185;margin-right:8px}
+#tm-input{background:transparent;border:none;outline:none;color:#67e8f9;font-family:'Share Tech Mono',monospace;font-size:13px;flex:1;caret-color:#fb7185}
+.tc-pink{color:#fb7185}.tc-cyan{color:#67e8f9}.tc-purple{color:#c084fc}.tc-yellow{color:#fbbf24}.tc-green{color:#34d399}.tc-dim{color:#4a3060}.tc-white{color:#e8e0f0}.tc-red{color:#f87171}
+.tm-section{font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.22em;color:#fb7185;border-bottom:1px solid #2a1a40;padding-bottom:3px;margin:10px 0 6px}
+.tm-skill-name{display:inline-block;min-width:210px;color:#67e8f9;font-size:12px}.tm-bar-fill{color:#c084fc}.tm-bar-empty{color:#2a1a40}.tm-skill-pct{color:#4a3060;font-size:11px}
+.tm-tag{display:inline-block;border:1px solid rgba(103,232,249,.3);color:#67e8f9;font-size:11px;padding:0 7px;margin:2px 3px 2px 0;border-radius:2px}
+.tm-help-cmd{display:inline-block;min-width:175px;color:#fbbf24}.tm-help-desc{color:#6b5080}
+.tm-contact-key{display:inline-block;min-width:115px;color:#4a3060}.tm-contact-val{color:#67e8f9}
+.tm-glitch{font-family:'Orbitron',monospace;font-weight:900;font-size:20px;color:#67e8f9;letter-spacing:.08em;animation:tm-glitch 4s infinite;display:inline-block}
+@keyframes tm-glitch{0%,60%,100%{text-shadow:2px 0 #fb7185,-2px 0 #67e8f9}20%{text-shadow:-2px 0 #fb7185,2px 0 #67e8f9;transform:translate(-1px,0)}40%{text-shadow:2px 0 #67e8f9,-2px 0 #c084fc;transform:translate(1px,0)}}
 .tm-ascii{font-size:9px;line-height:1.15;white-space:pre;margin:6px 0}
-.tm-entry-title{color:#ffe600}.tm-entry-sub{color:#b060ff;font-size:12px}.tm-entry-date{color:#4a3060;font-size:12px}.tm-entry-desc{color:#b8a8cc;font-size:12px;margin-top:2px}
-#konami-overlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .5s}#konami-overlay.active{opacity:1;pointer-events:all}
-#konami-canvas{border:1px solid var(--cyan)}.konami-label{font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--cyan);letter-spacing:.3em;margin-top:1rem}
-.konami-close{position:absolute;top:2rem;right:2rem;font-family:'Orbitron',sans-serif;font-size:.7rem;color:var(--muted);cursor:pointer;letter-spacing:.15em;background:transparent;border:1px solid var(--muted);padding:.4rem .8rem}.konami-close:hover{color:var(--pink);border-color:var(--pink)}
-@media(max-width:700px){nav{padding:1rem}.nav-links{gap:1.2rem}.about-grid{grid-template-columns:1fr}.about-avatar{max-width:180px}.nav-links a.terminal-nav{display:none}.featured-grid,.cg{grid-template-columns:1fr}.proj-tabs{gap:.2rem}}
+.tm-entry-title{color:#fbbf24}.tm-entry-sub{color:#c084fc;font-size:12px}.tm-entry-date{color:#4a3060;font-size:12px}.tm-entry-desc{color:#b8a8cc;font-size:12px;margin-top:2px}
+
+/* Konami */
+#konami-overlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .5s}
+#konami-overlay.active{opacity:1;pointer-events:all}
+#konami-canvas{border:1px solid var(--sky)}.konami-label{font-family:'Share Tech Mono',monospace;font-size:.68rem;color:var(--sky);letter-spacing:.3em;margin-top:1rem}
+.konami-close{position:absolute;top:2rem;right:2rem;font-family:'Orbitron',sans-serif;font-size:.68rem;color:var(--muted);cursor:pointer;letter-spacing:.14em;background:transparent;border:1px solid var(--muted);padding:.4rem .8rem;border-radius:2px;transition:all .2s}.konami-close:hover{color:var(--rose);border-color:var(--rose)}
+
+@media(max-width:700px){
+  nav{padding:1rem}.nav-links{gap:1rem}.about-grid{grid-template-columns:1fr}.about-avatar{max-width:180px}
+  .nav-links a.terminal-nav{display:none}.featured-grid,.cg{grid-template-columns:1fr}.proj-tabs{gap:.2rem}
+}
 </style>
 </head>
 <body>
+<div class="grid-bg"></div>
 <div id="cursor"></div><div id="cursor-ring"></div>
-<nav><div class="nav-logo">MK<span>://</span></div><ul class="nav-links"><li><a href="#about">ABOUT</a></li><li><a href="#skills">SKILLS</a></li><li><a href="#projects">PROJECTS</a></li><li><a href="#experience">EXPERIENCE</a></li><li><a href="#contact">CONTACT</a></li><li><a href="#" class="terminal-nav" onclick="openTerminal(event)">&#62;_ TERMINAL</a></li></ul></nav>
 
-<section id="hero"><canvas id="hero-canvas"></canvas><div class="hero-content"><div class="hero-eyebrow">// SYSTEM ONLINE — INITIALIZING PORTFOLIO //</div><div class="hero-name">MATT KEITH</div><div class="hero-title">TECHNOLOGY SERVICES MANAGER &nbsp;·&nbsp; SECURITY ENGINEER</div><div class="hero-tags"><span class="tag tag-cyan">PENETRATION TESTING</span><span class="tag tag-pink">AZURE / M365</span><span class="tag tag-cyan">FULL-STACK DEV</span><span class="tag tag-yellow">HOME LAB OPS</span><span class="tag tag-pink">SECURITY AWARENESS</span></div><div class="hero-cta"><a href="#projects" class="btn btn-primary">VIEW PROJECTS</a><a href="#contact" class="btn btn-outline">GET IN TOUCH</a><button class="btn btn-terminal" onclick="openTerminal(event)">&#62;_ OPEN TERMINAL</button></div></div><div class="scroll-hint">▼ &nbsp; SCROLL TO EXPLORE &nbsp; ▼</div></section>
+<nav>
+  <div class="nav-logo">MK<span>://</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">ABOUT</a></li>
+    <li><a href="#skills">SKILLS</a></li>
+    <li><a href="#projects">PROJECTS</a></li>
+    <li><a href="#experience">EXPERIENCE</a></li>
+    <li><a href="#contact">CONTACT</a></li>
+    <li><a href="#" class="terminal-nav" onclick="openTerminal(event)">&#62;_ TERMINAL</a></li>
+  </ul>
+</nav>
 
-<section id="about"><div class="section-wrap"><div class="section-header reveal"><div class="section-num">// 01</div><div class="section-title">ABOUT</div></div><div class="divider"></div><div class="about-grid"><div class="about-avatar reveal"><div class="avatar-frame"><div class="avatar-initials">MK</div></div><div class="avatar-corner tl"></div><div class="avatar-corner tr"></div><div class="avatar-corner bl"></div><div class="avatar-corner br"></div></div><div class="about-text reveal"><p>I'm a <strong>Technology Services Manager</strong> at the North Carolina Association of County Commissioners, where I wear a lot of hats — helpdesk lead, internal developer, and the person who built the security awareness infrastructure from scratch.</p><p>My work lives at the intersection of <strong>systems engineering, cybersecurity, and automation</strong>. I build tools that actually get used: from Azure-hosted portals with Entra ID auth to phishing simulation platforms with real campaign analytics.</p><p>Outside of work I run a home lab on a <strong>Dell PowerEdge T430 / Proxmox</strong> stack, chase placement in Fortnite Zero Build, and build side projects that scratch whatever technical itch I have that week.</p><div class="stat-row"><div class="stat"><div class="stat-num">5+</div><div class="stat-label">YRS EXPERIENCE</div></div><div class="stat"><div class="stat-num">35+</div><div class="stat-label">TOOLS SHIPPED</div></div><div class="stat"><div class="stat-num">2</div><div class="stat-label">CERTS EARNED</div></div><div class="stat"><div class="stat-num">∞</div><div class="stat-label">TICKETS CLOSED</div></div></div></div></div></div></section>
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-eyebrow">// SYSTEM ONLINE — INITIALIZING PORTFOLIO //</div>
+    <div class="hero-name">MATT KEITH</div>
+    <div class="hero-title">TECHNOLOGY SERVICES MANAGER &nbsp;·&nbsp; SECURITY ENGINEER</div>
+    <div class="hero-tags">
+      <span class="tag tag-violet">PENETRATION TESTING</span>
+      <span class="tag tag-rose">AZURE / M365</span>
+      <span class="tag tag-sky">FULL-STACK DEV</span>
+      <span class="tag tag-amber">HOME LAB OPS</span>
+      <span class="tag tag-violet">DETECTION ENGINEERING</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">VIEW PROJECTS</a>
+      <a href="#contact" class="btn btn-outline">GET IN TOUCH</a>
+      <button class="btn btn-terminal" onclick="openTerminal(event)">&#62;_ OPEN TERMINAL</button>
+    </div>
+  </div>
+  <div class="scroll-hint">▼ &nbsp; SCROLL TO EXPLORE &nbsp; ▼</div>
+</section>
 
-<section id="skills"><div class="section-wrap"><div class="section-header reveal"><div class="section-num">// 02</div><div class="section-title">SKILLS & CERTS</div></div><div class="divider"></div><div class="skills-grid"><div class="skill-card reveal"><div class="skill-icon">🔐</div><div class="skill-cat">CYBERSECURITY</div><ul class="skill-list"><li>Penetration Testing</li><li>Security Awareness Training</li><li>Phishing Simulation Design</li><li>Entra ID / Zero Trust</li><li>Vulnerability Assessment</li><li>Log Analysis &amp; SIEM</li></ul><div class="cert-badge">AAS — CYBERSECURITY</div><br><div class="cert-badge">CERT — PENETRATION TESTING</div><br><div class="cert-badge">CERT — PYTHON</div></div><div class="skill-card reveal"><div class="skill-icon">☁️</div><div class="skill-cat">CLOUD &amp; INFRASTRUCTURE</div><ul class="skill-list"><li>Microsoft Azure</li><li>Microsoft 365 / SharePoint</li><li>Power Apps / Power Automate</li><li>Azure App Service</li><li>Entra ID / SSO / OAuth</li><li>Barracuda Email Security</li></ul></div><div class="skill-card reveal"><div class="skill-icon">⚙️</div><div class="skill-cat">DEVELOPMENT</div><ul class="skill-list"><li>Python / FastAPI</li><li>HTML / CSS / JavaScript</li><li>SQLite / REST APIs</li><li>GitHub Actions CI/CD</li><li>APScheduler / Webhooks</li><li>Leaflet.js / D3.js</li></ul></div><div class="skill-card reveal"><div class="skill-icon">🖥️</div><div class="skill-cat">HOME LAB &amp; SYSTEMS</div><ul class="skill-list"><li>Proxmox VE</li><li>Linux (Ubuntu / Debian)</li><li>Windows Server</li><li>Pi-hole / Cloudflare Tunnel</li><li>Ollama (Local AI)</li><li>NSSM / Systemd Services</li></ul></div></div></div></section>
+<section id="about">
+  <div class="section-wrap">
+    <div class="section-header reveal"><div class="section-num">// 01</div><div class="section-title">ABOUT</div></div>
+    <div class="divider"></div>
+    <div class="about-grid">
+      <div class="about-avatar reveal">
+        <div class="avatar-frame"><div class="avatar-initials">MK</div></div>
+        <div class="avatar-corner tl"></div><div class="avatar-corner tr"></div>
+        <div class="avatar-corner bl"></div><div class="avatar-corner br"></div>
+      </div>
+      <div class="about-text reveal">
+        <p>I'm a <strong>Technology Services Manager</strong> at the North Carolina Association of County Commissioners, where I wear a lot of hats — helpdesk lead, internal developer, and the person who built the security awareness infrastructure from scratch.</p>
+        <p>My work lives at the intersection of <strong>systems engineering, cybersecurity, and automation</strong>. I build tools that actually get used: from Azure-hosted portals with Entra ID auth to phishing simulation platforms and MITRE ATT&CK-mapped detection engines.</p>
+        <p>Outside of work I run a home lab on a <strong>Dell PowerEdge T430 / Proxmox</strong> stack and build side projects that scratch whatever technical itch I have that week.</p>
+        <div class="stat-row">
+          <div class="stat"><div class="stat-num">5+</div><div class="stat-label">YRS EXPERIENCE</div></div>
+          <div class="stat"><div class="stat-num">35+</div><div class="stat-label">TOOLS SHIPPED</div></div>
+          <div class="stat"><div class="stat-num">2</div><div class="stat-label">CERTS EARNED</div></div>
+          <div class="stat"><div class="stat-num">∞</div><div class="stat-label">TICKETS CLOSED</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<section id="projects"><div class="section-wrap"><div class="section-header reveal"><div class="section-num">// 03</div><div class="section-title">PROJECTS</div></div><div class="divider"></div>
-<div class="proj-tabs reveal"><button class="proj-tab active" onclick="switchTab('featured',this)">★ FEATURED<span class="tab-count">7</span></button><button class="proj-tab" onclick="switchTab('security',this)">SECURITY<span class="tab-count">10</span></button><button class="proj-tab" onclick="switchTab('ops',this)">IT OPS<span class="tab-count">7</span></button><button class="proj-tab" onclick="switchTab('dev',this)">DEV<span class="tab-count">5</span></button><button class="proj-tab" onclick="switchTab('personal',this)">PERSONAL<span class="tab-count">3</span></button><button class="proj-tab" onclick="switchTab('gaming',this)">GAMING<span class="tab-count">9</span></button></div>
+<section id="skills">
+  <div class="section-wrap">
+    <div class="section-header reveal"><div class="section-num">// 02</div><div class="section-title">SKILLS & CERTS</div></div>
+    <div class="divider"></div>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-icon">🔐</div>
+        <div class="skill-cat">CYBERSECURITY</div>
+        <ul class="skill-list">
+          <li>Penetration Testing</li><li>Detection Engineering</li><li>Security Awareness Training</li>
+          <li>Phishing Simulation Design</li><li>Log Analysis & SIEM</li><li>Vulnerability Assessment</li>
+        </ul>
+        <div class="cert-badge">AAS — CYBERSECURITY</div><br>
+        <div class="cert-badge">CERT — PENETRATION TESTING</div><br>
+        <div class="cert-badge">CERT — PYTHON</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">☁️</div>
+        <div class="skill-cat">CLOUD & INFRASTRUCTURE</div>
+        <ul class="skill-list">
+          <li>Microsoft Azure</li><li>Microsoft 365 / SharePoint</li><li>Power Apps / Power Automate</li>
+          <li>Entra ID / SSO / OAuth</li><li>Azure App Service</li><li>Barracuda Email Security</li>
+        </ul>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">⚙️</div>
+        <div class="skill-cat">DEVELOPMENT</div>
+        <ul class="skill-list">
+          <li>Python / FastAPI</li><li>HTML / CSS / JavaScript</li><li>SQLite / REST APIs</li>
+          <li>GitHub Actions CI/CD</li><li>APScheduler / Webhooks</li><li>Pytest / ruff</li>
+        </ul>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🖥️</div>
+        <div class="skill-cat">HOME LAB & SYSTEMS</div>
+        <ul class="skill-list">
+          <li>Proxmox VE</li><li>Linux (Ubuntu / Debian)</li><li>Windows Server</li>
+          <li>Pi-hole / Cloudflare Tunnel</li><li>Ollama (Local AI)</li><li>NSSM / Systemd Services</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-<div class="proj-panel active" id="tab-featured"><div class="featured-grid reveal">
-<div class="fc"><div class="fa" style="background:linear-gradient(90deg,#ff0040,#ff6600)"></div><div class="fh"><div class="fl">CYBER WARFARE</div><div class="fn">BLACKSITE</div><span class="fs">● LIVE</span></div><div class="fb"><p class="fd">Red vs Blue Team War Room with live scoring, ransomware kill chain visualizer, OSINT terminal with 9 commands, and solvable CTF arena with 13 challenges.</p><div class="ft"><span class="tp">JS</span><span class="tp">Canvas</span><span class="tp">GitHub Pages</span></div><a href="https://nexusfang-tech.github.io/cyber-warfare-sim/" target="_blank" class="fk" style="color:#ff2d78;border-color:rgba(255,45,120,.3)">⟶ ENTER BLACKSITE</a></div></div>
-<div class="fc"><div class="fa" style="background:linear-gradient(90deg,#ff1493,#9d00ff)"></div><div class="fh"><div class="fl">INCIDENT RESPONSE</div><div class="fn">PHANTOM::RESPONSE</div><span class="fs">● LIVE</span></div><div class="fb"><p class="fd">IR command center — NIST SP 800-61r2 playbook engine, OSINT/attack surface mapper, malware sandbox with 6 malware families and MITRE ATT&CK mapping.</p><div class="ft"><span class="tp">JS</span><span class="tp">Canvas</span><span class="tp">GitHub Pages</span></div><a href="https://nexusfang-tech.github.io/ircc/" target="_blank" class="fk" style="color:#a020f0;border-color:rgba(160,32,240,.3)">⟶ LAUNCH PHANTOM</a></div></div>
-<div class="fc"><div class="fa" style="background:linear-gradient(90deg,#00eeff,#00ff88)"></div><div class="fh"><div class="fl">THREAT INTELLIGENCE</div><div class="fn">NEXUS::SENTINEL</div><span class="fs">● LIVE</span></div><div class="fb"><p class="fd">Threat intel workstation — IP analysis, password auditing, hash ID, subnet calc, port scanner, encoder/decoder, JWT decoder, security header checker.</p><div class="ft"><span class="tp">JS</span><span class="tp">Canvas</span><span class="tp">GitHub Pages</span></div><a href="https://nexusfang-tech.github.io/threat-intel-workstation" target="_blank" class="fk" style="color:#00eeff;border-color:rgba(0,238,255,.3)">⟶ LAUNCH SENTINEL</a></div></div>
-<div class="fc"><div class="fa" style="background:linear-gradient(90deg,#6c5ce7,#00cec9)"></div><div class="fh"><div class="fl">AUTOMATION</div><div class="fn">FLOWSTATE</div><span class="fs">● LIVE</span></div><div class="fb"><p class="fd">Visual drag-and-drop workflow builder — 16 node types, conditional branching, 4 templates, export to JSON/Pseudocode/Mermaid/Power Automate.</p><div class="ft"><span class="tp">JS</span><span class="tp">Canvas</span><span class="tp">GitHub Pages</span></div><a href="https://nexusfang-tech.github.io/flowstate" target="_blank" class="fk" style="color:#6c5ce7;border-color:rgba(108,92,231,.3)">⟶ LAUNCH FLOWSTATE</a></div></div>
-<div class="fc"><div class="fa" style="background:linear-gradient(90deg,#3b82f6,#06b6d4)"></div><div class="fh"><div class="fl">NETWORK ENGINEERING</div><div class="fn">NETFORGE</div><span class="fs">● LIVE</span></div><div class="fb"><p class="fd">Network topology mapper — 20 device types, VLAN/subnet management, 5 link types, export to JSON/Markdown/Mermaid/CSV.</p><div class="ft"><span class="tp">JS</span><span class="tp">Canvas</span><span class="tp">GitHub Pages</span></div><a href="https://nexusfang-tech.github.io/netforge" target="_blank" class="fk" style="color:#3b82f6;border-color:rgba(59,130,246,.3)">⟶ LAUNCH NETFORGE</a></div></div>
-<div class="fc"><div class="fa" style="background:linear-gradient(90deg,#0078d4,#50b5ff)"></div><div class="fh"><div class="fl">CLOUD ARCHITECTURE</div><div class="fn">CLOUDCRAFT</div><span class="fs">● LIVE</span></div><div class="fb"><p class="fd">Azure architecture planner — 21 resource types, live cost estimation, SKU selection, Terraform HCL/ARM template/Mermaid/cost report export.</p><div class="ft"><span class="tp">JS</span><span class="tp">Canvas</span><span class="tp">GitHub Pages</span></div><a href="https://nexusfang-tech.github.io/cloudcraft" target="_blank" class="fk" style="color:#0078d4;border-color:rgba(0,120,212,.3)">⟶ LAUNCH CLOUDCRAFT</a></div></div>
-<div class="fc"><div class="fa" style="background:linear-gradient(90deg,#c05621,#dd6b20)"></div><div class="fh"><div class="fl">IT OPERATIONS</div><div class="fn">RUNBOOK</div><span class="fs">● LIVE</span></div><div class="fb"><p class="fd">IT runbook/SOP builder — step-by-step checklists, code blocks, callouts, 6 pre-built templates, Markdown/JSON/checklist export.</p><div class="ft"><span class="tp">JS</span><span class="tp">localStorage</span><span class="tp">GitHub Pages</span></div><a href="https://nexusfang-tech.github.io/runbook" target="_blank" class="fk" style="color:#c05621;border-color:rgba(192,86,33,.3)">⟶ LAUNCH RUNBOOK</a></div></div>
-</div></div>
+<section id="projects">
+  <div class="section-wrap">
+    <div class="section-header reveal"><div class="section-num">// 03</div><div class="section-title">PROJECTS</div></div>
+    <div class="divider"></div>
 
-<div class="proj-panel" id="tab-security"><div class="cg reveal">
-<div class="cc"><div class="ca" style="background:#ff0040"></div><div class="ct"><div class="cn">BLACKSITE</div><span class="cs sl">● LIVE</span></div><div class="cd">Red/Blue war room, ransomware sim, OSINT terminal, CTF arena</div><div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div><a href="https://nexusfang-tech.github.io/cyber-warfare-sim/" target="_blank" class="ck" style="color:#ff2d78">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#9d00ff"></div><div class="ct"><div class="cn">PHANTOM::RESPONSE</div><span class="cs sl">● LIVE</span></div><div class="cd">IR command center, NIST playbook, malware sandbox</div><div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div><a href="https://nexusfang-tech.github.io/ircc/" target="_blank" class="ck" style="color:#a020f0">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#00eeff"></div><div class="ct"><div class="cn">NEXUS::SENTINEL</div><span class="cs sl">● LIVE</span></div><div class="cd">Threat intel workstation — IP, hash, password, subnet tools</div><div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div><a href="https://nexusfang-tech.github.io/threat-intel-workstation" target="_blank" class="ck" style="color:#00eeff">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#ff2d78"></div><div class="ct"><div class="cn">PHISHING SIM PLATFORM</div><span class="cs sw">◈ WIP</span></div><div class="cd">5 templates, Graph API mailer, campaign analytics, CI/CD</div><div class="cf"><span class="tp">FastAPI</span><span class="tp">Graph API</span><span class="tp">Azure</span></div></div>
-<div class="cc"><div class="ca" style="background:#ff2d78"></div><div class="ct"><div class="cn">INTRUSION DETECTION SYS</div><span class="cs sl">● LIVE</span></div><div class="cd">Live packet sniffing, port scan detection, brute force alerting</div><div class="cf"><span class="tp">Python</span><span class="tp">Scapy</span></div></div>
-<div class="cc"><div class="ca" style="background:#00eeff"></div><div class="ct"><div class="cn">THREAT INTEL AGGREGATOR</div><span class="cs sl">● LIVE</span></div><div class="cd">IOC ingestion from public feeds, cross-referencing, alerts</div><div class="cf"><span class="tp">Python</span><span class="tp">APIs</span></div></div>
-<div class="cc"><div class="ca" style="background:#a020f0"></div><div class="ct"><div class="cn">DIGITAL FORENSICS SIM</div><span class="cs sl">● LIVE</span></div><div class="cd">Evidence ingestion, artifact analysis, timeline reconstruction</div><div class="cf"><span class="tp">Python</span><span class="tp">DFIR</span></div></div>
-<div class="cc"><div class="ca" style="background:#00eeff"></div><div class="ct"><div class="cn">MINI-SIEM</div><span class="cs sl">● LIVE</span></div><div class="cd">Log normalization, detection rules, alert dashboard</div><div class="cf"><span class="tp">Python</span><span class="tp">SIEM</span></div></div>
-<div class="cc"><div class="ca" style="background:#a020f0"></div><div class="ct"><div class="cn">VOIDTERM CTF TOOLKIT</div><span class="cs sl">● LIVE</span></div><div class="cd">Base64/Hex/ROT13, hash cracking, JWT inspector, cipher tools</div><div class="cf"><span class="tp">Python</span><span class="tp">FastAPI</span><span class="tp">JS</span></div></div>
-<div class="cc"><div class="ca" style="background:#ffe600"></div><div class="ct"><div class="cn">RECON REPORT GENERATOR</div><span class="cs sl">● LIVE</span></div><div class="cd">Automated recon pipeline → markdown vulnerability reports</div><div class="cf"><span class="tp">Python</span><span class="tp">nmap</span></div></div>
-</div></div>
+    <div class="proj-tabs reveal">
+      <button class="proj-tab active" onclick="switchTab('featured',this)">★ FEATURED<span class="tab-count">8</span></button>
+      <button class="proj-tab" onclick="switchTab('security',this)">SECURITY<span class="tab-count">8</span></button>
+      <button class="proj-tab" onclick="switchTab('ops',this)">IT OPS<span class="tab-count">7</span></button>
+      <button class="proj-tab" onclick="switchTab('dev',this)">DEV<span class="tab-count">5</span></button>
+      <button class="proj-tab" onclick="switchTab('personal',this)">PERSONAL<span class="tab-count">3</span></button>
+      <button class="proj-tab" onclick="switchTab('gaming',this)">GAMING<span class="tab-count">9</span></button>
+    </div>
 
-<div class="proj-panel" id="tab-ops"><div class="cg reveal">
-<div class="cc"><div class="ca" style="background:#6c5ce7"></div><div class="ct"><div class="cn">FLOWSTATE</div><span class="cs sl">● LIVE</span></div><div class="cd">Visual automation workflow builder — 16 nodes, conditional logic</div><div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div><a href="https://nexusfang-tech.github.io/flowstate" target="_blank" class="ck" style="color:#6c5ce7">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#3b82f6"></div><div class="ct"><div class="cn">NETFORGE</div><span class="cs sl">● LIVE</span></div><div class="cd">Network topology mapper — 20 devices, VLANs, 4 exports</div><div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div><a href="https://nexusfang-tech.github.io/netforge" target="_blank" class="ck" style="color:#3b82f6">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#0078d4"></div><div class="ct"><div class="cn">CLOUDCRAFT</div><span class="cs sl">● LIVE</span></div><div class="cd">Azure architecture planner — 21 resources, cost estimation</div><div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div><a href="https://nexusfang-tech.github.io/cloudcraft" target="_blank" class="ck" style="color:#0078d4">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#c05621"></div><div class="ct"><div class="cn">RUNBOOK</div><span class="cs sl">● LIVE</span></div><div class="cd">IT runbook builder — checklists, code blocks, 6 templates</div><div class="cf"><span class="tp">JS</span><span class="tp">localStorage</span></div><a href="https://nexusfang-tech.github.io/runbook" target="_blank" class="ck" style="color:#c05621">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#00eeff"></div><div class="ct"><div class="cn">NCACC CONTACTS PORTAL</div><span class="cs sl">● LIVE</span></div><div class="cd">Production CRM — Entra ID SSO, county map, Teams digest</div><div class="cf"><span class="tp">FastAPI</span><span class="tp">Azure</span><span class="tp">SQLite</span></div></div>
-<div class="cc"><div class="ca" style="background:#a020f0"></div><div class="ct"><div class="cn">PASSIVE RECON TOOLKIT</div><span class="cs sl">● LIVE</span></div><div class="cd">WHOIS/RDAP, DNS enumeration, CT subdomains, headers</div><div class="cf"><span class="tp">JS</span><span class="tp">RDAP</span><span class="tp">DoH</span></div><a href="https://nexusfang-tech.github.io/recon-toolkit" target="_blank" class="ck" style="color:#a020f0">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#ffe600"></div><div class="ct"><div class="cn">IP INTELLIGENCE LOOKUP</div><span class="cs sl">● LIVE</span></div><div class="cd">GeoIP, ASN, reverse DNS, BGP, risk scoring, DNSBL</div><div class="cf"><span class="tp">JS</span><span class="tp">ipapi</span><span class="tp">BGPView</span></div><a href="https://nexusfang-tech.github.io/ip-intel" target="_blank" class="ck" style="color:#ffe600">⟶ Launch</a></div>
-</div></div>
+    <!-- FEATURED -->
+    <div class="proj-panel active" id="tab-featured">
+      <div class="featured-grid reveal">
 
-<div class="proj-panel" id="tab-dev"><div class="cg reveal">
-<div class="cc"><div class="ca" style="background:#00eeff"></div><div class="ct"><div class="cn">CVE EXPLORER</div><span class="cs sl">● LIVE</span></div><div class="cd">NVD API vulnerability lookup — CVSS gauges, severity filters</div><div class="cf"><span class="tp">JS</span><span class="tp">NVD API</span></div><a href="https://nexusfang-tech.github.io/cve-explorer" target="_blank" class="ck" style="color:#00eeff">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#ff2d78"></div><div class="ct"><div class="cn">LIVE THREAT FEED</div><span class="cs sw">◈ WIP</span></div><div class="cd">AbuseIPDB dashboard — confidence tiers, country stats</div><div class="cf"><span class="tp">JS</span><span class="tp">Netlify</span><span class="tp">AbuseIPDB</span></div></div>
-<div class="cc"><div class="ca" style="background:#a020f0"></div><div class="ct"><div class="cn">RETROWAVE THREAT MAP</div><span class="cs sw">◈ WIP</span></div><div class="cd">3D globe with live attack arcs via Three.js</div><div class="cf"><span class="tp">Three.js</span><span class="tp">WebGL</span><span class="tp">Netlify</span></div></div>
-<div class="cc"><div class="ca" style="background:#a020f0"></div><div class="ct"><div class="cn">NEONCAST</div><span class="cs sl">● LIVE</span></div><div class="cd">Broadcast control — SSE overlays, Stream Deck, OBS</div><div class="cf"><span class="tp">FastAPI</span><span class="tp">SSE</span><span class="tp">OBS</span></div></div>
-<div class="cc"><div class="ca" style="background:#a020f0"></div><div class="ct"><div class="cn">JARVIS SITUATION MONITOR</div><span class="cs sl">● LIVE</span></div><div class="cd">Real-time events dashboard — RSS, voting, CF Tunnel</div><div class="cf"><span class="tp">FastAPI</span><span class="tp">RSS</span><span class="tp">SSE</span></div></div>
-</div></div>
+        <div class="fc"><div class="fa" style="background:linear-gradient(90deg,#7c3aed,#e8407a)"></div>
+          <div class="fh"><div class="fl">DETECTION ENGINEERING</div><div class="fn">EVTXPLORER</div><span class="fs">● LIVE</span></div>
+          <div class="fb"><p class="fd">Windows Event Log analyzer with 21 YAML-driven MITRE ATT&CK detection rules. Threshold-based brute force/spray detection, Shannon entropy analysis, JSON/CSV/HTML reporting. Tested across Python 3.10–3.12.</p>
+          <div class="ft"><span class="tp">Python</span><span class="tp">MITRE ATT&CK</span><span class="tp">YAML</span><span class="tp">pytest</span><span class="tp">CI/CD</span></div>
+          <a href="https://github.com/NexusFang-tech/evtxplorer" target="_blank" class="fk" style="color:var(--violet);border-color:rgba(124,58,237,.3)">⟶ VIEW ON GITHUB</a></div>
+        </div>
 
-<div class="proj-panel" id="tab-personal"><div class="cg reveal">
-<div class="cc"><div class="ca" style="background:#ff2d78"></div><div class="ct"><div class="cn">SYNTHWAVE RESUME TERMINAL</div><span class="cs sl">● LIVE</span></div><div class="cd">Interactive retro terminal resume — boot sequence, 15+ Easter eggs</div><div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div><a href="https://nexusfang-tech.github.io/terminal" target="_blank" class="ck" style="color:#ff2d78">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#00eeff"></div><div class="ct"><div class="cn">SYNTHSTRIKE</div><span class="cs sl">● SHIPPED</span></div><div class="cd">Guitar Hero-style rhythm game — procedural synthwave chiptune</div><div class="cf"><span class="tp">Canvas</span><span class="tp">Web Audio</span></div></div>
-<div class="cc"><div class="ca" style="background:#ffe600"></div><div class="ct"><div class="cn">CONTROLLER OFFICE</div><span class="cs sl">● LIVE</span></div><div class="cd">Windows productivity via Scuf controller — radial menu, Ollama AI</div><div class="cf"><span class="tp">Python</span><span class="tp">Ollama</span></div></div>
-</div></div>
+        <div class="fc"><div class="fa" style="background:linear-gradient(90deg,#e8407a,#f59e0b)"></div>
+          <div class="fh"><div class="fl">CREDENTIAL SECURITY</div><div class="fn">PORTCULLIS</div><span class="fs">● LIVE</span></div>
+          <div class="fb"><p class="fd">Secrets & credential scanner for git repos and file trees. Shannon entropy analysis, YAML detection rules, git history auditing. Covers AWS keys, PEM certs, JWTs, .env secrets, DB connection strings. MITRE T1552.</p>
+          <div class="ft"><span class="tp">Python</span><span class="tp">Secrets Scanning</span><span class="tp">Git</span><span class="tp">Entropy</span><span class="tp">MITRE T1552</span></div>
+          <a href="https://github.com/NexusFang-tech/portcullis" target="_blank" class="fk" style="color:var(--rose);border-color:rgba(232,64,122,.3)">⟶ VIEW ON GITHUB</a></div>
+        </div>
 
-<div class="proj-panel" id="tab-gaming"><div class="cg reveal">
-<div class="cc"><div class="ca" style="background:#ffe600"></div><div class="ct"><div class="cn">SQUAD::STATS</div><span class="cs sl">● LIVE</span></div><div class="cd">3-player Fortnite stats dashboard — real Ch7 S2 data, trend charts</div><div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div><a href="https://nexusfang-tech.github.io/squad-stats" target="_blank" class="ck" style="color:#ffe600">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#ff2d78"></div><div class="ct"><div class="cn">LOOT::ROULETTE</div><span class="cs sl">● LIVE</span></div><div class="cd">Loadout randomizer — 5 maps, separate BR/Reload loot pools, squad roles</div><div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div><a href="https://nexusfang-tech.github.io/loot-roulette" target="_blank" class="ck" style="color:#ff2d78">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#00eeff"></div><div class="ct"><div class="cn">DROP::ZONE</div><span class="cs sl">● LIVE</span></div><div class="cd">Squad drop planner — 5 real maps embedded, POI ratings, custom markers</div><div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div><a href="https://nexusfang-tech.github.io/drop-zone" target="_blank" class="ck" style="color:#00eeff">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#ff2d78"></div><div class="ct"><div class="cn">TRASH::TALK</div><span class="cs sl">● LIVE</span></div><div class="cd">AI squad roast generator — Claude-powered stat-specific burns and awards</div><div class="cf"><span class="tp">JS</span><span class="tp">Anthropic API</span></div><a href="https://nexusfang-tech.github.io/trash-talk" target="_blank" class="ck" style="color:#ff2d78">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#ffe600"></div><div class="ct"><div class="cn">BOUNTY::BOARD</div><span class="cs sl">● LIVE</span></div><div class="cd">Squad challenge tracker — post bounties, claim completions, leaderboard</div><div class="cf"><span class="tp">JS</span><span class="tp">HTML5</span></div><a href="https://nexusfang-tech.github.io/bounty-board" target="_blank" class="ck" style="color:#ffe600">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#00eeff"></div><div class="ct"><div class="cn">CLUTCH::REPLAY</div><span class="cs sl">● LIVE</span></div><div class="cd">Match storyteller — animated timeline, kill feed, hype commentary</div><div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div><a href="https://nexusfang-tech.github.io/clutch-replay" target="_blank" class="ck" style="color:#00eeff">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#a020f0"></div><div class="ct"><div class="cn">GLITCH::TYPE</div><span class="cs sl">● LIVE</span></div><div class="cd">Cyberpunk text effects generator — 7 animated modes, PNG export</div><div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div><a href="https://nexusfang-tech.github.io/glitch-type" target="_blank" class="ck" style="color:#a020f0">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#a020f0"></div><div class="ct"><div class="cn">VIBE::CHECK</div><span class="cs sl">● LIVE</span></div><div class="cd">Ambient mood visualizer — 6 particle presets, click-to-burst interaction</div><div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div><a href="https://nexusfang-tech.github.io/vibe-check" target="_blank" class="ck" style="color:#a020f0">⟶ Launch</a></div>
-<div class="cc"><div class="ca" style="background:#ff2d78"></div><div class="ct"><div class="cn">FNLOG</div><span class="cs sl">● LIVE</span></div><div class="cd">Fortnite session tracker — CLI + vaporwave dashboard, K/D trends</div><div class="cf"><span class="tp">FastAPI</span><span class="tp">Fortnite API</span></div></div>
-</div></div>
-</div></section>
+        <div class="fc"><div class="fa" style="background:linear-gradient(90deg,#0ea5e9,#10b981)"></div>
+          <div class="fh"><div class="fl">NETWORK RECON</div><div class="fn">NETRECON</div><span class="fs">● LIVE</span></div>
+          <div class="fb"><p class="fd">Network reconnaissance CLI built from raw sockets — no nmap wrappers. TCP port scanner with threading and CIDR support, banner grabbing, DNS record enumeration, WHOIS via raw socket (port 43). Rich terminal output.</p>
+          <div class="ft"><span class="tp">Python</span><span class="tp">Sockets</span><span class="tp">DNS</span><span class="tp">WHOIS</span><span class="tp">Recon</span></div>
+          <a href="https://github.com/NexusFang-tech/netrecon" target="_blank" class="fk" style="color:var(--sky);border-color:rgba(14,165,233,.3)">⟶ VIEW ON GITHUB</a></div>
+        </div>
 
-<section id="experience"><div class="section-wrap"><div class="section-header reveal"><div class="section-num">// 04</div><div class="section-title">EXPERIENCE</div></div><div class="divider"></div><div class="timeline"><div class="timeline-item reveal"><div class="timeline-dot"></div><div class="timeline-date">2025 — PRESENT</div><div class="timeline-role">Technology Services Manager</div><div class="timeline-org">NC Association of County Commissioners · Raleigh, NC</div><p class="timeline-desc">Primary helpdesk resource and internal developer for a statewide government association. Built and maintain multiple internal platforms on Azure. Architected a security awareness program including a custom phishing simulation platform, Barracuda email security policies, and staff training materials. Manage M365, SharePoint, Power Apps, and Azure infrastructure.</p><div class="timeline-tags"><span class="tp">Azure</span><span class="tp">M365</span><span class="tp">Python</span><span class="tp">FastAPI</span><span class="tp">Security Awareness</span></div></div><div class="timeline-item reveal"><div class="timeline-dot" style="background:var(--purple);box-shadow:0 0 15px var(--purple)"></div><div class="timeline-date">PRIOR ROLE</div><div class="timeline-role">Customer Success Manager</div><div class="timeline-org">MSP / Managed Services</div><p class="timeline-desc">Client-facing technical account management for SMB and mid-market customers. Transitioned into engineering and infrastructure work during tenure, accelerating the pivot to a full technical career path.</p><div class="timeline-tags"><span class="tp">Client Mgmt</span><span class="tp">IT Support</span><span class="tp">MSP</span></div></div><div class="timeline-item reveal"><div class="timeline-dot" style="background:var(--cyan);box-shadow:0 0 15px var(--cyan)"></div><div class="timeline-date">AUGUST 2025</div><div class="timeline-role">AAS — Cybersecurity</div><div class="timeline-org">Wake Technical Community College · + Certificate in Penetration Testing; Certification in Python</div><p class="timeline-desc">Completed an Associate of Applied Science in Cybersecurity alongside a dedicated Penetration Testing certificate program. Foundations in ethical hacking, network security, vulnerability assessment, and security operations.</p><div class="timeline-tags"><span class="tp">Ethical Hacking</span><span class="tp">Network Security</span><span class="tp">Pen Testing</span></div></div></div></div></section>
+        <div class="fc"><div class="fa" style="background:linear-gradient(90deg,#ff0040,#ff6600)"></div>
+          <div class="fh"><div class="fl">CYBER WARFARE</div><div class="fn">BLACKSITE</div><span class="fs">● LIVE</span></div>
+          <div class="fb"><p class="fd">Red vs Blue Team War Room with live scoring, ransomware kill chain visualizer, OSINT terminal with 9 commands, and solvable CTF arena with 13 challenges.</p>
+          <div class="ft"><span class="tp">JS</span><span class="tp">Canvas</span><span class="tp">GitHub Pages</span></div>
+          <a href="https://nexusfang-tech.github.io/cyber-warfare-sim/" target="_blank" class="fk" style="color:#ff2d78;border-color:rgba(255,45,120,.3)">⟶ ENTER BLACKSITE</a></div>
+        </div>
 
-<section id="contact"><div class="section-wrap"><div class="section-header reveal" style="text-align:center"><div class="section-num" style="text-align:center">// 05</div><div class="section-title">CONTACT</div></div><div class="divider"></div><p class="contact-intro reveal">Open to cybersecurity, systems engineering, and senior technical roles. Also always down to talk home lab setups, tooling, or weird side projects.</p><div class="contact-links reveal"><a href="mailto:mskeith0193@gmail.com" class="contact-link">✉ EMAIL</a><a href="https://linkedin.com/in/mskeith93" class="contact-link" target="_blank">in LINKEDIN</a><a href="https://github.com/nexusfang-tech" class="contact-link" target="_blank">⌥ GITHUB</a><a href="https://jarvis.chudmeter.com" class="contact-link" target="_blank">◈ JARVIS</a></div><p class="reveal" style="font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:.2em">// TRY THE KONAMI CODE //</p></div></section>
+        <div class="fc"><div class="fa" style="background:linear-gradient(90deg,#ff1493,#9d00ff)"></div>
+          <div class="fh"><div class="fl">INCIDENT RESPONSE</div><div class="fn">PHANTOM::RESPONSE</div><span class="fs">● LIVE</span></div>
+          <div class="fb"><p class="fd">IR command center — NIST SP 800-61r2 playbook engine, OSINT/attack surface mapper, malware sandbox with 6 malware families and MITRE ATT&CK mapping.</p>
+          <div class="ft"><span class="tp">JS</span><span class="tp">Canvas</span><span class="tp">GitHub Pages</span></div>
+          <a href="https://nexusfang-tech.github.io/ircc/" target="_blank" class="fk" style="color:#a020f0;border-color:rgba(160,32,240,.3)">⟶ LAUNCH PHANTOM</a></div>
+        </div>
+
+        <div class="fc"><div class="fa" style="background:linear-gradient(90deg,#00eeff,#00ff88)"></div>
+          <div class="fh"><div class="fl">THREAT INTELLIGENCE</div><div class="fn">NEXUS::SENTINEL</div><span class="fs">● LIVE</span></div>
+          <div class="fb"><p class="fd">Threat intel workstation — IP analysis, password auditing, hash ID, subnet calc, port scanner, encoder/decoder, JWT decoder, security header checker.</p>
+          <div class="ft"><span class="tp">JS</span><span class="tp">Canvas</span><span class="tp">GitHub Pages</span></div>
+          <a href="https://nexusfang-tech.github.io/threat-intel-workstation" target="_blank" class="fk" style="color:#00eeff;border-color:rgba(0,238,255,.3)">⟶ LAUNCH SENTINEL</a></div>
+        </div>
+
+        <div class="fc"><div class="fa" style="background:linear-gradient(90deg,#0078d4,#50b5ff)"></div>
+          <div class="fh"><div class="fl">IT OPERATIONS</div><div class="fn">NCACC COUNTY CONNECT</div><span class="fs">● PRODUCTION</span></div>
+          <div class="fb"><p class="fd">Production CRM for a statewide government association — Entra ID SSO, Leaflet.js county map, automated Teams digest, Mailchimp sync, role-based access, CSV export.</p>
+          <div class="ft"><span class="tp">FastAPI</span><span class="tp">Azure</span><span class="tp">SQLite</span><span class="tp">Entra ID</span></div></div>
+        </div>
+
+        <div class="fc"><div class="fa" style="background:linear-gradient(90deg,#f59e0b,#ef4444)"></div>
+          <div class="fh"><div class="fl">SECURITY AWARENESS</div><div class="fn">PHISHCRAFT</div><span class="fs">◈ WIP</span></div>
+          <div class="fb"><p class="fd">Enterprise phishing simulation platform — 10 HTML templates, Jinja2 rendering, Graph API mailer, campaign analytics, Entra App Registration integration.</p>
+          <div class="ft"><span class="tp">FastAPI</span><span class="tp">Graph API</span><span class="tp">Azure</span><span class="tp">Jinja2</span></div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECURITY -->
+    <div class="proj-panel" id="tab-security">
+      <div class="cg reveal">
+        <div class="cc"><div class="ca" style="background:linear-gradient(90deg,#7c3aed,#e8407a)"></div>
+          <div class="ct"><div class="cn">EVTXPLORER</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">YAML-driven MITRE ATT&CK event log analyzer — 21 rules, threshold detection, brute force/spray/Kerberoasting</div>
+          <div class="cf"><span class="tp">Python</span><span class="tp">MITRE</span><span class="tp">YAML</span></div>
+          <a href="https://github.com/NexusFang-tech/evtxplorer" target="_blank" class="ck" style="color:var(--violet)">⟶ GitHub</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:linear-gradient(90deg,#e8407a,#f59e0b)"></div>
+          <div class="ct"><div class="cn">PORTCULLIS</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Secrets scanner — entropy analysis, git history audit, YAML rules, AWS/JWT/PEM/env coverage. MITRE T1552</div>
+          <div class="cf"><span class="tp">Python</span><span class="tp">Entropy</span><span class="tp">Git</span></div>
+          <a href="https://github.com/NexusFang-tech/portcullis" target="_blank" class="ck" style="color:var(--rose)">⟶ GitHub</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:linear-gradient(90deg,#0ea5e9,#10b981)"></div>
+          <div class="ct"><div class="cn">NETRECON</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Raw-socket recon CLI — TCP scanner, banner grab, DNS enum, WHOIS. No nmap wrappers.</div>
+          <div class="cf"><span class="tp">Python</span><span class="tp">Sockets</span><span class="tp">DNS</span></div>
+          <a href="https://github.com/NexusFang-tech/netrecon" target="_blank" class="ck" style="color:var(--sky)">⟶ GitHub</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#ff0040"></div>
+          <div class="ct"><div class="cn">BLACKSITE</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Red/Blue war room, ransomware sim, OSINT terminal, CTF arena</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div>
+          <a href="https://nexusfang-tech.github.io/cyber-warfare-sim/" target="_blank" class="ck" style="color:#ff2d78">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#9d00ff"></div>
+          <div class="ct"><div class="cn">PHANTOM::RESPONSE</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">IR command center, NIST playbook, malware sandbox, MITRE mapping</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div>
+          <a href="https://nexusfang-tech.github.io/ircc/" target="_blank" class="ck" style="color:#a020f0">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#00eeff"></div>
+          <div class="ct"><div class="cn">NEXUS::SENTINEL</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Threat intel workstation — IP, hash, password, subnet tools</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div>
+          <a href="https://nexusfang-tech.github.io/threat-intel-workstation" target="_blank" class="ck" style="color:#00eeff">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#f59e0b"></div>
+          <div class="ct"><div class="cn">PHISHCRAFT</div><span class="cs sw">◈ WIP</span></div>
+          <div class="cd">10 templates, Graph API mailer, campaign analytics, Entra integration</div>
+          <div class="cf"><span class="tp">FastAPI</span><span class="tp">Graph API</span><span class="tp">Azure</span></div>
+        </div>
+        <div class="cc"><div class="ca" style="background:#a020f0"></div>
+          <div class="ct"><div class="cn">VOIDTERM CTF TOOLKIT</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Base64/Hex/ROT13, hash cracking, JWT inspector, cipher tools</div>
+          <div class="cf"><span class="tp">Python</span><span class="tp">FastAPI</span><span class="tp">JS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPS -->
+    <div class="proj-panel" id="tab-ops">
+      <div class="cg reveal">
+        <div class="cc"><div class="ca" style="background:#0078d4"></div>
+          <div class="ct"><div class="cn">NCACC COUNTY CONNECT</div><span class="cs sl">● PRODUCTION</span></div>
+          <div class="cd">Production CRM — Entra ID SSO, county map, Teams digest, Mailchimp sync</div>
+          <div class="cf"><span class="tp">FastAPI</span><span class="tp">Azure</span><span class="tp">SQLite</span></div>
+        </div>
+        <div class="cc"><div class="ca" style="background:#6c5ce7"></div>
+          <div class="ct"><div class="cn">FLOWSTATE</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Visual automation workflow builder — 16 nodes, conditional logic, 4 exports</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div>
+          <a href="https://nexusfang-tech.github.io/flowstate" target="_blank" class="ck" style="color:#6c5ce7">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#3b82f6"></div>
+          <div class="ct"><div class="cn">NETFORGE</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Network topology mapper — 20 devices, VLANs, 4 exports</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div>
+          <a href="https://nexusfang-tech.github.io/netforge" target="_blank" class="ck" style="color:#3b82f6">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#0078d4"></div>
+          <div class="ct"><div class="cn">CLOUDCRAFT</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Azure architecture planner — 21 resources, cost estimation, Terraform export</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div>
+          <a href="https://nexusfang-tech.github.io/cloudcraft" target="_blank" class="ck" style="color:#0078d4">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#c05621"></div>
+          <div class="ct"><div class="cn">RUNBOOK</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">IT runbook builder — checklists, code blocks, 6 templates</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">localStorage</span></div>
+          <a href="https://nexusfang-tech.github.io/runbook" target="_blank" class="ck" style="color:#c05621">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#a020f0"></div>
+          <div class="ct"><div class="cn">PASSIVE RECON TOOLKIT</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">WHOIS/RDAP, DNS enumeration, CT subdomains, headers</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">RDAP</span><span class="tp">DoH</span></div>
+          <a href="https://nexusfang-tech.github.io/recon-toolkit" target="_blank" class="ck" style="color:#a020f0">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#ffe600"></div>
+          <div class="ct"><div class="cn">IP INTELLIGENCE LOOKUP</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">GeoIP, ASN, reverse DNS, BGP, risk scoring, DNSBL</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">ipapi</span><span class="tp">BGPView</span></div>
+          <a href="https://nexusfang-tech.github.io/ip-intel" target="_blank" class="ck" style="color:#f59e0b">⟶ Launch</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEV -->
+    <div class="proj-panel" id="tab-dev">
+      <div class="cg reveal">
+        <div class="cc"><div class="ca" style="background:#00eeff"></div>
+          <div class="ct"><div class="cn">CVE EXPLORER</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">NVD API vulnerability lookup — CVSS gauges, severity filters</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">NVD API</span></div>
+          <a href="https://nexusfang-tech.github.io/cve-explorer" target="_blank" class="ck" style="color:#00eeff">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#ff2d78"></div>
+          <div class="ct"><div class="cn">LIVE THREAT FEED</div><span class="cs sw">◈ WIP</span></div>
+          <div class="cd">AbuseIPDB dashboard — confidence tiers, country stats</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">Netlify</span><span class="tp">AbuseIPDB</span></div>
+        </div>
+        <div class="cc"><div class="ca" style="background:#a020f0"></div>
+          <div class="ct"><div class="cn">RETROWAVE THREAT MAP</div><span class="cs sw">◈ WIP</span></div>
+          <div class="cd">3D globe with live attack arcs via Three.js</div>
+          <div class="cf"><span class="tp">Three.js</span><span class="tp">WebGL</span><span class="tp">Netlify</span></div>
+        </div>
+        <div class="cc"><div class="ca" style="background:#a020f0"></div>
+          <div class="ct"><div class="cn">NEONCAST</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Broadcast control — SSE overlays, Stream Deck, OBS</div>
+          <div class="cf"><span class="tp">FastAPI</span><span class="tp">SSE</span><span class="tp">OBS</span></div>
+        </div>
+        <div class="cc"><div class="ca" style="background:#a020f0"></div>
+          <div class="ct"><div class="cn">JARVIS SITUATION MONITOR</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Real-time events dashboard — RSS, voting, CF Tunnel</div>
+          <div class="cf"><span class="tp">FastAPI</span><span class="tp">RSS</span><span class="tp">SSE</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERSONAL -->
+    <div class="proj-panel" id="tab-personal">
+      <div class="cg reveal">
+        <div class="cc"><div class="ca" style="background:#ff2d78"></div>
+          <div class="ct"><div class="cn">SYNTHWAVE RESUME TERMINAL</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Interactive retro terminal resume — boot sequence, 15+ Easter eggs</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div>
+          <a href="https://nexusfang-tech.github.io/terminal" target="_blank" class="ck" style="color:var(--rose)">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#00eeff"></div>
+          <div class="ct"><div class="cn">SYNTHSTRIKE</div><span class="cs sl">● SHIPPED</span></div>
+          <div class="cd">Guitar Hero-style rhythm game — procedural synthwave chiptune</div>
+          <div class="cf"><span class="tp">Canvas</span><span class="tp">Web Audio</span></div>
+        </div>
+        <div class="cc"><div class="ca" style="background:#ffe600"></div>
+          <div class="ct"><div class="cn">CONTROLLER OFFICE</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Windows productivity via Scuf controller — radial menu, Ollama AI</div>
+          <div class="cf"><span class="tp">Python</span><span class="tp">Ollama</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAMING -->
+    <div class="proj-panel" id="tab-gaming">
+      <div class="cg reveal">
+        <div class="cc"><div class="ca" style="background:#ffe600"></div>
+          <div class="ct"><div class="cn">SQUAD::STATS</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">3-player Fortnite stats dashboard — real Ch7 S2 data, trend charts</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div>
+          <a href="https://nexusfang-tech.github.io/squad-stats" target="_blank" class="ck" style="color:#f59e0b">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#ff2d78"></div>
+          <div class="ct"><div class="cn">LOOT::ROULETTE</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Loadout randomizer — 5 maps, separate BR/Reload loot pools, squad roles</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div>
+          <a href="https://nexusfang-tech.github.io/loot-roulette" target="_blank" class="ck" style="color:var(--rose)">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#00eeff"></div>
+          <div class="ct"><div class="cn">DROP::ZONE</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Squad drop planner — 5 real maps, POI ratings, custom markers</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div>
+          <a href="https://nexusfang-tech.github.io/drop-zone" target="_blank" class="ck" style="color:var(--sky)">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#ff2d78"></div>
+          <div class="ct"><div class="cn">TRASH::TALK</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">AI squad roast generator — Claude-powered stat-specific burns and awards</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">Anthropic API</span></div>
+          <a href="https://nexusfang-tech.github.io/trash-talk" target="_blank" class="ck" style="color:var(--rose)">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#ffe600"></div>
+          <div class="ct"><div class="cn">BOUNTY::BOARD</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Squad challenge tracker — post bounties, claim completions, leaderboard</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">HTML5</span></div>
+          <a href="https://nexusfang-tech.github.io/bounty-board" target="_blank" class="ck" style="color:#f59e0b">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#00eeff"></div>
+          <div class="ct"><div class="cn">CLUTCH::REPLAY</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Match storyteller — animated timeline, kill feed, hype commentary</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div>
+          <a href="https://nexusfang-tech.github.io/clutch-replay" target="_blank" class="ck" style="color:var(--sky)">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#a020f0"></div>
+          <div class="ct"><div class="cn">GLITCH::TYPE</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Cyberpunk text effects generator — 7 animated modes, PNG export</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div>
+          <a href="https://nexusfang-tech.github.io/glitch-type" target="_blank" class="ck" style="color:#a020f0">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#a020f0"></div>
+          <div class="ct"><div class="cn">VIBE::CHECK</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Ambient mood visualizer — 6 particle presets, click-to-burst interaction</div>
+          <div class="cf"><span class="tp">JS</span><span class="tp">Canvas</span></div>
+          <a href="https://nexusfang-tech.github.io/vibe-check" target="_blank" class="ck" style="color:#a020f0">⟶ Launch</a>
+        </div>
+        <div class="cc"><div class="ca" style="background:#ff2d78"></div>
+          <div class="ct"><div class="cn">FNLOG</div><span class="cs sl">● LIVE</span></div>
+          <div class="cd">Fortnite session tracker — CLI + vaporwave dashboard, K/D trends</div>
+          <div class="cf"><span class="tp">FastAPI</span><span class="tp">Fortnite API</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-wrap">
+    <div class="section-header reveal"><div class="section-num">// 04</div><div class="section-title">EXPERIENCE</div></div>
+    <div class="divider"></div>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2025 — PRESENT</div>
+        <div class="timeline-role">Technology Services Manager</div>
+        <div class="timeline-org">NC Association of County Commissioners · Raleigh, NC</div>
+        <p class="timeline-desc">Primary helpdesk resource and internal developer for a statewide government association. Built and maintain multiple internal platforms on Azure. Architected a security awareness program including a custom phishing simulation platform, Barracuda email security policies, and staff training materials. Manage M365, SharePoint, Power Apps, and Azure infrastructure.</p>
+        <div class="timeline-tags"><span class="tp">Azure</span><span class="tp">M365</span><span class="tp">Python</span><span class="tp">FastAPI</span><span class="tp">Security Awareness</span></div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot" style="background:var(--violet);box-shadow:0 0 12px var(--glow-violet)"></div>
+        <div class="timeline-date">PRIOR ROLE</div>
+        <div class="timeline-role">Customer Success Manager</div>
+        <div class="timeline-org">MSP / Managed Services</div>
+        <p class="timeline-desc">Client-facing technical account management for SMB and mid-market customers. Transitioned into engineering and infrastructure work during tenure, accelerating the pivot to a full technical career path.</p>
+        <div class="timeline-tags"><span class="tp">Client Mgmt</span><span class="tp">IT Support</span><span class="tp">MSP</span></div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot" style="background:var(--sky);box-shadow:0 0 12px var(--glow-sky)"></div>
+        <div class="timeline-date">AUGUST 2025</div>
+        <div class="timeline-role">AAS — Cybersecurity</div>
+        <div class="timeline-org">Wake Technical Community College · + Certificate in Penetration Testing; Certification in Python</div>
+        <p class="timeline-desc">Completed an Associate of Applied Science in Cybersecurity alongside a dedicated Penetration Testing certificate program. Foundations in ethical hacking, network security, vulnerability assessment, and security operations.</p>
+        <div class="timeline-tags"><span class="tp">Ethical Hacking</span><span class="tp">Network Security</span><span class="tp">Pen Testing</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-wrap">
+    <div class="section-header reveal" style="text-align:center"><div class="section-num" style="text-align:center">// 05</div><div class="section-title">CONTACT</div></div>
+    <div class="divider"></div>
+    <p class="contact-intro reveal">Open to cybersecurity, detection engineering, and senior technical roles. Also always down to talk home lab setups, tooling, or weird side projects.</p>
+    <div class="contact-links reveal">
+      <a href="/cdn-cgi/l/email-protection#7c110f17191508144c4d454f3c1b111d1510521f1311" class="contact-link">✉ EMAIL</a>
+      <a href="https://linkedin.com/in/mskeith93" class="contact-link" target="_blank">in LINKEDIN</a>
+      <a href="https://github.com/nexusfang-tech" class="contact-link" target="_blank">⌥ GITHUB</a>
+      <a href="https://jarvis.chudmeter.com" class="contact-link" target="_blank">◈ JARVIS</a>
+    </div>
+    <p class="reveal" style="font-family:'Share Tech Mono',monospace;font-size:.67rem;color:var(--muted);letter-spacing:.2em">// TRY THE KONAMI CODE //</p>
+  </div>
+</section>
 
 <footer>BUILT BY <span>MATT KEITH</span> · RALEIGH NC · <span>MMXXVI</span> · STACK: VANILLA HTML/CSS/JS</footer>
 
-<div id="terminal-modal" onclick="if(event.target===this)closeTerminal()"><div class="terminal-modal-inner"><div class="terminal-modal-bar"><div class="terminal-modal-dots"><span class="tmd-r"></span><span class="tmd-y"></span><span class="tmd-g"></span></div><span>MK:// NEXUS TERMINAL · v2.5</span><button class="terminal-modal-close" onclick="closeTerminal()">[ DISCONNECT ]</button></div><div id="tm-body" onclick="document.getElementById('tm-input').focus()"><div id="tm-output"></div><div class="tm-prompt-row"><span class="tm-ps1-user">operator</span><span class="tm-ps1-at">@</span><span class="tm-ps1-host">nexus-terminal</span><span class="tm-ps1-sep">:</span><span class="tm-ps1-path">~/portfolio</span><span class="tm-ps1-sym"> $ </span><input id="tm-input" type="text" autocomplete="off" spellcheck="false" /></div></div></div></div>
-<div id="konami-overlay"><button class="konami-close" onclick="closeKonami()">✕ CLOSE</button><canvas id="konami-canvas" width="400" height="300"></canvas><div class="konami-label">// SYNTHSTRIKE MINI //</div></div>
+<!-- Terminal Modal -->
+<div id="terminal-modal" onclick="if(event.target===this)closeTerminal()">
+  <div class="terminal-modal-inner">
+    <div class="terminal-modal-bar">
+      <div class="terminal-modal-dots"><span class="tmd-r"></span><span class="tmd-y"></span><span class="tmd-g"></span></div>
+      <span>MK:// NEXUS TERMINAL · v2.5</span>
+      <button class="terminal-modal-close" onclick="closeTerminal()">[ DISCONNECT ]</button>
+    </div>
+    <div id="tm-body" onclick="document.getElementById('tm-input').focus()">
+      <div id="tm-output"></div>
+      <div class="tm-prompt-row">
+        <span class="tm-ps1-user">operator</span><span class="tm-ps1-at">@</span><span class="tm-ps1-host">nexus-terminal</span><span class="tm-ps1-sep">:</span><span class="tm-ps1-path">~/portfolio</span><span class="tm-ps1-sym"> $ </span>
+        <input id="tm-input" type="text" autocomplete="off" spellcheck="false" />
+      </div>
+    </div>
+  </div>
+</div>
 
-<script>
-const cur=document.getElementById('cursor'),curRing=document.getElementById('cursor-ring');let mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});(function ac(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;curRing.style.left=rx+'px';curRing.style.top=ry+'px';requestAnimationFrame(ac)})();document.querySelectorAll('a,button,.fc,.cc,.skill-card').forEach(el=>{el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2)';cur.style.background='var(--pink)'});el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';cur.style.background='var(--cyan)'})});
-const hc=document.getElementById('hero-canvas'),hx=hc.getContext('2d');function rh(){hc.width=innerWidth;hc.height=innerHeight}rh();addEventListener('resize',rh);let ht=0;function dh(){const W=hc.width,H=hc.height;hx.clearRect(0,0,W,H);const sky=hx.createLinearGradient(0,0,0,H*.6);sky.addColorStop(0,'#07000f');sky.addColorStop(1,'#1a0035');hx.fillStyle=sky;hx.fillRect(0,0,W,H*.6);const gnd=hx.createLinearGradient(0,H*.6,0,H);gnd.addColorStop(0,'#100020');gnd.addColorStop(1,'#07000f');hx.fillStyle=gnd;hx.fillRect(0,H*.6,W,H*.4);const hor=H*.55,spd=(ht*.25)%1;for(let i=0;i<=20;i++){const t=i/20;hx.beginPath();hx.moveTo(W*t,H);hx.lineTo(W/2+(t-.5)*80,hor);hx.strokeStyle='rgba(160,32,240,.18)';hx.lineWidth=1;hx.stroke()}for(let i=0;i<=18;i++){const t=((i/18)+spd)%1,y=hor+(H-hor)*t*t,pw=W*.04+(W*.96)*t*t;hx.beginPath();hx.moveTo((W-pw)/2,y);hx.lineTo((W+pw)/2,y);hx.strokeStyle=`rgba(0,238,255,${t*.22})`;hx.lineWidth=1;hx.stroke()}const sr=Math.min(W,H)*.14,sg=hx.createRadialGradient(W/2,hor-10,0,W/2,hor-10,sr);sg.addColorStop(0,'rgba(255,220,80,.7)');sg.addColorStop(.35,'rgba(255,45,120,.5)');sg.addColorStop(1,'rgba(160,32,240,0)');hx.fillStyle=sg;hx.beginPath();hx.arc(W/2,hor-10,sr,0,Math.PI*2);hx.fill();hx.save();hx.beginPath();hx.arc(W/2,hor-10,sr,0,Math.PI*2);hx.clip();for(let i=0;i<9;i++){const sy=hor-10+sr*(.2+i*.1);if(sy>hor-10+sr)continue;hx.fillStyle='rgba(7,0,15,.55)';hx.fillRect(W/2-sr,sy,sr*2,4+i*2)}hx.restore();for(let i=0;i<60;i++){const sx=(Math.sin(i*137.5)*.5+.5)*W,sy=(Math.sin(i*97.3)*.5+.5)*hor*.85,ss=.5+Math.sin(ht*.05+i)*.4;hx.globalAlpha=.3+Math.sin(ht*.04+i*.7)*.3;hx.fillStyle='rgba(255,255,255,.6)';hx.fillRect(sx,sy,ss,ss)}hx.globalAlpha=1;ht+=.016;requestAnimationFrame(dh)}dh();
-const io=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);io.unobserve(e.target)}})},{threshold:.1});document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-function switchTab(tab,btn){document.querySelectorAll('.proj-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.proj-panel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById('tab-'+tab).classList.add('active')}
-const termModal=document.getElementById('terminal-modal');let termBooted=false;function openTerminal(e){if(e)e.preventDefault();termModal.classList.add('open');document.body.style.overflow='hidden';if(!termBooted){termBooted=true;tmBoot()}else setTimeout(()=>document.getElementById('tm-input').focus(),350)}function closeTerminal(){termModal.classList.remove('open');document.body.style.overflow=''}
+<!-- Konami -->
+<div id="konami-overlay">
+  <button class="konami-close" onclick="closeKonami()">✕ CLOSE</button>
+  <canvas id="konami-canvas" width="400" height="300"></canvas>
+  <div class="konami-label">// SYNTHSTRIKE MINI //</div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Cursor
+const cur=document.getElementById('cursor'),curRing=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function ac(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;curRing.style.left=rx+'px';curRing.style.top=ry+'px';requestAnimationFrame(ac)})();
+document.querySelectorAll('a,button,.fc,.cc,.skill-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2)';cur.style.background='var(--violet)'});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';cur.style.background='var(--rose)'})
+});
+
+// Hero canvas — pastel synthwave sunrise
+const hc=document.getElementById('hero-canvas'),hx=hc.getContext('2d');
+function rh(){hc.width=innerWidth;hc.height=innerHeight}rh();addEventListener('resize',rh);
+let ht=0,mouseX=innerWidth/2,mouseY=innerHeight/2;
+document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY});
+
+// Floating objects
+const objects=[
+  // Wireframe cubes
+  {type:'cube',x:.15,y:.25,size:55,rotX:0,rotY:0,rotZ:0,speedX:.008,speedY:.005,speedZ:.003,floatAmp:18,floatSpd:.7,floatOff:0,color:'rgba(124,58,237,.35)',fill:'rgba(124,58,237,.04)'},
+  {type:'cube',x:.82,y:.35,size:38,rotX:0,rotY:0,rotZ:0,speedX:.005,speedY:.009,speedZ:.006,floatAmp:14,floatSpd:.9,floatOff:1.2,color:'rgba(232,64,122,.3)',fill:'rgba(232,64,122,.04)'},
+  {type:'cube',x:.08,y:.62,size:28,rotX:0,rotY:0,rotZ:0,speedX:.012,speedY:.004,speedZ:.008,floatAmp:10,floatSpd:1.1,floatOff:2.1,color:'rgba(14,165,233,.25)',fill:'rgba(14,165,233,.03)'},
+  {type:'cube',x:.9,y:.68,size:42,rotX:0,rotY:0,rotZ:0,speedX:.006,speedY:.011,speedZ:.004,floatAmp:16,floatSpd:.6,floatOff:3.4,color:'rgba(245,158,11,.28)',fill:'rgba(245,158,11,.04)'},
+  // Rings / tori
+  {type:'ring',x:.72,y:.18,r:40,thickness:2.5,rot:0,rotSpd:.012,floatAmp:20,floatSpd:.8,floatOff:.5,tiltX:.6,color:'rgba(124,58,237,.4)'},
+  {type:'ring',x:.25,y:.72,r:28,thickness:2,rot:0,rotSpd:-.009,floatAmp:12,floatSpd:1.2,floatOff:1.8,tiltX:.4,color:'rgba(232,64,122,.35)'},
+  {type:'ring',x:.88,y:.5,r:22,thickness:1.5,rot:0,rotSpd:.016,floatAmp:9,floatSpd:1.4,floatOff:4.1,tiltX:.7,color:'rgba(14,165,233,.3)'},
+  // Triangles
+  {type:'tri',x:.05,y:.4,size:36,rot:0,rotSpd:.007,floatAmp:15,floatSpd:.85,floatOff:2.6,color:'rgba(124,58,237,.3)',fill:'rgba(124,58,237,.05)'},
+  {type:'tri',x:.78,y:.78,size:26,rot:0,rotSpd:-.013,floatAmp:11,floatSpd:1.05,floatOff:.9,color:'rgba(245,158,11,.3)',fill:'rgba(245,158,11,.04)'},
+  // Spheres (CD/disc vaporwave style)
+  {type:'disc',x:.18,y:.55,r:32,rot:0,rotSpd:.01,floatAmp:13,floatSpd:.95,floatOff:3.0,color:'rgba(232,64,122,.25)'},
+  {type:'disc',x:.65,y:.65,r:20,rot:0,rotSpd:-.014,floatAmp:8,floatSpd:1.3,floatOff:1.5,color:'rgba(14,165,233,.22)'},
+  // Floating particles
+  ...[...Array(28)].map((_,i)=>({type:'particle',x:Math.sin(i*137.5)*.45+.5,y:Math.cos(i*97.3)*.45+.5,r:1+Math.random()*2.5,floatAmp:6+Math.random()*12,floatSpd:.4+Math.random()*.8,floatOff:Math.random()*Math.PI*2,color:`rgba(${[124,232,14,245][i%4]},${[58,64,165,158][i%4]},${[237,122,233,11][i%4]},.${20+Math.floor(Math.random()*25)})`}))
+];
+
+// Marble bust paths (simplified profile silhouette — head + shoulders)
+function drawBust(cx,cy,sc,alpha,glitch){
+  hx.save();
+  hx.globalAlpha=alpha;
+  hx.translate(cx,cy);
+  hx.scale(sc,sc);
+
+  // Chromatic aberration glitch layers
+  const glitchOffsets=glitch?[[2,0,'rgba(232,64,122,.08)'],[-2,0,'rgba(14,165,233,.08)'],[0,1,'rgba(124,58,237,.06)']]:[[[0,0,null]]];
+
+  (glitch?glitchOffsets:[[0,0,null]]).forEach(([gx,gy,gc])=>{
+    hx.save();
+    hx.translate(gx||0,gy||0);
+    if(gc){hx.globalCompositeOperation='screen';hx.fillStyle=gc}
+    else{hx.fillStyle='rgba(237,233,254,.7)';hx.globalCompositeOperation='source-over'}
+
+    // Pedestal / base
+    hx.beginPath();
+    hx.rect(-45,95,90,18);
+    hx.fill();
+    hx.strokeStyle=gc||'rgba(124,58,237,.2)';
+    hx.lineWidth=.5;
+    hx.stroke();
+
+    // Neck + shoulders
+    hx.beginPath();
+    hx.moveTo(-40,95);
+    hx.bezierCurveTo(-40,80,-20,75,-12,60);
+    hx.lineTo(-10,40);
+    hx.lineTo(10,40);
+    hx.lineTo(12,60);
+    hx.bezierCurveTo(20,75,40,80,40,95);
+    hx.closePath();
+    hx.fill();
+    hx.stroke();
+
+    // Head shape
+    hx.beginPath();
+    hx.moveTo(-10,40);
+    hx.bezierCurveTo(-32,38,-40,18,-36,-8);
+    hx.bezierCurveTo(-32,-35,-18,-55,0,-58);
+    hx.bezierCurveTo(18,-55,32,-35,36,-8);
+    hx.bezierCurveTo(40,18,32,38,10,40);
+    hx.closePath();
+    hx.fill();
+    hx.stroke();
+
+    // Hair / crown detail
+    hx.beginPath();
+    hx.moveTo(-36,-8);
+    hx.bezierCurveTo(-40,-25,-35,-50,-20,-58);
+    hx.bezierCurveTo(-10,-65,10,-65,20,-58);
+    hx.bezierCurveTo(35,-50,40,-25,36,-8);
+    hx.strokeStyle=gc||'rgba(124,58,237,.15)';
+    hx.lineWidth=.8;
+    hx.stroke();
+
+    // Curled hair strokes
+    for(let i=0;i<6;i++){
+      const hx2=hx,ang=-Math.PI*.7+i*.2,r=28;
+      hx2.beginPath();
+      hx2.arc(-2+Math.cos(ang)*12,-35+Math.sin(ang)*8,r*.18,ang,ang+Math.PI*.6);
+      hx2.strokeStyle=gc||'rgba(124,58,237,.12)';
+      hx2.lineWidth=.7;
+      hx2.stroke();
+    }
+
+    // Brow ridge
+    hx.beginPath();
+    hx.moveTo(-20,0);hx.bezierCurveTo(-14,-6,-4,-8,0,-8);
+    hx.bezierCurveTo(4,-8,14,-6,20,0);
+    hx.strokeStyle=gc||'rgba(124,58,237,.2)';hx.lineWidth=1;hx.stroke();
+
+    // Eye sockets (classical hollow look)
+    hx.beginPath();hx.ellipse(-13,4,7,4.5,-.1,0,Math.PI*2);
+    hx.fillStyle=gc||'rgba(167,139,250,.15)';hx.fill();
+    hx.beginPath();hx.ellipse(13,4,7,4.5,.1,0,Math.PI*2);
+    hx.fill();
+
+    // Nose
+    hx.beginPath();
+    hx.moveTo(0,8);hx.bezierCurveTo(-4,14,-5,22,-3,26);
+    hx.bezierCurveTo(-1,28,1,28,3,26);
+    hx.bezierCurveTo(5,22,4,14,0,8);
+    hx.strokeStyle=gc||'rgba(124,58,237,.18)';hx.lineWidth=.8;hx.stroke();
+    hx.fillStyle=gc||'rgba(237,233,254,.4)';hx.fill();
+
+    // Lips
+    hx.beginPath();
+    hx.moveTo(-10,34);hx.bezierCurveTo(-5,30,5,30,10,34);
+    hx.bezierCurveTo(5,37,-5,37,-10,34);
+    hx.fillStyle=gc||'rgba(196,167,255,.2)';hx.fill();
+
+    // Beard strokes
+    for(let i=0;i<14;i++){
+      const bx=-12+i*1.8,by=38;
+      hx.beginPath();
+      hx.moveTo(bx,by);
+      hx.bezierCurveTo(bx-1+Math.sin(i)*2,by+8,bx+Math.cos(i),by+16,bx-1+Math.sin(i*1.3)*3,by+24);
+      hx.strokeStyle=gc||'rgba(124,58,237,.1)';hx.lineWidth=.6;hx.stroke();
+    }
+
+    // Drapery lines on shoulders
+    for(let i=0;i<5;i++){
+      hx.beginPath();
+      hx.moveTo(-38+i*5,92);hx.bezierCurveTo(-36+i*5,85,-34+i*4,80,-32+i*4,75);
+      hx.strokeStyle=gc||'rgba(124,58,237,.08)';hx.lineWidth=.5;hx.stroke();
+      hx.beginPath();
+      hx.moveTo(38-i*5,92);hx.bezierCurveTo(36-i*5,85,34-i*4,80,32-i*4,75);
+      hx.stroke();
+    }
+
+    hx.restore();
+  });
+  hx.restore();
+}
+
+// Pseudo-3D cube projection
+function project3D(verts,rotX,rotY,rotZ){
+  return verts.map(([x,y,z])=>{
+    // RotX
+    let y2=y*Math.cos(rotX)-z*Math.sin(rotX),z2=y*Math.sin(rotX)+z*Math.cos(rotX);
+    // RotY
+    let x3=x*Math.cos(rotY)+z2*Math.sin(rotY),z3=-x*Math.sin(rotY)+z2*Math.cos(rotY);
+    // RotZ
+    let x4=x3*Math.cos(rotZ)-y2*Math.sin(rotZ),y4=x3*Math.sin(rotZ)+y2*Math.cos(rotZ);
+    const d=3.5;const fov=d/(d+z3*.003);
+    return [x4*fov,y4*fov];
+  });
+}
+
+function drawCube(cx,cy,sz,rx,ry,rz,color,fill){
+  const h=sz/2;
+  const verts=[[-h,-h,-h],[h,-h,-h],[h,h,-h],[-h,h,-h],[-h,-h,h],[h,-h,h],[h,h,h],[-h,h,h]];
+  const faces=[[0,1,2,3],[4,5,6,7],[0,1,5,4],[2,3,7,6],[0,3,7,4],[1,2,6,5]];
+  const p=project3D(verts,rx,ry,rz).map(([x,y])=>[cx+x,cy+y]);
+  hx.strokeStyle=color;hx.lineWidth=1;
+  faces.forEach(f=>{
+    hx.beginPath();
+    f.forEach((vi,i)=>{i===0?hx.moveTo(...p[vi]):hx.lineTo(...p[vi])});
+    hx.closePath();
+    hx.fillStyle=fill;hx.fill();hx.stroke();
+  });
+}
+
+function drawRing(cx,cy,r,thick,rot,tiltX,color){
+  const steps=48;
+  hx.save();hx.translate(cx,cy);
+  hx.strokeStyle=color;hx.lineWidth=thick;
+  hx.beginPath();
+  for(let i=0;i<=steps;i++){
+    const a=i/steps*Math.PI*2+rot;
+    const px=Math.cos(a)*r,py=Math.sin(a)*r*Math.sin(tiltX);
+    i===0?hx.moveTo(px,py):hx.lineTo(px,py);
+  }
+  hx.closePath();hx.stroke();
+  // Inner ring shimmer
+  hx.globalAlpha=.4;hx.lineWidth=thick*.5;
+  hx.beginPath();
+  for(let i=0;i<=steps;i++){
+    const a=i/steps*Math.PI*2+rot+.08;
+    const px=Math.cos(a)*(r*.7),py=Math.sin(a)*(r*.7)*Math.sin(tiltX);
+    i===0?hx.moveTo(px,py):hx.lineTo(px,py);
+  }
+  hx.closePath();hx.stroke();
+  hx.globalAlpha=1;
+  hx.restore();
+}
+
+function drawTriangle(cx,cy,sz,rot,color,fill){
+  hx.save();hx.translate(cx,cy);hx.rotate(rot);
+  hx.beginPath();
+  for(let i=0;i<3;i++){const a=i/3*Math.PI*2-Math.PI/2;hx.lineTo(Math.cos(a)*sz,Math.sin(a)*sz)}
+  hx.closePath();
+  hx.fillStyle=fill;hx.fill();
+  hx.strokeStyle=color;hx.lineWidth=1;hx.stroke();
+  hx.restore();
+}
+
+function drawDisc(cx,cy,r,rot,color){
+  hx.save();hx.translate(cx,cy);
+  // CD-style concentric rings
+  [1,.75,.5,.3,.15].forEach((fr,i)=>{
+    hx.beginPath();hx.arc(0,0,r*fr,0,Math.PI*2);
+    hx.strokeStyle=color.replace(/[\d.]+\)$/,`${.15+i*.06})`);
+    hx.lineWidth=i===0?1.5:.8;hx.stroke();
+  });
+  // Holographic shine arc
+  hx.beginPath();hx.arc(0,0,r*.6,rot,rot+Math.PI*.7);
+  hx.strokeStyle=color.replace(/[\d.]+\)$/,'.5)');hx.lineWidth=2;hx.stroke();
+  hx.restore();
+}
+
+function dh(){
+  const W=hc.width,H=hc.height;
+  hx.clearRect(0,0,W,H);
+
+  // Pastel background — soft lavender-cream
+  const bg=hx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#f5f0ff');bg.addColorStop(.5,'#fce7f3');bg.addColorStop(1,'#f0f4ff');
+  hx.fillStyle=bg;hx.fillRect(0,0,W,H);
+
+  // Subtle ambient glow blobs
+  [[.2,.3,'rgba(167,139,250,.12)',280],[.75,.6,'rgba(251,207,232,.15)',220],[.5,.15,'rgba(196,167,255,.1)',180]].forEach(([fx,fy,c,r])=>{
+    const g=hx.createRadialGradient(fx*W,fy*H,0,fx*W,fy*H,r);
+    g.addColorStop(0,c);g.addColorStop(1,'transparent');
+    hx.fillStyle=g;hx.fillRect(0,0,W,H);
+  });
+
+  // Mouse parallax factor
+  const px=(mouseX/W-.5)*.04,py=(mouseY/H-.5)*.04;
+
+  // Update and draw all objects
+  objects.forEach(o=>{
+    const fy=o.floatAmp*Math.sin(ht*o.floatSpd+o.floatOff);
+    const cx=(o.x+px*.5)*W,cy=(o.y+py*.5)*H+fy;
+
+    if(o.type==='cube'){
+      o.rotX+=o.speedX;o.rotY+=o.speedY;o.rotZ+=o.speedZ;
+      drawCube(cx,cy,o.size,o.rotX,o.rotY,o.rotZ,o.color,o.fill);
+    } else if(o.type==='ring'){
+      o.rot+=o.rotSpd;
+      drawRing(cx,cy,o.r,o.thickness,o.rot,o.tiltX,o.color);
+    } else if(o.type==='tri'){
+      o.rot+=o.rotSpd;
+      drawTriangle(cx,cy,o.size,o.rot,o.color,o.fill);
+    } else if(o.type==='disc'){
+      o.rot+=o.rotSpd;
+      drawDisc(cx,cy,o.r,o.rot,o.color);
+    } else if(o.type==='particle'){
+      hx.beginPath();hx.arc(cx,cy,o.r,0,Math.PI*2);
+      hx.fillStyle=o.color;hx.fill();
+    }
+  });
+
+  // Marble bust — centered, slight parallax, glitch pulse every ~4s
+  const bustX=W/2+px*60;
+  const bustY=H*.52+py*40;
+  const bustScale=Math.min(W,H)*.0038;
+  const glitchOn=Math.floor(ht*4)%240===0||Math.floor(ht*4)%241===0;
+
+  // Soft halo behind bust
+  const halo=hx.createRadialGradient(bustX,bustY,0,bustX,bustY,bustScale*140);
+  halo.addColorStop(0,'rgba(196,167,255,.22)');halo.addColorStop(.5,'rgba(251,207,232,.12)');halo.addColorStop(1,'transparent');
+  hx.fillStyle=halo;hx.fillRect(0,0,W,H);
+
+  drawBust(bustX,bustY,bustScale,0.92,glitchOn);
+
+  // Chromatic aberration lines across bust occasionally
+  if(Math.sin(ht*.3)>.94){
+    for(let i=0;i<3;i++){
+      const ly=bustY-bustScale*80+Math.random()*bustScale*180;
+      const lw=bustScale*30+Math.random()*bustScale*60;
+      hx.fillStyle=`rgba(${Math.random()>0.5?'124,58,237':'232,64,122'},.06)`;
+      hx.fillRect(bustX-lw/2,ly,lw,1.5+Math.random()*2);
+    }
+  }
+
+  ht+=.016;requestAnimationFrame(dh);
+}
+dh();
+
+// Scroll reveal
+const io=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*70);io.unobserve(e.target)}})},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// Tab switcher
+function switchTab(tab,btn){
+  document.querySelectorAll('.proj-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.proj-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active')
+}
+
+// Terminal
+const termModal=document.getElementById('terminal-modal');
+let termBooted=false;
+function openTerminal(e){if(e)e.preventDefault();termModal.classList.add('open');document.body.style.overflow='hidden';if(!termBooted){termBooted=true;tmBoot()}else setTimeout(()=>document.getElementById('tm-input').focus(),350)}
+function closeTerminal(){termModal.classList.remove('open');document.body.style.overflow=''}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTerminal()});
-const tmOut=document.getElementById('tm-output'),tmIn=document.getElementById('tm-input');let tmHistory=[],tmHistIdx=-1;
-const TM={about:{name:'MATT KEITH',title:'Technology Services Manager · Security Engineer',location:'Raleigh, NC',summary:['Technology Services Manager at the NC Association of County Commissioners.','Full-stack developer, Azure/M365 specialist, and certified penetration','tester. Builder of production tools, security platforms, and interactive','cybersecurity simulations.']},skills:[{cat:'OFFENSIVE SECURITY',items:[{name:'Penetration Testing',pct:88},{name:'OSINT / Recon',pct:90},{name:'Network Analysis',pct:82},{name:'Vulnerability Assessment',pct:85}]},{cat:'CLOUD & IDENTITY',items:[{name:'Azure / Entra ID',pct:90},{name:'Microsoft 365',pct:92},{name:'Graph API',pct:80},{name:'SharePoint / Power Apps',pct:78}]},{cat:'DEVELOPMENT',items:[{name:'Python / FastAPI',pct:88},{name:'JavaScript / HTML / CSS',pct:85},{name:'SQLite / SQL',pct:80},{name:'GitHub Actions / CI-CD',pct:82}]},{cat:'INFRASTRUCTURE',items:[{name:'Proxmox / Home Lab',pct:85},{name:'Docker / VPS Ops',pct:80},{name:'Barracuda / Filtering',pct:78},{name:'Windows Server / NSSM',pct:83}]}],projects:[{name:'BLACKSITE',tech:['JS','Canvas'],status:'LIVE',desc:'Red/Blue war room, ransomware sim, OSINT terminal, CTF arena.'},{name:'PHANTOM::RESPONSE',tech:['JS','Canvas'],status:'LIVE',desc:'IR command center — NIST playbook, malware sandbox, MITRE.'},{name:'NEXUS::SENTINEL',tech:['JS','Canvas'],status:'LIVE',desc:'Threat intel workstation — IP, hash, password, subnet tools.'},{name:'FLOWSTATE',tech:['JS','Canvas'],status:'LIVE',desc:'Visual automation workflow builder — 16 nodes, 4 exports.'},{name:'NETFORGE',tech:['JS','Canvas'],status:'LIVE',desc:'Network topology mapper — 20 devices, VLANs, 4 exports.'},{name:'CLOUDCRAFT',tech:['JS','Canvas'],status:'LIVE',desc:'Azure architecture planner — 21 resources, cost estimation.'},{name:'RUNBOOK',tech:['JS','localStorage'],status:'LIVE',desc:'IT runbook builder — checklists, code blocks, 6 templates.'},{name:'NCACC Portal',tech:['FastAPI','Azure'],status:'LIVE',desc:'Production CRM with Entra ID auth, Teams webhooks.'},{name:'Phishing Sim',tech:['FastAPI','Graph API'],status:'LIVE',desc:'Security awareness: 5 templates, campaign analytics.'},{name:'CVE Explorer',tech:['JS','NVD API'],status:'LIVE',desc:'Vulnerability lookup with CVSS gauges.'},{name:'Mini-SIEM',tech:['Python'],status:'LIVE',desc:'Log normalization, detection rules, alerts.'},{name:'FNLog',tech:['FastAPI','Fortnite API'],status:'LIVE',desc:'Session tracker with vaporwave dashboard.'},{name:'LOOT::ROULETTE',tech:['JS','Canvas'],status:'LIVE',desc:'Loadout randomizer — 5 maps, BR/Reload loot pools.'},{name:'DROP::ZONE',tech:['JS','Canvas'],status:'LIVE',desc:'Squad drop planner — 5 real maps, POI ratings.'},{name:'CLUTCH::REPLAY',tech:['JS','Canvas'],status:'LIVE',desc:'Match storyteller — animated timeline, kill feed.'},{name:'GLITCH::TYPE',tech:['JS','Canvas'],status:'LIVE',desc:'Cyberpunk text effects — 7 modes, PNG export.'},{name:'VIBE::CHECK',tech:['JS','Canvas'],status:'LIVE',desc:'Ambient mood visualizer — 6 particle presets.'}],experience:[{title:'Technology Services Manager',org:'NC Association of County Commissioners',dates:'2025 — PRESENT',desc:'Primary helpdesk and internal developer. Azure/M365 admin, security platform builder.'},{title:'Customer Success Manager',org:'MSP / Managed Services',dates:'PRIOR ROLE',desc:'Client-facing technical account management. Transitioned into engineering.'}],certs:[{name:'AAS — Cybersecurity',org:'Wake Tech CC',year:'2025',badge:'DEGREE'},{name:'Cert — Penetration Testing',org:'Wake Tech CC',year:'2025',badge:'CERT'},{name:'Cert — Python',org:'Wake Tech CC',year:'2025',badge:'CERT'}],contact:{github:'github.com/nexusfang-tech',site:'nexusfang-tech.github.io',location:'Raleigh, NC',status:'Open to security / systems engineering roles'},easter:{'sudo':'[ PERMISSION DENIED ] Nice try, operator.','hack':'[ ALERT ] Unauthorized intrusion attempt logged. Just kidding.','ls':'blacksite/  phantom-response/  nexus-sentinel/  flowstate/  netforge/  cloudcraft/  runbook/  contacts-portal/  jarvis/  fnlog/  loot-roulette/  drop-zone/  clutch-replay/  glitch-type/  vibe-check/','cd':'[ ERROR ] Already at root.','pwd':'/home/operator/nexus-terminal/portfolio','uname':'NexusOS v2.5.0 (Synthwave Edition) x86_64','date':null,'nmap':'Starting Nmap 7.94 — Host: localhost — 22/ssh 80/http 443/https 8000/api','vim':'[ ERROR ] vim not found. Skill issue.','ping':'PING nexusfang-tech.github.io: 0ms — you\'re inside the system.','ifconfig':'eth0: 10.0.0.1/24\nnexus0: [CLASSIFIED]','exit':'[ SYSTEM ] You\'re in too deep.','rm -rf /':'[ CRITICAL ] This terminal has feelings. And backups.','matrix':null,'help':null,'clear':null,'cls':null}};
-function tmLine(h,c=''){const d=document.createElement('div');d.className=c;d.innerHTML=h;tmOut.appendChild(d)}function tmBlank(){tmLine('&nbsp;')}function tmScroll(){tmOut.scrollTop=tmOut.scrollHeight}function tmBar(p){const f=Math.round(p/5),e=20-f;return`<span class="tm-bar-fill">${'█'.repeat(f)}</span><span class="tm-bar-empty">${'░'.repeat(e)}</span>`}function tmTags(a){return a.map(t=>`<span class="tm-tag">${t}</span>`).join('')}function tmSection(t){tmLine(`<div class="tm-section">// ${t}</div>`)}
-function tmBoot(){[{h:'<span class="tc-dim">[ BIOS ] Scanning memory............. OK</span>',d:100},{h:'<span class="tc-dim">[ BOOT ] Loading NexusOS.............. OK</span>',d:200},{h:'<span class="tc-dim">[ AUTH ] Verifying credentials........ OK</span>',d:350},{h:'<span class="tc-dim">[ NET  ] Secure tunnel............... OK</span>',d:500},{h:'<span class="tc-dim">[ INIT ] Mounting filesystem......... OK</span>',d:650},{h:'',d:750},{h:`<pre class="tm-ascii"><span style="color:#00f5ff">  ███╗   ███╗ █████╗ ████████╗████████╗</span>    <span style="color:#ff2d78">██╗  ██╗███████╗██╗████████╗██╗  ██╗</span>\n<span style="color:#00f5ff">  ████╗ ████║██╔══██╗╚══██╔══╝╚══██╔══╝</span>    <span style="color:#ff2d78">██║ ██╔╝██╔════╝██║╚══██╔══╝██║  ██║</span>\n<span style="color:#00f5ff">  ██╔████╔██║███████║   ██║      ██║   </span>    <span style="color:#ff2d78">█████╔╝ █████╗  ██║   ██║   ███████║</span>\n<span style="color:#00f5ff">  ██║╚██╔╝██║██╔══██║   ██║      ██║   </span>    <span style="color:#ff2d78">██╔═██╗ ██╔══╝  ██║   ██║   ██╔══██║</span>\n<span style="color:#00f5ff">  ██║ ╚═╝ ██║██║  ██║   ██║      ██║   </span>    <span style="color:#ff2d78">██║  ██╗███████╗██║   ██║   ██║  ██║</span>\n<span style="color:#00f5ff">  ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝      ╚═╝   </span>    <span style="color:#ff2d78">╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝   ╚═╝  ╚═╝</span></pre>`,d:800},{h:'',d:860},{h:'<span class="tc-purple">  NEXUS TERMINAL · v2.5 · CLASSIFIED</span>',d:900},{h:'<span class="tc-dim">  ─────────────────────────────────────────────</span>',d:940},{h:'<span class="tc-cyan">  Operative :</span> <span class="tc-white">Matt Keith — Tech Services Mgr · Security Engineer</span>',d:980},{h:'<span class="tc-cyan">  Location  :</span> <span class="tc-white">Raleigh, NC // 36.1627°N, 78.6633°W</span>',d:1020},{h:'<span class="tc-cyan">  Clearance :</span> <span class="tc-green">OPERATOR — FULL ACCESS</span>',d:1060},{h:'<span class="tc-dim">  ─────────────────────────────────────────────</span>',d:1100},{h:'',d:1140},{h:'<span class="tc-purple">  Type <span class="tc-yellow">help</span> for commands.</span>',d:1180}].forEach(({h,d})=>setTimeout(()=>{if(h==='')tmBlank();else tmLine(h);tmScroll()},d));setTimeout(()=>tmIn.focus(),1300)}
-function tmRun(raw){const cmd=raw.trim().toLowerCase();tmLine(`<span class="tc-green">operator@nexus:~/portfolio $</span> <span class="tc-cyan">${raw.trim()}</span>`);tmBlank();if(!cmd){tmScroll();return}tmHistory.unshift(raw);if(tmHistory.length>50)tmHistory.pop();tmHistIdx=-1;if(cmd==='clear'||cmd==='cls'){tmOut.innerHTML='';return}if(cmd==='help')tmHelp();else if(cmd==='whoami'||cmd==='about')tmAbout();else if(cmd==='skills')tmSkills();else if(cmd==='projects')tmProjects();else if(cmd==='experience')tmExperience();else if(cmd==='contact')tmContact();else if(cmd==='certifications'||cmd==='certs')tmCerts();else if(cmd==='matrix')tmMatrix();else if(cmd==='date')tmLine(`  <span class="tc-yellow">${new Date().toString()}</span>`);else if(TM.easter[raw.trim()]!==undefined&&TM.easter[raw.trim()]!==null)TM.easter[raw.trim()].split('\n').forEach(l=>tmLine(`  <span class="tc-yellow">${l}</span>`));else if(TM.easter[cmd]!==undefined&&TM.easter[cmd]!==null)TM.easter[cmd].split('\n').forEach(l=>tmLine(`  <span class="tc-yellow">${l}</span>`));else{tmLine(`  <span class="tc-red">bash: ${raw.trim()}: command not found</span>`);tmLine(`  <span class="tc-dim">Type <span class="tc-yellow">help</span> for commands.</span>`)}tmScroll()}
+
+const tmOut=document.getElementById('tm-output'),tmIn=document.getElementById('tm-input');
+let tmHistory=[],tmHistIdx=-1;
+
+const TM={
+  about:{name:'MATT KEITH',title:'Technology Services Manager · Security Engineer',location:'Raleigh, NC',summary:['Technology Services Manager at the NC Association of County Commissioners.','Full-stack developer, Azure/M365 specialist, and certified penetration','tester. Builder of production tools, detection engines, and interactive','cybersecurity simulations.']},
+  skills:[{cat:'OFFENSIVE SECURITY',items:[{name:'Penetration Testing',pct:88},{name:'OSINT / Recon',pct:90},{name:'Network Analysis',pct:82},{name:'Vulnerability Assessment',pct:85}]},{cat:'DETECTION ENGINEERING',items:[{name:'MITRE ATT&CK Mapping',pct:85},{name:'YAML Rule Authoring',pct:82},{name:'Log Analysis / EVTX',pct:83},{name:'Secrets Scanning',pct:80}]},{cat:'CLOUD & IDENTITY',items:[{name:'Azure / Entra ID',pct:90},{name:'Microsoft 365',pct:92},{name:'Graph API',pct:80},{name:'SharePoint / Power Apps',pct:78}]},{cat:'DEVELOPMENT',items:[{name:'Python / FastAPI',pct:88},{name:'JavaScript / HTML / CSS',pct:85},{name:'SQLite / SQL',pct:80},{name:'GitHub Actions / CI-CD',pct:84}]}],
+  projects:[{name:'EVTXPLORER',tech:['Python','MITRE','YAML','pytest'],status:'LIVE',desc:'Windows Event Log analyzer — 21 YAML rules, threshold detection, brute force/spray/Kerberoasting.'},{name:'PORTCULLIS',tech:['Python','Entropy','Git'],status:'LIVE',desc:'Secrets scanner — entropy analysis, git history audit, AWS/JWT/PEM/env coverage.'},{name:'NETRECON',tech:['Python','Sockets','DNS'],status:'LIVE',desc:'Raw-socket recon CLI — TCP scanner, banner grab, DNS enum, WHOIS.'},{name:'BLACKSITE',tech:['JS','Canvas'],status:'LIVE',desc:'Red/Blue war room, ransomware sim, OSINT terminal, CTF arena.'},{name:'PHANTOM::RESPONSE',tech:['JS','Canvas'],status:'LIVE',desc:'IR command center — NIST playbook, malware sandbox, MITRE.'},{name:'NEXUS::SENTINEL',tech:['JS','Canvas'],status:'LIVE',desc:'Threat intel workstation — IP, hash, password, subnet tools.'},{name:'COUNTY CONNECT',tech:['FastAPI','Azure'],status:'PRODUCTION',desc:'Production CRM with Entra ID SSO, Teams webhooks, Mailchimp sync.'},{name:'PHISHCRAFT',tech:['FastAPI','Graph API'],status:'WIP',desc:'Security awareness: 10 templates, campaign analytics.'},{name:'CVE Explorer',tech:['JS','NVD API'],status:'LIVE',desc:'Vulnerability lookup with CVSS gauges.'},{name:'FNLOG',tech:['FastAPI','Fortnite API'],status:'LIVE',desc:'Session tracker with vaporwave dashboard.'}],
+  experience:[{title:'Technology Services Manager',org:'NC Association of County Commissioners',dates:'2025 — PRESENT',desc:'Primary helpdesk and internal developer. Azure/M365 admin, detection tool builder.'},{title:'Customer Success Manager',org:'MSP / Managed Services',dates:'PRIOR ROLE',desc:'Client-facing technical account management. Transitioned into engineering.'}],
+  certs:[{name:'AAS — Cybersecurity',org:'Wake Tech CC',year:'2025',badge:'DEGREE'},{name:'Cert — Penetration Testing',org:'Wake Tech CC',year:'2025',badge:'CERT'},{name:'Cert — Python',org:'Wake Tech CC',year:'2025',badge:'CERT'}],
+  contact:{github:'github.com/nexusfang-tech',site:'nexusfang-tech.github.io',location:'Raleigh, NC',status:'Open to security / detection engineering roles'},
+  easter:{'sudo':'[ PERMISSION DENIED ] Nice try, operator.','hack':'[ ALERT ] Unauthorized intrusion attempt logged. Just kidding.','ls':'evtxplorer/  portcullis/  netrecon/  blacksite/  phantom-response/  nexus-sentinel/  county-connect/  phishcraft/  cve-explorer/  fnlog/','cd':'[ ERROR ] Already at root.','pwd':'/home/operator/nexus-terminal/portfolio','uname':'NexusOS v2.5.0 (Pastel Synthwave Edition) x86_64','date':null,'nmap':'Starting Nmap 7.94 — Host: localhost — 22/ssh 80/http 443/https 8000/api','vim':'[ ERROR ] vim not found. Skill issue.','ping':'PING nexusfang-tech.github.io: 0ms — you\'re inside the system.','ifconfig':'eth0: 10.0.0.1/24\nnexus0: [CLASSIFIED]','exit':'[ SYSTEM ] You\'re in too deep.','rm -rf /':'[ CRITICAL ] This terminal has feelings. And backups.','matrix':null,'help':null,'clear':null,'cls':null}
+};
+
+function tmLine(h,c=''){const d=document.createElement('div');d.className=c;d.innerHTML=h;tmOut.appendChild(d)}
+function tmBlank(){tmLine('&nbsp;')}
+function tmScroll(){tmOut.scrollTop=tmOut.scrollHeight}
+function tmBar(p){const f=Math.round(p/5),e=20-f;return`<span class="tm-bar-fill">${'█'.repeat(f)}</span><span class="tm-bar-empty">${'░'.repeat(e)}</span>`}
+function tmTags(a){return a.map(t=>`<span class="tm-tag">${t}</span>`).join('')}
+function tmSection(t){tmLine(`<div class="tm-section">// ${t}</div>`)}
+
+function tmBoot(){
+  [{h:'<span class="tc-dim">[ BIOS ] Scanning memory............. OK</span>',d:100},{h:'<span class="tc-dim">[ BOOT ] Loading NexusOS.............. OK</span>',d:200},{h:'<span class="tc-dim">[ AUTH ] Verifying credentials........ OK</span>',d:350},{h:'<span class="tc-dim">[ NET  ] Secure tunnel............... OK</span>',d:500},{h:'<span class="tc-dim">[ INIT ] Mounting filesystem......... OK</span>',d:650},{h:'',d:750},
+  {h:`<pre class="tm-ascii"><span style="color:#67e8f9">  ███╗   ███╗ █████╗ ████████╗████████╗</span>    <span style="color:#fb7185">██╗  ██╗███████╗██╗████████╗██╗  ██╗</span>\n<span style="color:#67e8f9">  ████╗ ████║██╔══██╗╚══██╔══╝╚══██╔══╝</span>    <span style="color:#fb7185">██║ ██╔╝██╔════╝██║╚══██╔══╝██║  ██║</span>\n<span style="color:#67e8f9">  ██╔████╔██║███████║   ██║      ██║   </span>    <span style="color:#fb7185">█████╔╝ █████╗  ██║   ██║   ███████║</span>\n<span style="color:#67e8f9">  ██║╚██╔╝██║██╔══██║   ██║      ██║   </span>    <span style="color:#fb7185">██╔═██╗ ██╔══╝  ██║   ██║   ██╔══██║</span>\n<span style="color:#67e8f9">  ██║ ╚═╝ ██║██║  ██║   ██║      ██║   </span>    <span style="color:#fb7185">██║  ██╗███████╗██║   ██║   ██║  ██║</span>\n<span style="color:#67e8f9">  ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝      ╚═╝   </span>    <span style="color:#fb7185">╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝   ╚═╝  ╚═╝</span></pre>`,d:800},
+  {h:'',d:860},{h:'<span class="tc-purple">  NEXUS TERMINAL · v2.5 · CLASSIFIED</span>',d:900},{h:'<span class="tc-dim">  ─────────────────────────────────────────────</span>',d:940},
+  {h:'<span class="tc-cyan">  Operative :</span> <span class="tc-white">Matt Keith — Tech Services Mgr · Security Engineer</span>',d:980},
+  {h:'<span class="tc-cyan">  Location  :</span> <span class="tc-white">Raleigh, NC // 36.1627°N, 78.6633°W</span>',d:1020},
+  {h:'<span class="tc-cyan">  Clearance :</span> <span class="tc-green">OPERATOR — FULL ACCESS</span>',d:1060},
+  {h:'<span class="tc-dim">  ─────────────────────────────────────────────</span>',d:1100},{h:'',d:1140},
+  {h:'<span class="tc-purple">  Type <span class="tc-yellow">help</span> for commands.</span>',d:1180}
+  ].forEach(({h,d})=>setTimeout(()=>{if(h==='')tmBlank();else tmLine(h);tmScroll()},d));
+  setTimeout(()=>tmIn.focus(),1300)
+}
+
+function tmRun(raw){
+  const cmd=raw.trim().toLowerCase();
+  tmLine(`<span class="tc-green">operator@nexus:~/portfolio $</span> <span class="tc-cyan">${raw.trim()}</span>`);
+  tmBlank();
+  if(!cmd){tmScroll();return}
+  tmHistory.unshift(raw);if(tmHistory.length>50)tmHistory.pop();tmHistIdx=-1;
+  if(cmd==='clear'||cmd==='cls'){tmOut.innerHTML='';return}
+  if(cmd==='help')tmHelp();
+  else if(cmd==='whoami'||cmd==='about')tmAbout();
+  else if(cmd==='skills')tmSkills();
+  else if(cmd==='projects')tmProjects();
+  else if(cmd==='experience')tmExperience();
+  else if(cmd==='contact')tmContact();
+  else if(cmd==='certifications'||cmd==='certs')tmCerts();
+  else if(cmd==='matrix')tmMatrix();
+  else if(cmd==='date')tmLine(`  <span class="tc-yellow">${new Date().toString()}</span>`);
+  else if(TM.easter[raw.trim()]!==undefined&&TM.easter[raw.trim()]!==null)TM.easter[raw.trim()].split('\n').forEach(l=>tmLine(`  <span class="tc-yellow">${l}</span>`));
+  else if(TM.easter[cmd]!==undefined&&TM.easter[cmd]!==null)TM.easter[cmd].split('\n').forEach(l=>tmLine(`  <span class="tc-yellow">${l}</span>`));
+  else{tmLine(`  <span class="tc-red">bash: ${raw.trim()}: command not found</span>`);tmLine(`  <span class="tc-dim">Type <span class="tc-yellow">help</span> for commands.</span>`)}
+  tmScroll()
+}
+
 function tmHelp(){tmSection('COMMANDS');[['whoami','Dossier'],['skills','Capabilities'],['projects','Operations'],['experience','History'],['certs','Credentials'],['contact','Comms'],['clear','Purge']].forEach(([c,d])=>tmLine(`  <span class="tm-help-cmd">${c}</span><span class="tm-help-desc">${d}</span>`))}
 function tmAbout(){tmSection('OPERATIVE DOSSIER');tmLine(`  <span class="tm-glitch">${TM.about.name}</span>`);tmBlank();tmLine(`  <span class="tc-purple">${TM.about.title}</span>`);tmLine(`  <span class="tc-dim">${TM.about.location}</span>`);tmBlank();TM.about.summary.forEach(l=>tmLine(`  <span class="tc-white">${l}</span>`))}
 function tmSkills(){tmSection('CAPABILITY MATRIX');TM.skills.forEach(cat=>{tmBlank();tmLine(`  <span class="tc-pink">[ ${cat.cat} ]</span>`);cat.items.forEach(s=>tmLine(`  <span class="tm-skill-name">${s.name}</span> ${tmBar(s.pct)} <span class="tm-skill-pct">${s.pct}%</span>`))})}
@@ -245,10 +1052,22 @@ function tmProjects(){tmSection('OPERATIONS');TM.projects.forEach(p=>{tmBlank();
 function tmExperience(){tmSection('ASSIGNMENTS');TM.experience.forEach(e=>{tmBlank();tmLine(`  <span class="tm-entry-title">${e.title}</span> <span class="tm-entry-date">// ${e.dates}</span>`);tmLine(`  <span class="tm-entry-sub">${e.org}</span>`);tmLine(`  <span class="tm-entry-desc">${e.desc}</span>`)})}
 function tmCerts(){tmSection('CREDENTIALS');tmBlank();TM.certs.forEach(c=>{tmLine(`  <span class="tc-pink">[${c.badge}]</span> <span class="tm-entry-title">${c.name}</span>`);tmLine(`        <span class="tc-dim">${c.org} · ${c.year}</span>`);tmBlank()})}
 function tmContact(){tmSection('SECURE CHANNEL');tmBlank();tmLine(`  <span class="tc-dim">STATUS:</span> <span class="tc-green">● OPEN</span>`);tmBlank();Object.entries(TM.contact).forEach(([k,v])=>{const lk=v.startsWith('github')||v.startsWith('nexus');tmLine(`  <span class="tm-contact-key">${k.toUpperCase().padEnd(12)}</span>${lk?`<a href="https://${v}" target="_blank" class="tm-contact-val" style="text-decoration:none">${v}</a>`:`<span class="tm-contact-val">${v}</span>`}`)})}
-function tmMatrix(){tmLine(`  <span class="tc-green">// MATRIX PROTOCOL...</span>`);const ch='日ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾃ0123456789ABCDEF';let n=0;const iv=setInterval(()=>{let r='  ';for(let i=0;i<55;i++)r+=`<span style="color:hsl(${Math.random()*60+100},100%,${Math.random()*40+30}%)">${ch[Math.floor(Math.random()*ch.length)]}</span>`;tmLine(r);tmScroll();if(++n>20){clearInterval(iv);tmBlank();tmLine(`  <span class="tc-pink">// DISENGAGED.</span>`);tmScroll()}},60)}
-tmIn.addEventListener('keydown',e=>{if(e.key==='Enter'){const v=tmIn.value;tmIn.value='';tmRun(v)}else if(e.key==='ArrowUp'){e.preventDefault();if(tmHistIdx<tmHistory.length-1)tmIn.value=tmHistory[++tmHistIdx]}else if(e.key==='ArrowDown'){e.preventDefault();tmHistIdx>0?tmIn.value=tmHistory[--tmHistIdx]:(tmHistIdx=-1,tmIn.value='')}else if(e.key==='Tab'){e.preventDefault();const m=['whoami','about','skills','projects','experience','certifications','certs','contact','help','clear'].find(c=>c.startsWith(tmIn.value.toLowerCase()));if(m)tmIn.value=m}});
-const KONAMI=[38,38,40,40,37,39,37,39,66,65];let ki=0;document.addEventListener('keydown',e=>{if(e.keyCode===KONAMI[ki]){if(++ki===KONAMI.length){ki=0;activateKonami()}}else ki=0});function activateKonami(){document.getElementById('konami-overlay').classList.add('active');startMiniGame()}function closeKonami(){document.getElementById('konami-overlay').classList.remove('active');miniRunning=false}
-let miniRunning=false,miniScore=0,miniNotes=[];const mc=document.getElementById('konami-canvas'),mx2=mc.getContext('2d');const MC=['#ff2d78','#a020f0','#00eeff','#ffe600'];function startMiniGame(){miniRunning=true;miniScore=0;miniNotes=[];for(let i=0;i<30;i++)miniNotes.push({lane:Math.floor(Math.random()*4),y:-20-i*80,speed:2+Math.random(),hit:false});document.addEventListener('keydown',miniKey);(function lp(){if(!miniRunning)return;mx2.clearRect(0,0,400,300);mx2.fillStyle='#07000f';mx2.fillRect(0,0,400,300);for(let l=0;l<4;l++){mx2.fillStyle=MC[l]+'18';mx2.fillRect(l*100,0,100,300);mx2.fillStyle=MC[l];mx2.font='bold 11px Orbitron';mx2.textAlign='center';mx2.fillText(['←','→','←','→'][l],l*100+50,285)}mx2.strokeStyle='rgba(255,255,255,.4)';mx2.lineWidth=2;mx2.beginPath();mx2.moveTo(0,255);mx2.lineTo(400,255);mx2.stroke();let a=false;miniNotes.forEach(n=>{if(n.hit)return;n.y+=n.speed;if(n.y>320){n.hit=true;return}a=true;mx2.beginPath();mx2.roundRect(n.lane*100+8,n.y,84,18,4);mx2.fillStyle=MC[n.lane];mx2.shadowColor=MC[n.lane];mx2.shadowBlur=10;mx2.fill();mx2.shadowBlur=0});mx2.fillStyle='#fff';mx2.font='bold 13px Orbitron';mx2.textAlign='left';mx2.fillText('SCORE: '+miniScore,10,20);if(!a){mx2.fillStyle=MC[1];mx2.textAlign='center';mx2.font='bold 14px Orbitron';mx2.fillText('TRACK COMPLETE!',200,140)}requestAnimationFrame(lp)})()}function miniKey(e){if(!miniRunning)return;const l=[37,39,38,40].indexOf(e.keyCode);if(l===-1)return;for(const n of miniNotes)if(!n.hit&&n.lane===l&&n.y>230&&n.y<280){n.hit=true;miniScore+=100;break}}
-</script>
-</body>
-</html>
+function tmMatrix(){tmLine(`  <span class="tc-green">// MATRIX PROTOCOL...</span>`);const ch='日ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾃ0123456789ABCDEF';let n=0;const iv=setInterval(()=>{let r='  ';for(let i=0;i<55;i++)r+=`<span style="color:hsl(${Math.random()*60+260},80%,${Math.random()*30+55}%)">${ch[Math.floor(Math.random()*ch.length)]}</span>`;tmLine(r);tmScroll();if(++n>20){clearInterval(iv);tmBlank();tmLine(`  <span class="tc-pink">// DISENGAGED.</span>`);tmScroll()}},60)}
+
+tmIn.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){const v=tmIn.value;tmIn.value='';tmRun(v)}
+  else if(e.key==='ArrowUp'){e.preventDefault();if(tmHistIdx<tmHistory.length-1)tmIn.value=tmHistory[++tmHistIdx]}
+  else if(e.key==='ArrowDown'){e.preventDefault();tmHistIdx>0?tmIn.value=tmHistory[--tmHistIdx]:(tmHistIdx=-1,tmIn.value='')}
+  else if(e.key==='Tab'){e.preventDefault();const m=['whoami','about','skills','projects','experience','certifications','certs','contact','help','clear'].find(c=>c.startsWith(tmIn.value.toLowerCase()));if(m)tmIn.value=m}
+});
+
+// Konami
+const KONAMI=[38,38,40,40,37,39,37,39,66,65];let ki=0;
+document.addEventListener('keydown',e=>{if(e.keyCode===KONAMI[ki]){if(++ki===KONAMI.length){ki=0;activateKonami()}}else ki=0});
+function activateKonami(){document.getElementById('konami-overlay').classList.add('active');startMiniGame()}
+function closeKonami(){document.getElementById('konami-overlay').classList.remove('active');miniRunning=false}
+let miniRunning=false,miniScore=0,miniNotes=[];
+const mc=document.getElementById('konami-canvas'),mx2=mc.getContext('2d');
+const MC=['#fb7185','#c084fc','#67e8f9','#fbbf24'];
+function startMiniGame(){miniRunning=true;miniScore=0;miniNotes=[];for(let i=0;i<30;i++)miniNotes.push({lane:Math.floor(Math.random()*4),y:-20-i*80,speed:2+Math.random(),hit:false});document.addEventListener('keydown',miniKey);(function lp(){if(!miniRunning)return;mx2.clearRect(0,0,400,300);mx2.fillStyle='#0f0826';mx2.fillRect(0,0,400,300);for(let l=0;l<4;l++){mx2.fillStyle=MC[l]+'18';mx2.fillRect(l*100,0,100,300);mx2.fillStyle=MC[l];mx2.font='bold 11px Orbitron';mx2.textAlign='center';mx2.fillText(['←','→','←','→'][l],l*100+50,285)}mx2.strokeStyle='rgba(255,255,255,.3)';mx2.lineWidth=2;mx2.beginPath();mx2.moveTo(0,255);mx2.lineTo(400,255);mx2.stroke();let a=false;miniNotes.forEach(n=>{if(n.hit)return;n.y+=n.speed;if(n.y>320){n.hit=true;return}a=true;mx2.beginPath();mx2.roundRect(n.lane*100+8,n.y,84,18,4);mx2.fillStyle=MC[n.lane];mx2.shadowColor=MC[n.lane];mx2.shadowBlur=10;mx2.fill();mx2.shadowBlur=0});mx2.fillStyle='#fff';mx2.font='bold 13px Orbitron';mx2.textAlign='left';mx2.fillText('SCORE: '+miniScore,10,20);if(!a){mx2.fillStyle=MC[1];mx2.textAlign='center';mx2.font='bold 14px Orbitron';mx2.fillText('TRACK COMPLETE!',200,140)}requestAnimationFrame(lp)})()}
+function miniKey(e){if(!miniRunning)return;const l=[37,39,38,40].indexOf(e.
